@@ -46,7 +46,7 @@ def spitzer_q_electron(dataframe):
 
     return q_SH_electron
 
-def _defunct_spitzer_q_ion(dataframe):
+def test_spitzer_q_ion(dataframe):
 
     # Constants
     e = 1.602e-19  # Electron charge in Coulombs
@@ -67,14 +67,14 @@ def _defunct_spitzer_q_ion(dataframe):
     Ni = dataframe['Nd+']
     # Y = 4*pi * ((e**2 )/ (4*pi*epsilon_0))**2
 
-    Y = 4 * pi * (e**2 / (4 * pi * epsilon_0 * m_i))**2
+    Y = 4 * pi * (e**2 / (4 * pi * epsilon_0 * m_e))**2
     # print('Y',Y)s
 
-    ln_alpha = 6.6 - 0.5 * np.log(Ne/1e20) + 1.5* np.log(Ti)
+    ln_alpha = 6.6 - 0.5 * np.log(Ne/1e20) + 1.5* np.log(Te)
     # print(ln_alpha)
     # print('ln_alpha',ln_alpha)
 
-    v_t = np.sqrt(2 * e * Ti/m_i)
+    v_t = np.sqrt(2 * e * Te/m_e)
     # print('v_t', v_t)
 
     lambda_ei = (v_t**4)/(Y * Ni * ln_alpha) 
@@ -95,7 +95,7 @@ def spitzer_q_ion(dataframe, ion_mass_amu=2):
     # Constants
     e = 1.602e-19  # Electron charge in Coulombs
     m_e = 9.109e-31  # Electron mass in kg
-    m_i = 2 * 1.67e-27  # Ion mass in kg
+    m_i = ion_mass_amu * 1.67e-27  # Ion mass in kg
     pi = np.pi
     k0 = 13.58  # Given constant
     epsilon_0 = 8.85e-12  # Permittivity of free space in F/m
@@ -151,7 +151,7 @@ def spitzer_q_ion_simple(dataframe):
     Ne = dataframe['Ne']
     Ni = dataframe['Nd+']
     kappa_e = dataframe['kappa_par_e']
-    kappa_i = dataframe['kappa_par_e+']
+    kappa_i = dataframe['kappa_par_d+']
 
     grad_T = np.gradient(Ti, x)
 
