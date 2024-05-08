@@ -46,49 +46,50 @@ def spitzer_q_electron(dataframe):
 
     return q_SH_electron
 
-def test_spitzer_q_ion(dataframe):
+# def test_spitzer_q_ion(dataframe):
 
-    # Constants
-    e = 1.602e-19  # Electron charge in Coulombs
-    m_e = 9.109e-31  # Electron mass in kg
-    m_i = 2 * 1.67e-27  # Ion mass in kg
-    pi = np.pi
-    k0 = 13.58  # Given constant
-    epsilon_0 = 8.85e-12  # Permittivity of free space in F/m
+#     # Constants
+#     e = 1.602e-19  # Electron charge in Coulombs
+#     m_e = 9.109e-31  # Electron mass in kg
+#     m_i = 2 * 1.67e-27  # Ion mass in kg
+#     pi = np.pi
+#     k0 = 13.58  # Given constant
+#     epsilon_0 = 8.85e-12  # Permittivity of free space in F/m
 
-    # Assumed given values (you'll need to replace these with actual values)
-    n_e = 1e20  # Electron density in m^-3, example value
-    Z = 1  # Average ion charge, example value
+#     # Assumed given values (you'll need to replace these with actual values)
+#     n_e = 1e20  # Electron density in m^-3, example value
+#     Z = 1  # Average ion charge, example value
 
-    x = dataframe['y']
-    Te = dataframe['Te']
-    Ti = dataframe['Td+']
-    Ne = dataframe['Ne']
-    Ni = dataframe['Nd+']
-    # Y = 4*pi * ((e**2 )/ (4*pi*epsilon_0))**2
+#     x = dataframe['y']
+#     Te = dataframe['Te']
+#     Ti = dataframe['Td+']
+#     Ne = dataframe['Ne']
+#     Ni = dataframe['Nd+']
+#     kappa_i = dataframe['kappa_par_d+']
+#     # Y = 4*pi * ((e**2 )/ (4*pi*epsilon_0))**2
 
-    Y = 4 * pi * (e**2 / (4 * pi * epsilon_0 * m_e))**2
-    # print('Y',Y)s
+#     Y = 4 * pi * (e**2 / (4 * pi * epsilon_0 * m_e))**2
+#     # print('Y',Y)s
 
-    ln_alpha = 6.6 - 0.5 * np.log(Ne/1e20) + 1.5* np.log(Te)
-    # print(ln_alpha)
-    # print('ln_alpha',ln_alpha)
+#     ln_alpha = 6.6 - 0.5 * np.log(Ne/1e20) + 1.5* np.log(Te)
+#     # print(ln_alpha)
+#     # print('ln_alpha',ln_alpha)
 
-    v_t = np.sqrt(2 * e * Te/m_e)
-    # print('v_t', v_t)
+#     v_t = np.sqrt(2 * e * Te/m_e)
+#     # print('v_t', v_t)
 
-    lambda_ei = (v_t**4)/(Y * Ni * ln_alpha) 
-    # print('lambda_ei', lambda_ei)
+#     lambda_ei = (v_t**4)/(Y * Ni * ln_alpha) 
+#     print('lambda_ei_electron', lambda_ei)
 
-    tau_t = lambda_ei/v_t
-    # print('tau_t', tau_t)
+#     tau_t = lambda_ei/v_t
+#     # print('tau_t', tau_t)
 
-    grad_T = np.gradient(Ti, x)
-    # print('grad_T', grad_T)
+#     grad_T = np.gradient(Ti, x)
+#     # print('grad_T', grad_T)
 
-    q_SH = -((Ni * e * Ti)/(m_i)) * ((3 * np.sqrt(pi))/4) * (tau_t*k0) * ((1 +0.24)/(1 + 4.2)) *  grad_T
+#     q_SH = -((Ni * e * Ti)/(m_i)) * ((3 * np.sqrt(pi))/4) * (tau_t*k0) * ((1 +0.24)/(1 + 4.2)) *  grad_T
 
-    return q_SH
+#     return q_SH
 
 def spitzer_q_ion(dataframe, ion_mass_amu=2):
 
@@ -113,7 +114,7 @@ def spitzer_q_ion(dataframe, ion_mass_amu=2):
     v_t_snb = np.sqrt(2 * e * Ti/m_i)
 
     lambda_ei_snb = (v_t_snb**4)/(Y * Ni * ln_alpha)
-    # print('lambda_ei', lambda_ei)
+    print('lambda_ei_ion', lambda_ei_snb)
 
     tau_t_snb = (lambda_ei_snb)/(v_t_snb)
 
@@ -125,6 +126,41 @@ def spitzer_q_ion(dataframe, ion_mass_amu=2):
     q_SNB_ion = q_SNB_ion * e
     return q_SNB_ion
 
+def test_spitzer_q_ion(dataframe, ion_mass_amu=2):
+
+    # Constants
+    e = 1.602e-19  # Electron charge in Coulombs
+    m_e = 9.109e-31  # Electron mass in kg
+    m_i = ion_mass_amu * 1.67e-27  # Ion mass in kg
+    pi = np.pi
+    k0 = 13.58  # Given constant
+    epsilon_0 = 8.85e-12  # Permittivity of free space in F/m
+
+    x = dataframe['y']
+    Te = dataframe['Te']
+    Ti = dataframe['Td+']
+    Ne = dataframe['Ne']
+    Ni = dataframe['Nd+']
+    kappa_i = dataframe['kappa_par_d+']
+
+    Y = 4 * pi * (e**2 / (4 * pi * epsilon_0 * m_i))**2
+
+    ln_alpha = 6.6 - 0.5 * np.log(Ni / 1e20) + 1.5 * np.log(Ti)
+
+    v_t_snb = np.sqrt(2 * e * Ti/m_i)
+
+    lambda_ei_snb = (v_t_snb**4)/(Y * Ni * ln_alpha)
+    print('lambda_ei_ion', lambda_ei_snb)
+
+    tau_t_snb = (lambda_ei_snb)/(v_t_snb)
+
+    grad_T_snb = np.gradient(Ti, x)
+
+    q_SNB_ion = -((Ni * e * Ti)/(m_i)) * ((3 * np.sqrt(pi))/4) * (tau_t_snb*kappa_i) * ((1 +0.24)/(1 + 4.2)) *  grad_T_snb
+
+    # q is clculated in in ev/m^2/s so multiplying by e to get watts/m^2
+    q_SNB_ion = q_SNB_ion * e
+    return q_SNB_ion
 
 def spitzer_q_electron_simple(dataframe):
     
@@ -216,7 +252,7 @@ def q_convective_ion(dataframe):
 
     return q_conv
 
-def divq_sh_integrate(dataframe, snb_int = False):
+def divq_integrate(dataframe, snb_int = False):
     """
     Calculate the total heat flux from the divergence of the Spitzer-Harm fluxes.
     If snb == True outputs integral of divq_snb, otherwise outputs integral of divq_sh.
