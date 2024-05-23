@@ -51,11 +51,8 @@ def lp_asymmetry(shot_number, sector, parameter, smoothing=False,
     probe_data_lower = getattr(lower_data_group, parameter)
 
     # Compute maximum along the time axis
-    max_probe_upper = np.nanmax(probe_data_upper, axis=1)
-    max_probe_lower = np.nanmax(probe_data_lower, axis=1)
-
-    
-
+    max_probe_upper = np.nanmean(probe_data_upper, axis=1)
+    max_probe_lower = np.nanmean(probe_data_lower, axis=1)
 
 
     # Calculating asymmetry
@@ -74,11 +71,28 @@ def lp_asymmetry(shot_number, sector, parameter, smoothing=False,
 
 
 """ Magnetic Diagnostics """
-def magnetic_axis(shot_number, output_time = False, normalise = False, coordinate = 'Z'):
+def magnetic_axis_efit(shot_number, output_time = False, normalise = False, coordinate = 'Z'):
 
     client=pyuda.Client()
     mag_time = client.get(f'/epm/output/globalParameters/magneticAxis/{coordinate}',shot_number).time.data
     mag_axis = client.get(f'/epm/output/globalParameters/magneticAxis/{coordinate}',shot_number).data
+
+    if normalise:
+        abs_max = np.max(np.abs(mag_axis))
+        mag_axis = mag_axis / abs_max
+
+    if output_time:
+        return mag_axis,mag_time
+    
+    else:
+        return mag_axis
+
+
+def magnetic_axis_zc(shot_number, output_time = False, normalise = False):
+
+    client=pyuda.Client()
+    mag_time = client.get(f'/xzc/zcon/zip',shot_number).time.data
+    mag_axis = client.get(f'/xzc/zcon/zip',shot_number).data * 1e-6
 
     if normalise:
         abs_max = np.max(np.abs(mag_axis))
@@ -225,7 +239,7 @@ def plot_equib_with_traces_defunct(shot_number, psi_value = 1):
     # Fetch diagnostic data along with their time data
     sxd_bolo_asymmetry, sxd_time = bolo_sxd_asymmetry(shot_number, output_time=True)
     lang_asymmetry, lang_time = lp_asymmetry(shot_number, 4, 'isat', smoothing=True, output_time=True)
-    mag_axis, mag_time = magnetic_axis(shot_number, output_time=True, normalise=False)
+    mag_axis, mag_time = magnetic_axis_zc(shot_number, output_time=True, normalise=False)
     core_bolo_asymmetry, core_bolo_time = core_bolo_xpoint_asymmetry(shot_number, output_time=True)
 
     x = np.linspace(0.06, 2, 65)
@@ -278,7 +292,7 @@ def plot_equib_with_traces_defunct(shot_number, psi_value = 1):
     return anim
 
 
-def plot_equib_with_traces(shot_number, psi_value=1, plot_lang_asymmetry=False, save_gif=False):
+def plot_equib_with_traces(shot_number, psi_value=1, plot_lang_asymmetry=True, save_gif=False, sector = 4):
     client = pyuda.Client()
     psiNorm_data = client.get('EPM/OUTPUT/PROFILES2D/PSINORM', shot_number).data
     time_data = client.get('EPM/OUTPUT/PROFILES2D/PSINORM', shot_number).time.data
@@ -286,8 +300,8 @@ def plot_equib_with_traces(shot_number, psi_value=1, plot_lang_asymmetry=False, 
     # Fetch diagnostic data along with their time data
     sxd_bolo_asymmetry, sxd_time = bolo_sxd_asymmetry(shot_number, output_time=True)
     if plot_lang_asymmetry:
-        lang_asymmetry, lang_time = lp_asymmetry(shot_number, 4, 'isat', smoothing=True, output_time=True)
-    mag_axis, mag_time = magnetic_axis(shot_number, output_time=True, normalise=False)
+        lang_asymmetry, lang_time = lp_asymmetry(shot_number, sector, 'isat', smoothing=True, output_time=True)
+    mag_axis, mag_time = magnetic_axis_zc(shot_number, output_time=True, normalise=False)
     core_bolo_asymmetry, core_bolo_time = core_bolo_xpoint_asymmetry(shot_number, output_time=True)
 
     limR = client.geometry('/limiter/efit', shot_number).data.R
@@ -350,7 +364,7 @@ def plot_equib_with_traces(shot_number, psi_value=1, plot_lang_asymmetry=False, 
 
 
 if __name__=='__main__':
-    shot=48651
+    shot=49260
 
     # bolo, time = bolo_sxd_asymmetry(shot, output_time=True)
 
@@ -364,4 +378,4 @@ if __name__=='__main__':
 
     # plot_equib_animate(shot)
 
-    plot_equib_with_traces(shot, save_gif= True)
+    plot_equib_with_traces(shot, save_gif= False, sector = 4)
