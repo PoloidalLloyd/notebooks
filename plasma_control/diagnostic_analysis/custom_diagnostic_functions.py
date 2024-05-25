@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 from scipy.interpolate import interp1d
 import sys, os
 from scipy.signal import medfilt
+import warnings
 from matplotlib.animation import FuncAnimation
 
 # Grab P Ryans LP functions
@@ -69,6 +70,60 @@ def lp_asymmetry(shot_number, sector, parameter, smoothing=False,
     else:
         return up_down_asymmetry
 
+""" D-alpha Diagnostics"""
+def d_alpha_divertor_asymmetry(shot_number, site_line, output_time = False):
+    client=pyuda.Client()
+
+    if site_line == 'OSP':
+        upper_signal = client.get(f'/XIM/DA/HU10/OSP', shot_number).data
+        lower_signal = client.get(f'/XIM/DA/HL02/OSP', shot_number).data
+        time = client.get(f'/XIM/DA/HU10/OSP', shot_number).time.data
+    elif site_line == 'SXD':
+        upper_signal = client.get(f'/XIM/DA/HU10/SXD', shot_number).data
+        lower_signal = client.get(f'/XIM/DA/HL02/SXD', shot_number).data
+        time = client.get(f'/XIM/DA/HU10/SXD', shot_number).time.data
+    elif site_line == 'ISP':
+        # upper_signal = client.get(f'/XIM/DA/HU10/ISP', shot_number).data
+        lower_signal = client.get(f'/XIM/DA/HE05/ISP/L', shot_number).data
+        time = client.get(f'/XIM/DA/HE05/ISP/L', shot_number).time.data
+    else:
+        print('Invalid site line, valid lines of site are: OSP, SXD or ISP')
+        return
+
+    asymmetry = (upper_signal - lower_signal) / (upper_signal + lower_signal)
+
+    if output_time:
+        return asymmetry, time
+    
+    else:
+        return asymmetry
+
+
+def d_alpha_signal(shot_number, site_line, output_time = False):
+    client=pyuda.Client()
+
+    if site_line == 'OSP':
+        upper_signal = client.get(f'/XIM/DA/HU10/OSP', shot_number).data
+        lower_signal = client.get(f'/XIM/DA/HL02/OSP', shot_number).data
+        time = client.get(f'/XIM/DA/HU10/OSP', shot_number).time.data
+    elif site_line == 'SXD':
+        upper_signal = client.get(f'/XIM/DA/HU10/SXD', shot_number).data
+        lower_signal = client.get(f'/XIM/DA/HL02/SXD', shot_number).data
+        time = client.get(f'/XIM/DA/HU10/SXD', shot_number).time.data
+    elif site_line == 'ISP':
+        upper_signal = client.get(f'/XIM/DA/HU10/ISP', shot_number).data
+        lower_signal = client.get(f'/XIM/DA/HL02/ISP', shot_number).data
+        time = client.get(f'/XIM/DA/HU10/ISP', shot_number).time.data
+    else:
+        print('Invalid site line, valid lines of site are: OSP, SXD or ISP')
+        return
+
+    if output_time:
+        return upper_signal, lower_signal, time
+    
+    else:
+        return upper_signal, lower_signal
+
 
 """ Magnetic Diagnostics """
 def magnetic_axis_efit(shot_number, output_time = False, normalise = False, coordinate = 'Z'):
@@ -88,21 +143,52 @@ def magnetic_axis_efit(shot_number, output_time = False, normalise = False, coor
         return mag_axis
 
 
-def magnetic_axis_zc(shot_number, output_time = False, normalise = False):
+def magnetic_axis_zc(shot_number, output_time = False, normalise = False, trim = True):
 
     client=pyuda.Client()
-    mag_time = client.get(f'/xzc/zcon/zip',shot_number).time.data
-    mag_axis = client.get(f'/xzc/zcon/zip',shot_number).data * 1e-6
+    np.seterr(divide='ignore', invalid='ignore')
+
+    time = client.get(f'/xzc/zcon/zip',shot_number).time.data
+    zip = client.get(f'/xzc/zcon/zip',shot_number).data 
+    ip = client.get(f'/xzc/zcon/ip',shot_number).data
+
+    print(ip)
+    print(len(ip))
+
+    # Have to divide by ip to get z
+    z = zip/ip
+
+    z = np.divide(zip,ip, out=np.zeros_like(zip), where=ip!=0)
+
+    # We know the pulse starts at 0, so we can set all values before this to 0
+    z[time < 0.01] = 0
+
+    derivative = np.diff(z)
+    unphysical_index = np.where(np.abs(derivative) > np.mean(np.abs(derivative)) + 3 * np.std(np.abs(derivative)))[0]
+    if len(unphysical_index) > 0:
+        first_unphysical_index = unphysical_index[0] + 1  # +1 to account for diff reducing length by 1
+        z[first_unphysical_index -1 :] = 0
 
     if normalise:
-        abs_max = np.max(np.abs(mag_axis))
-        mag_axis = mag_axis / abs_max
+        abs_max = np.max(np.abs(zip))
+        zip = zip / abs_max
+
+    if trim:
+        # Identify indices where values are unphysical
+        outlier_indices = np.where((z > 0.15) | (z < -0.15))[0]
+
+        # Generate indices for valid data points
+        valid_indices = np.delete(np.arange(len(z)), outlier_indices)
+
+        # Interpolate to replace outliers
+        interpolator = interp1d(valid_indices, z[valid_indices], kind='linear', fill_value="extrapolate")
+        z[outlier_indices] = interpolator(outlier_indices)
 
     if output_time:
-        return mag_axis,mag_time
+        return z, time
     
     else:
-        return mag_axis
+        return z
 
 def plot_equib(shot_number, ):
     client=pyuda.Client()
@@ -173,8 +259,6 @@ def plot_equib_animate(shot_number):
 
     plt.show()
     return anim
-
-# Example usage: plot_equib(45470)
 
 
 
@@ -378,4 +462,10 @@ if __name__=='__main__':
 
     # plot_equib_animate(shot)
 
-    plot_equib_with_traces(shot, save_gif= False, sector = 4)
+    # plot_equib_with_traces(shot, save_gif= False, sector = 4)
+
+    # d_alpha_asymmetry, time = d_alpha_divertor_asymmetry(shot, 'SXD', output_time = True)
+
+    mag_axis, time = magnetic_axis_zc(shot, output_time = True)
+
+    # print(d_alpha_asymmetry, time)
