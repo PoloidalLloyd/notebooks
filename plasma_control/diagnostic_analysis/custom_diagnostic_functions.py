@@ -71,7 +71,7 @@ def lp_asymmetry(shot_number, sector, parameter, smoothing=False,
         return up_down_asymmetry
 
 """ D-alpha Diagnostics"""
-def d_alpha_divertor_asymmetry(shot_number, site_line, output_time = False):
+def d_alpha_divertor_asymmetry(shot_number, site_line, output_time = False, offset = False):
     client=pyuda.Client()
 
     if site_line == 'OSP':
@@ -90,7 +90,19 @@ def d_alpha_divertor_asymmetry(shot_number, site_line, output_time = False):
         print('Invalid site line, valid lines of site are: OSP, SXD or ISP')
         return
 
-    asymmetry = (upper_signal - lower_signal) / (upper_signal + lower_signal)
+    if site_line != 'ISP':
+        upper_signal[upper_signal < 0] = 0
+        lower_signal[lower_signal < 0] = 0
+
+        asymmetry = (upper_signal - lower_signal) / (upper_signal + lower_signal)
+
+        if offset:
+            asymmetry = asymmetry - 0.5
+
+    else:
+        lower_signal[lower_signal < 0] = 0
+        asymmetry = lower_signal / np.max(lower_signal)
+
 
     if output_time:
         return asymmetry, time
@@ -99,7 +111,7 @@ def d_alpha_divertor_asymmetry(shot_number, site_line, output_time = False):
         return asymmetry
 
 
-def d_alpha_signal(shot_number, site_line, output_time = False):
+def d_alpha_signal(shot_number, site_line, output_time = False, normalisation = False):
     client=pyuda.Client()
 
     if site_line == 'OSP':
@@ -111,18 +123,131 @@ def d_alpha_signal(shot_number, site_line, output_time = False):
         lower_signal = client.get(f'/XIM/DA/HL02/SXD', shot_number).data
         time = client.get(f'/XIM/DA/HU10/SXD', shot_number).time.data
     elif site_line == 'ISP':
-        upper_signal = client.get(f'/XIM/DA/HU10/ISP', shot_number).data
-        lower_signal = client.get(f'/XIM/DA/HL02/ISP', shot_number).data
-        time = client.get(f'/XIM/DA/HU10/ISP', shot_number).time.data
+        # upper_signal = client.get(f'/XIM/DA/HU10/ISP', shot_number).data
+        lower_signal = client.get(f'/XIM/DA/HE05/ISP/L', shot_number).data
+        time = client.get(f'/XIM/DA/HE05/ISP/L', shot_number).time.data
     else:
         print('Invalid site line, valid lines of site are: OSP, SXD or ISP')
         return
 
-    if output_time:
-        return upper_signal, lower_signal, time
+
+    if normalisation:
+        if site_line != 'ISP':
+            def calculate_rms(signal):
+                return np.sqrt(np.mean(signal**2))
+            
+            rms_upper = calculate_rms(upper_signal)
+            rms_lower = calculate_rms(lower_signal)
+
+            normalization_factor_rms = rms_upper / rms_lower
+            normalized_lower_signal_rms = lower_signal * normalization_factor_rms
+
+            
+            if output_time:
+                return upper_signal, normalized_lower_signal_rms, time
+            
+            else:
+                return upper_signal, normalized_lower_signal_rms
+            
+        else:
+            normalized_lower_signal = lower_signal / np.max(lower_signal)
+            
+            if output_time:
+                return normalized_lower_signal, time
+            
+            else:
+                return normalized_lower_signal
+
     
     else:
-        return upper_signal, lower_signal
+        if site_line != 'ISP':
+            if output_time:
+                return upper_signal, lower_signal, time
+            
+            else:
+                return upper_signal, lower_signal
+            
+        else:
+            if output_time:
+                return lower_signal, time
+            
+            else:
+                return lower_signal
+            
+def compare_d_alpha(shot_number, title):
+    # Gather data for magnetic axes and divertor asymmetry
+    mag_z, mag_time = magnetic_axis_zc(shot_number, output_time=True, trim=True)
+    mag_efit, mag_time_efit = magnetic_axis_efit(shot_number, output_time=True)
+    d_alpha_osp, d_alpha_osp_time = d_alpha_divertor_asymmetry(shot_number, 'OSP', output_time=True)
+    # d_alpha_isp, d_alpha_isp_time = d_alpha_divertor_asymmetry(shot_number, 'ISP', output_time=True)
+    d_alpha_sxd, d_alpha_sxd_time = d_alpha_divertor_asymmetry(shot_number, 'SXD', output_time=True)
+    d_alpha_osp_upper_sig, d_alpha_osp_lower_sig, d_alpha_osp_upper_time = d_alpha_signal(shot_number, 'OSP', output_time=True, normalisation=False)
+    d_alpha_isp_lower_sig, d_alpha_isp_upper_time = d_alpha_signal(shot_number, 'ISP', output_time=True, normalisation=False)
+    d_alpha_sxd_upper_sig, d_alpha_sxd_lower_sig, d_alpha_sxd_upper_time = d_alpha_signal(shot_number, 'SXD', output_time=True, normalisation=False)
+
+    # Plotting setup
+    fig, axes = plt.subplots(6, 1, figsize=(20, 10), sharex=True)
+    fig.subplots_adjust(hspace=0.5)  # Adjust vertical spacing
+    fig.suptitle(title)
+    # Plot magnetic axis
+    axes[0].plot(mag_time, mag_z, label='Z-con magnetic axis', color='black')
+    axes[0].plot(mag_time_efit, mag_efit, label='EFIT magnetic axis')
+    axes[0].set_ylim(-0.10, 0.10)
+    axes[0].set_xlim(0, 1)
+    axes[0].set_ylabel('Z position (m)')
+    
+    axes[0].set_title('Magnetic axis')
+    axes[0].legend(loc='upper right')
+
+    # Plot OSP asymmetry and magnetic axis
+    axes[1].plot(d_alpha_osp_time, d_alpha_osp, label='OSP')
+    axes12 = axes[1].twinx()
+    axes12.plot(mag_time, mag_z, label='Z-con magnetic axis', color='black')
+    axes12.grid(False)
+    axes[1].set_ylabel('up/down')
+    axes[1].set_title('OSP asymmetry')
+    axes[1].legend(loc='upper right')
+
+    # Plot OSP signal
+    axes[2].plot(d_alpha_osp_upper_time, d_alpha_osp_upper_sig, label='OSP upper')
+    axes[2].plot(d_alpha_osp_upper_time, d_alpha_osp_lower_sig, label='OSP lower')
+    axes22 = axes[2].twinx()
+    axes22.plot(mag_time, mag_z, label='Z-con magnetic axis', color='black')
+    axes22.grid(False)
+    axes[2].set_ylabel('V')
+    axes[2].set_title('OSP signal')
+    axes[2].legend(loc='upper right')
+
+    # Plot SXD asymmetry and magnetic axis
+    axes[3].plot(d_alpha_sxd_time, d_alpha_sxd, label='SXD')
+    axes32 = axes[3].twinx()
+    axes32.plot(mag_time, mag_z, label='Z-con magnetic axis', color='black')
+    axes32.grid(False)
+    axes[3].set_ylabel('up/down')
+    axes[3].set_title('SXD asymmetry')
+    axes[3].legend(loc='upper right')
+
+    # Plot SXD signal
+    axes[4].plot(d_alpha_sxd_upper_time, d_alpha_sxd_upper_sig, label='SXD upper')
+    axes[4].plot(d_alpha_sxd_upper_time, d_alpha_sxd_lower_sig, label='SXD lower')
+    axes42 = axes[4].twinx()
+    axes42.plot(mag_time, mag_z, label='Z-con magnetic axis', color='black')
+    axes42.grid(False)
+    axes[4].set_ylabel('V')
+    axes[4].set_title('SXD signal')
+    axes[4].legend(loc='upper right')
+
+    # Plot ISP
+    axes[5].plot(d_alpha_isp_upper_time, d_alpha_isp_lower_sig, label='ISP')
+    axes52 = axes[5].twinx()
+    axes52.plot(mag_time, mag_z, label='Z-con magnetic axis', color='black')
+    axes52.grid(False)
+    axes[5].set_ylabel('V')
+    axes[5].set_xlabel('Time (s)')
+    axes[5].set_title('ISP lower signal')
+    axes[5].legend(loc='upper right')
+
+    plt.show()
 
 
 """ Magnetic Diagnostics """
@@ -269,8 +394,10 @@ def bolo_sxd_asymmetry(shot_number, output_time = False):
 
 
     upper_sxd_bolo = bolo.sxd_upper_prad
-
     lower_sxd_bolo = bolo.sxd_lower_prad
+
+    upper_sxd_bolo[upper_sxd_bolo < 0] = 0
+    lower_sxd_bolo[lower_sxd_bolo < 0] = 0
     # print(lower_sxd_bolo)
 
     # max_upper = np.nanmax(upper_sxd_bolo)
@@ -294,12 +421,18 @@ def core_bolo_xpoint_asymmetry(shot_number, output_time = False):
 
     channel3 = core_brightness[:, 2]
     channel4 = core_brightness[:, 3]
+    channel3[channel3 < 0] = 0
+    channel4[channel4 < 0] = 0
 
     channel13 = core_brightness[:, 13]
-    channel14 = core_brightness[:, 14] 
+    channel14 = core_brightness[:, 14]
+    channel13[channel13 < 0] = 0
+    channel14[channel14 < 0] = 0
 
     upper_mean_brightness = (channel3 + channel4)/2
     lower_mean_brightness = (channel13 + channel14)/2
+
+
 
     asymmetry_arr = (upper_mean_brightness - lower_mean_brightness) / (upper_mean_brightness + lower_mean_brightness)
 
