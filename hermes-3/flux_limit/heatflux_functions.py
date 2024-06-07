@@ -114,7 +114,7 @@ def spitzer_q_ion(dataframe, ion_mass_amu=2):
     v_t_snb = np.sqrt(2 * e * Ti/m_i)
 
     lambda_ei_snb = (v_t_snb**4)/(Y * Ni * ln_alpha)
-    print('lambda_ei_ion', lambda_ei_snb)
+    # print('lambda_ei_ion', lambda_ei_snb)
 
     tau_t_snb = (lambda_ei_snb)/(v_t_snb)
 
@@ -150,7 +150,7 @@ def test_spitzer_q_ion(dataframe, ion_mass_amu=2):
     v_t_snb = np.sqrt(2 * e * Ti/m_i)
 
     lambda_ei_snb = (v_t_snb**4)/(Y * Ni * ln_alpha)
-    print('lambda_ei_ion', lambda_ei_snb)
+    # print('lambda_ei_ion', lambda_ei_snb)
 
     tau_t_snb = (lambda_ei_snb)/(v_t_snb)
 
@@ -270,6 +270,18 @@ def divq_integrate(dataframe, snb_int = False):
     else:
         return q_snb
 
+
+def spitzer_electron_simple(dataframe):
+    """
+    Calculate the Spitzer-Harm heat flux using the simple formula.
+    """
+    x = dataframe['y']
+    Te = dataframe['Te']
+    kappa_e = dataframe['kappa_par_e']
+    grad_T = np.gradient(Te, x)
+    q = -kappa_e * grad_T
+
+    return q
 
 
 
