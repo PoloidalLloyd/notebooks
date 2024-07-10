@@ -258,10 +258,11 @@ def divq_integrate(dataframe, snb_int = False):
     If snb == True outputs integral of divq_snb, otherwise outputs integral of divq_sh.
     """
 
-    x = dataframe['y']
-    Te = dataframe['Te']
-    div_q_snb = dataframe['Div_Q_SNB']
-    div_q_sh = dataframe['Div_Q_SH']
+    x = np.ravel(dataframe['y'].values)
+    Te = np.ravel(dataframe['Te'].values)
+    div_q_snb = np.ravel(dataframe['Div_Q_SNB'].values)
+    div_q_sh = np.ravel(dataframe['Div_Q_SH'].values)
+
     q_snb = cumtrapz(div_q_snb, x, initial=0)
     q_sh = cumtrapz(div_q_sh, x, initial=0)
 
