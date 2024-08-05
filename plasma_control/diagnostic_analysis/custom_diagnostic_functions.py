@@ -71,7 +71,7 @@ def lp_asymmetry(shot_number, sector, parameter, smoothing=False,
         return up_down_asymmetry
 
 """ D-alpha Diagnostics"""
-def d_alpha_divertor_asymmetry(shot_number, site_line, output_time = False, offset = False):
+def d_alpha_divertor_asymmetry(shot_number, site_line, output_time = False, offset = False, calibrate = None):
     client=pyuda.Client()
 
     if site_line == 'OSP':
@@ -94,6 +94,9 @@ def d_alpha_divertor_asymmetry(shot_number, site_line, output_time = False, offs
         upper_signal[upper_signal < 0] = 0
         lower_signal[lower_signal < 0] = 0
 
+        if calibrate != None:
+            lower_signal = lower_signal * calibrate
+
         asymmetry = (upper_signal - lower_signal) / (upper_signal + lower_signal)
 
         if offset:
@@ -111,7 +114,7 @@ def d_alpha_divertor_asymmetry(shot_number, site_line, output_time = False, offs
         return asymmetry
 
 
-def d_alpha_signal(shot_number, site_line, output_time = False, normalisation = False):
+def d_alpha_signal(shot_number, site_line, output_time = False, normalisation = False, calibrate = None):
     client=pyuda.Client()
 
     if site_line == 'OSP':
@@ -121,6 +124,10 @@ def d_alpha_signal(shot_number, site_line, output_time = False, normalisation = 
     elif site_line == 'SXD':
         upper_signal = client.get(f'/XIM/DA/HU10/SXD', shot_number).data
         lower_signal = client.get(f'/XIM/DA/HL02/SXD', shot_number).data
+        if calibrate != None:
+            voltage_max = 10
+            lower_signal = lower_signal * calibrate
+            lower_signal[lower_signal > voltage_max] = voltage_max
         time = client.get(f'/XIM/DA/HU10/SXD', shot_number).time.data
     elif site_line == 'ISP':
         # upper_signal = client.get(f'/XIM/DA/HU10/ISP', shot_number).data
@@ -186,6 +193,7 @@ def compare_d_alpha(shot_number, title):
     d_alpha_sxd_upper_sig, d_alpha_sxd_lower_sig, d_alpha_sxd_upper_time = d_alpha_signal(shot_number, 'SXD', output_time=True, normalisation=False)
 
     # Plotting setup
+
     fig, axes = plt.subplots(6, 1, figsize=(20, 10), sharex=True)
     fig.subplots_adjust(hspace=0.5)  # Adjust vertical spacing
     fig.suptitle(title)
@@ -193,7 +201,7 @@ def compare_d_alpha(shot_number, title):
     axes[0].plot(mag_time, mag_z, label='Z-con magnetic axis', color='black')
     axes[0].plot(mag_time_efit, mag_efit, label='EFIT magnetic axis')
     axes[0].set_ylim(-0.10, 0.10)
-    axes[0].set_xlim(0, 1)
+    axes[0].set_xlim(0, mag_time_efit[-1])
     axes[0].set_ylabel('Z position (m)')
     
     axes[0].set_title('Magnetic axis')
@@ -268,22 +276,22 @@ def magnetic_axis_efit(shot_number, output_time = False, normalise = False, coor
         return mag_axis
 
 
-def magnetic_axis_zc(shot_number, output_time = False, normalise = False, trim = True):
-
-    client=pyuda.Client()
+def magnetic_axis_zc(shot_number, output_time=False, normalise=False, trim=True):
+    client = pyuda.Client()
     np.seterr(divide='ignore', invalid='ignore')
 
-    time = client.get(f'/xzc/zcon/zip',shot_number).time.data
-    zip = client.get(f'/xzc/zcon/zip',shot_number).data 
-    ip = client.get(f'/xzc/zcon/ip',shot_number).data
+    time = client.get(f'/xzc/zcon/zip', shot_number).time.data
+    zip = client.get(f'/xzc/zcon/zip', shot_number).data 
+    ip = client.get(f'/xzc/zcon/ip', shot_number).data
 
-    print(ip)
-    print(len(ip))
+    # Ensure all arrays have the same length
+    min_len = min(len(time), len(zip), len(ip))
+    time = time[:min_len]
+    zip = zip[:min_len]
+    ip = ip[:min_len]
 
     # Have to divide by ip to get z
-    z = zip/ip
-
-    z = np.divide(zip,ip, out=np.zeros_like(zip), where=ip!=0)
+    z = np.divide(zip, ip, out=np.zeros_like(zip), where=ip!=0)
 
     # We know the pulse starts at 0, so we can set all values before this to 0
     z[time < 0.01] = 0
@@ -292,7 +300,7 @@ def magnetic_axis_zc(shot_number, output_time = False, normalise = False, trim =
     unphysical_index = np.where(np.abs(derivative) > np.mean(np.abs(derivative)) + 3 * np.std(np.abs(derivative)))[0]
     if len(unphysical_index) > 0:
         first_unphysical_index = unphysical_index[0] + 1  # +1 to account for diff reducing length by 1
-        z[first_unphysical_index -1 :] = 0
+        z[first_unphysical_index - 1 :] = 0
 
     if normalise:
         abs_max = np.max(np.abs(zip))
@@ -311,7 +319,6 @@ def magnetic_axis_zc(shot_number, output_time = False, normalise = False, trim =
 
     if output_time:
         return z, time
-    
     else:
         return z
 
@@ -577,11 +584,101 @@ def plot_equib_with_traces(shot_number, psi_value=1, plot_lang_asymmetry=True, s
     plt.show()
     return anim
 
+def plot_equib(shot_number, psi_value=1, save_gif=False):
+    client = pyuda.Client()
+    psiNorm_data = client.get('EPM/OUTPUT/PROFILES2D/PSINORM', shot_number).data
+    time_data = client.get('EPM/OUTPUT/PROFILES2D/PSINORM', shot_number).time.data
 
+    limR = client.geometry('/limiter/efit', shot_number).data.R
+    limZ = client.geometry('/limiter/efit', shot_number).data.Z
 
+    x = np.linspace(0.06, 2, 65)
+    y = np.linspace(-2.2, 2.2, 65)
+    X, Y = np.meshgrid(y, x)
+
+    fig, ax1 = plt.subplots(figsize=(10, 12))
+    ax1.set_aspect('equal')
+
+    fig.suptitle(f'Magnetic Contour Evolution \n shot {shot_number}')
+    ax1.set_xlabel('R (M)')
+    ax1.set_ylabel('Z (M)')
+
+    # Initial plot setup for the contour and magnetic axis on ax1 (right plot)
+    contour_filled = ax1.contourf(Y, X, psiNorm_data[0], levels=100, cmap='plasma', alpha=0.5)
+    contour_line = ax1.contour(Y, X, psiNorm_data[0], levels=[psi_value], colors='red')
+
+    def update(frame):
+        ax1.clear()
+        ax1.set_aspect('equal')
+        contour_filled = ax1.contourf(Y, X, psiNorm_data[frame], levels=100, cmap='plasma', alpha=0.5)
+        contour_line = ax1.contour(Y, X, psiNorm_data[frame], levels=[psi_value], colors='red')
+        ax1.plot(limR, limZ, color='black')
+        time_text = ax1.text(0.05, 0.95, f'Time: {time_data[frame]:.2f}s', transform=ax1.transAxes, fontsize=12, verticalalignment='top')
+        return contour_filled.collections + contour_line.collections + [time_text]
+
+    anim = FuncAnimation(fig, update, frames=len(time_data), interval=50, blit=False)
+
+    if save_gif:
+        anim.save(f'./shot_{shot_number}_animation_new.gif', writer='imagemagick', fps=10)
+
+    plt.show()
+    return anim
+
+def plot_equib_d_alpha(shot_number, psi_value=1, plot_ax2=False, save_gif=False):
+    client = pyuda.Client()
+    psiNorm_data = client.get('EPM/OUTPUT/PROFILES2D/PSINORM', shot_number).data
+    time_data = client.get('EPM/OUTPUT/PROFILES2D/PSINORM', shot_number).time.data
+
+    limR = client.geometry('/limiter/efit', shot_number).data.R
+    limZ = client.geometry('/limiter/efit', shot_number).data.Z
+
+    x = np.linspace(0.06, 2, 65)
+    y = np.linspace(-2.2, 2.2, 65)
+    X, Y = np.meshgrid(y, x)
+
+    if plot_ax2:
+        fig, ax1 = plt.subplots(figsize=(20, 12))
+        compare_d_alpha(shot_number, f'Shot {shot_number} Asymmetry Analysis')
+        ax1 = plt.subplot2grid((1, 2), (0, 1))
+    else:
+        fig, ax1 = plt.subplots(figsize=(10, 12))
+
+    ax1.set_aspect('equal')
+    fig.suptitle(f'Magnetic Contour Evolution \n shot {shot_number}')
+    ax1.set_xlabel('R (M)')
+    ax1.set_ylabel('Z (M)')
+
+    contour_filled = ax1.contourf(Y, X, psiNorm_data[0], levels=100, cmap='plasma', alpha=0.5)
+    contour_line = ax1.contour(Y, X, psiNorm_data[0], levels=[psi_value], colors='red')
+
+    if plot_ax2:
+        vertical_line = [ax.axvline(x=time_data[0], color='r', linestyle='--') for ax in fig.axes]
+
+    def update(frame):
+        ax1.clear()
+        ax1.set_aspect('equal')
+        contour_filled = ax1.contourf(Y, X, psiNorm_data[frame], levels=100, cmap='plasma', alpha=0.5)
+        contour_line = ax1.contour(Y, X, psiNorm_data[frame], levels=[psi_value], colors='red')
+        ax1.plot(limR, limZ, color='black')
+        time_text = ax1.text(0.05, 0.95, f'Time: {time_data[frame]:.2f}s', transform=ax1.transAxes, fontsize=12, verticalalignment='top')
+        
+        if plot_ax2:
+            for vline in vertical_line:
+                vline.set_xdata([time_data[frame], time_data[frame]])
+            return contour_filled.collections + contour_line.collections + [time_text] + vertical_line
+        else:
+            return contour_filled.collections + contour_line.collections + [time_text]
+
+    anim = FuncAnimation(fig, update, frames=len(time_data), interval=50, blit=False)
+
+    if save_gif:
+        anim.save(f'shot_{shot_number}_animation_d_alpha.gif', writer='imagemagick', fps=10)
+
+    plt.show()
+    return anim
 
 if __name__=='__main__':
-    shot=49260
+    shot=49059
 
     # bolo, time = bolo_sxd_asymmetry(shot, output_time=True)
 
@@ -593,12 +690,12 @@ if __name__=='__main__':
 
     # print(core,time)
 
-    # plot_equib_animate(shot)
+    plot_equib(shot, save_gif=True)
 
-    # plot_equib_with_traces(shot, save_gif= False, sector = 4)
+    # plot_equib_d_alpha(shot, plot_ax2=True, save_gif= True)
 
     # d_alpha_asymmetry, time = d_alpha_divertor_asymmetry(shot, 'SXD', output_time = True)
 
-    mag_axis, time = magnetic_axis_zc(shot, output_time = True)
+    # mag_axis, time = magnetic_axis_zc(shot, output_time = True)
 
     # print(d_alpha_asymmetry, time)
