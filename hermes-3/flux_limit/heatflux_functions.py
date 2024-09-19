@@ -274,9 +274,9 @@ def divq_integrate(dataframe, snb_int = False):
 
 def spitzer_electron_simple(dataframe):
     """
-    Calculate the Spitzer-Harm heat flux using the simple formula.
+    Calculate Spitzer-Harm with hermes-3 conductivity output.
     """
-    x = dataframe['y']
+    x =dataframe['y']
     Te = dataframe['Te']
     kappa_e = dataframe['kappa_par_e']
     grad_T = np.gradient(Te, x)
