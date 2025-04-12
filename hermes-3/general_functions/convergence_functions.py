@@ -89,22 +89,31 @@ def find_first_below_threshold(temp_profile, y_values, threshold=5.0):
         return None  # Return None if no location is found below the threshold
 
 
-def detachment_front_finder(ds, last_time_slice=True):
+def detachment_front_finder(ds, last_time_slice=True, use_temperature=True):
     """
-    Finds the location where Nd becomes greater than Ne in the dataset.
+    Finds the location of the detachment front. Optionally, it can be determined
+    by the first cell where Te <= 5.
 
     Parameters:
     ds (xarray Dataset): The dataset for a single time slice.
+    use_temperature (bool): If True, the front is determined by the first cell where Te <= 5.
+                            If False, the front is determined where Nd > Ne.
 
     Returns:
-    float: The y-coordinate of the detachment front (where Nd > Ne), 
+    float: The y-coordinate of the detachment front, 
            or zero if the front position is undefined or non-positive.
     """
     Nd = replace_guards(np.ravel(ds['Nd']))
     Ne = replace_guards(np.ravel(ds['Ne']))
-    y = ds['y'][1:-1]  # Exclude guards from y coordinate as well
+    Te = replace_guards(np.ravel(ds['Te']))  # Adding temperature field
+    y = ds['y'][1:-1]  # Exclude guards from y coordinate
 
-    detachment_indices = np.where(Nd > Ne)[0]
+    if use_temperature:
+        # Find the first index where Te <= 5
+        detachment_indices = np.where(Te <= 5)[0]
+    else:
+        # Find the first index where Nd > Ne
+        detachment_indices = np.where(Nd > Ne)[0]
 
     if len(detachment_indices) > 0:
         front_loc = y[detachment_indices[0]]
@@ -113,10 +122,11 @@ def detachment_front_finder(ds, last_time_slice=True):
     else:
         return 0  # Set to zero if detachment front not found or undefined
 
+
        
 def plot_time_history(dataset, variables=['Te'], upstream_index=2, target_index=-2,
                       track_detachment_front=False, time_slices=800,
-                      log_threshold=1e6, base_figsize=(6, 4), save=False):
+                      log_threshold=1e6, base_figsize=(6, 4), save=False, det_specification = 'Te'):
     """
     Plots the time history of user-specified variables at upstream and target positions
     on separate plots, using the last 200 time slices or the maximum available.
@@ -164,14 +174,29 @@ def plot_time_history(dataset, variables=['Te'], upstream_index=2, target_index=
     # Variable to store positions where Nd > Ne (detachment front)
     detachment_front_positions = [] if track_detachment_front else None
 
+    if det_specification == 'Te':
+
     # If tracking the detachment front, calculate it for each time slice
-    if track_detachment_front:
-        front_positions = []
-        for t_step in range(num_time_slices):
-            ds_at_t = selected_steps.isel(t=t_step)
-            front_loc = detachment_front_finder(ds_at_t)
-            front_positions.append(front_loc)
-        detachment_front_positions = np.array(front_positions)
+        if track_detachment_front:
+            front_positions = []
+            for t_step in range(num_time_slices):
+                ds_at_t = selected_steps.isel(t=t_step)
+                front_loc = detachment_front_finder(ds_at_t, use_temperature=True)
+                front_positions.append(front_loc)
+            detachment_front_positions = np.array(front_positions)
+    
+    elif det_specification == 'Nd':
+        if track_detachment_front:
+            front_positions = []
+            for t_step in range(num_time_slices):
+                ds_at_t = selected_steps.isel(t=t_step)
+                front_loc = detachment_front_finder(ds_at_t, use_temperature=False)
+                front_positions.append(front_loc)
+            detachment_front_positions = np.array(front_positions)
+
+    else:
+        print('Invalid det_specification. Please choose either "Te" or "Nd"')
+        return
 
     # Iterate over each variable to plot upstream and target values
     for i, var in enumerate(variables):
@@ -211,18 +236,23 @@ def plot_time_history(dataset, variables=['Te'], upstream_index=2, target_index=
 
     # Add a separate subplot for the detachment front position if requested
     if track_detachment_front:
+
+        if det_specification == 'Te':
+            label = 'Te <= 5 Front'
+        elif det_specification == 'Nd':
+            label = 'Nd > Ne Front'
         detachment_front_index = len(variables)  # The next index after all variables
         axs[detachment_front_index].plot(times, detachment_front_positions, marker='s', linestyle='-', color='red',
-                                         label='Nd > Ne Front')
-        axs[detachment_front_index].set_title('Detachment Front Position (Nd > Ne)')
+                                         label='label')
+        axs[detachment_front_index].set_title(f'Detachment Front Position ({label})')
         axs[detachment_front_index].set_xlabel('Time (ms)')
         axs[detachment_front_index].set_ylabel('Position (m)')
         axs[detachment_front_index].grid(True)
 
         # Plot the same on the bottom row
         axs[detachment_front_index + total_vars].plot(times, detachment_front_positions, marker='s', linestyle='-', color='red',
-                                                      label='Nd > Ne Front')
-        axs[detachment_front_index + total_vars].set_title('Detachment Front Position (Nd > Ne)')
+                                                      label='label')
+        axs[detachment_front_index + total_vars].set_title(f'Detachment Front Position ({label})')
         axs[detachment_front_index + total_vars].set_xlabel('Time (ms)')
         axs[detachment_front_index + total_vars].set_ylabel('Position (m)')
         axs[detachment_front_index + total_vars].grid(True)
@@ -241,9 +271,9 @@ def plot_time_history(dataset, variables=['Te'], upstream_index=2, target_index=
 
 
 def plot_profiles_animation(simulation_data, variables=['Te'], data_label=None,
-                            guard_replace=True, linestyles=None, log_threshold=1e6, filename='profiles_animation.gif'):
+                            guard_replace=True, linestyles=None, log_threshold=1e6, filename='profiles_animation.mp4'):
     """
-    Creates an animated GIF of the specified variable profiles for the last 20 time steps (or fewer).
+    Creates an animated video of the specified variable profiles for the last 20 time steps (or fewer).
 
     Parameters:
     simulation_data (xarray Dataset): Dataset for the simulation.
@@ -252,16 +282,16 @@ def plot_profiles_animation(simulation_data, variables=['Te'], data_label=None,
     guard_replace (bool): Whether to replace guard cells.
     linestyles (list, optional): Custom linestyles for each variable plot.
     log_threshold (float): Threshold above which the y-axis will be plotted in log scale.
-    filename (str): The filename to save the animation as a GIF.
+    filename (str): The filename to save the animation as a video (e.g., `.mp4`).
     """
-    num_timesteps = min(100, simulation_data.dims['t'])  # Use last 20 timesteps or fewer
+    num_timesteps = min(100, simulation_data.dims['t'])  # Use last 100 timesteps or fewer
     num_vars = len(variables)
 
     # Set up plot layout with two columns, adjusting rows based on the number of variables
     ncols = 2 if num_vars > 1 else 1
     nrows = (num_vars + 1) // 2  # Ensure enough rows
 
-    fig, axs = plt.subplots(nrows, ncols, figsize=(12, 6 * nrows), dpi=500)
+    fig, axs = plt.subplots(nrows, ncols, figsize=(12, 6 * nrows), dpi=200)
     
     # If we have only one subplot, axs won't be a list, so we ensure it's treated as such
     if num_vars == 1:
@@ -314,12 +344,13 @@ def plot_profiles_animation(simulation_data, variables=['Te'], data_label=None,
     # Create animation using FuncAnimation
     ani = animation.FuncAnimation(fig, update_plot, frames=num_timesteps, repeat=False)
 
-    # Save the animation as a GIF using PillowWriter
-    ani.save(filename, writer='pillow', fps=2)
+    # Save the animation as a video using FFMpegWriter (MP4 format)
+    ani.save(filename, writer='ffmpeg', fps=2)
 
     print(f"Animation saved as {filename}")
     plt.close()
 
+    
 if __name__ == '__main__':
     # do something?
     print("Hello world!")
