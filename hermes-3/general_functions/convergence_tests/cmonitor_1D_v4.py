@@ -8,7 +8,7 @@ import time
 
 sys.path.append(os.path.join(r"/users/jlb647/scratch/simulation_program/hermes-3_sim/analysis/sdtools"))
 sys.path.append(os.path.join(r"/users/jlb647/scratch/simulation_program/hermes-3_sim/analysis/my_notebooks/notebooks/hermes-3/general_functions"))
-sys.path.append(os.path.join(r"/users/jlb647/scratch/simulation_program/hermes-3_sim/analysis/my_notebooks/notebooks/hermes-3/general_functions/source_functions.py"))
+# sys.path.append(os.path.join(r"/users/jlb647/scratch/simulation_program/hermes-3_sim/analysis/my_notebooks/notebooks/hermes-3/general_functions/source_functions.py"))
 from convergence_functions import *
 from plotting_functions import *
 from source_functions import *
@@ -30,7 +30,7 @@ def main(directory_path):
             plot_time_history(ds, variables=['Te', 'Td+', 'Ne', 'Nd', 'Sd+_src', 'Pe_src'], track_detachment_front=True, save=True)
             
             # Generate profiles plot
-            plot_profiles(ds, variables=['Te', 'Td+', 'Ne', 'Nd'], data_label='Simulation', save=True)
+            plot_profiles(ds, variables=['Te', 'Td+', 'Td', 'Ne', 'Nd','Pe','Pd+', 'Pd', 'NVd+', 'NVd'], data_label='Simulation', save=True)
 
             try:
                 pi_feedback_source(ds, plot=True, time_slices=10, save=True)
@@ -41,15 +41,15 @@ def main(directory_path):
             plot_profiles_animation(ds, variables=['Te', 'Td+', 'Td', 'Ne', 'Nd','Pe','Pd+', 'Pd', 'NVd+', 'NVd'], data_label='Simulation', filename='profiles_animation.gif')
 
             
-            import imageio
+            # import imageio
 
-            # Read the GIF file
-            gif_reader = imageio.get_reader('profiles_animation.gif')
+            # # Read the GIF file
+            # gif_reader = imageio.get_reader('profiles_animation.gif')
 
-            # Write the MP4 file
-            with imageio.get_writer('profiles_animation.mp4', fps=5) as writer:
-                for frame in gif_reader:
-                    writer.append_data(frame)
+            # # Write the MP4 file
+            # with imageio.get_writer('profiles_animation.mp4', fps=5) as writer:
+            #     for frame in gif_reader:
+            #         writer.append_data(frame)
 
 
             break  # Exit the loop once the reading and processing is successful

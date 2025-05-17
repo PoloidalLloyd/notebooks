@@ -120,7 +120,7 @@ def plot_profiles(simulation_data, variables=['Te'], data_label=None,
             var_data = replace_guards(var_data)
 
         label = f'({var})'
-        ax.plot(y, var_data, label=label, linestyle=linestyles[i])
+        ax.plot(y[::-1], var_data, label=label, linestyle=linestyles[i])
 
         # Determine if log scale is needed based on threshold
         if np.max(np.abs(var_data)) > log_threshold:
@@ -137,6 +137,7 @@ def plot_profiles(simulation_data, variables=['Te'], data_label=None,
         units = simulation_data[var].attrs.get('units', 'Unknown units')
 
         ax.set_xlabel(r'S$_\parallel$ (m)')
+        ax.set_xscale('log')
         ax.set_ylabel(f'{var} ({units})')
         ax.legend(loc='best', fontsize=8)
         ax.grid(True)

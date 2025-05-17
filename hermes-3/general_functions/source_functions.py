@@ -69,6 +69,7 @@ def pi_feedback_source(ds, plot = False, time_slices = 10, save = False):
         ax.axhline(steady_state, color = 'red', label = f'Steady state mean (last {time_slices} steps)', linestyle = '--')
         ax.set_xlabel('Time (ms)')
         ax.set_ylabel('Source')
+        ax.set_yscale('symlog')
         ax.set_title(f'Feedback source at first index (average of {time_slices} = {steady_state})')
         ax.legend()
         plt.show()

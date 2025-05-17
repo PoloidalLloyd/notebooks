@@ -10,6 +10,9 @@ import xarray as xr
 import xbout
 from pathlib import Path
 import xhermes as xh
+import imageio.v2 as imageio  # Use this to avoid deprecation warnings
+import tempfile
+from matplotlib.ticker import ScalarFormatter
 import matplotlib.animation as animation
 from matplotlib.ticker import LogFormatter
 sys.path.append(os.path.join(r"/users/jlb647/scratch/simulation_program/hermes-3_sim/analysis/sdtools"))
@@ -201,9 +204,12 @@ def plot_time_history(dataset, variables=['Te'], upstream_index=2, target_index=
     # Iterate over each variable to plot upstream and target values
     for i, var in enumerate(variables):
         # Extract upstream and target data for each variable
-        upstream_data = np.squeeze(selected_steps[var].isel(y=upstream_index).values)
-        target_data = np.squeeze(selected_steps[var].isel(y=target_index).values)
-
+        try:
+            upstream_data = np.squeeze(selected_steps[var].isel(y=upstream_index).values)
+            target_data = np.squeeze(selected_steps[var].isel(y=target_index).values)
+        except:
+            upstream_data = np.squeeze(selected_steps[var].isel(pos=upstream_index).values)
+            target_data = np.squeeze(selected_steps[var].isel(pos=target_index).values)
         # Check if data exceeds the threshold, and use log scale if so
         if np.max(np.abs(upstream_data)) > log_threshold or np.max(np.abs(target_data)) > log_threshold:
             scale = "log"
@@ -271,9 +277,10 @@ def plot_time_history(dataset, variables=['Te'], upstream_index=2, target_index=
 
 
 def plot_profiles_animation(simulation_data, variables=['Te'], data_label=None,
-                            guard_replace=True, linestyles=None, log_threshold=1e6, filename='profiles_animation.mp4'):
+                            guard_replace=True, linestyles=None, log_threshold=1e3,
+                            filename='profiles_animation.mp4', max_frames=40, fps=3):
     """
-    Creates an animated video of the specified variable profiles for the last 20 time steps (or fewer).
+    Creates an animated video of the specified variable profiles for up to `max_frames` time steps.
 
     Parameters:
     simulation_data (xarray Dataset): Dataset for the simulation.
@@ -282,35 +289,42 @@ def plot_profiles_animation(simulation_data, variables=['Te'], data_label=None,
     guard_replace (bool): Whether to replace guard cells.
     linestyles (list, optional): Custom linestyles for each variable plot.
     log_threshold (float): Threshold above which the y-axis will be plotted in log scale.
-    filename (str): The filename to save the animation as a video (e.g., `.mp4`).
+    filename (str): The filename to save the animation as a video (e.g., `.mp4` or `.gif`).
+    max_frames (int): Maximum number of frames to use in the animation.
+    fps (int): Frames per second for the output video.
     """
-    num_timesteps = min(100, simulation_data.dims['t'])  # Use last 100 timesteps or fewer
-    num_vars = len(variables)
+    import os
+    import numpy as np
+    import matplotlib.pyplot as plt
+    from matplotlib.ticker import ScalarFormatter
+    import imageio
+    from PIL import Image
+    import math
 
-    # Set up plot layout with two columns, adjusting rows based on the number of variables
-    ncols = 2 if num_vars > 1 else 1
-    nrows = (num_vars + 1) // 2  # Ensure enough rows
+    linestyles = linestyles or ['-'] * len(variables)
+    num_available = simulation_data.dims['t']
+    num_frames = min(max_frames, num_available)
 
-    fig, axs = plt.subplots(nrows, ncols, figsize=(12, 6 * nrows), dpi=200)
-    
-    # If we have only one subplot, axs won't be a list, so we ensure it's treated as such
-    if num_vars == 1:
-        axs = [axs]
+    time_indices = np.linspace(-num_frames, -1, num_frames, dtype=int)
 
-    # Flatten axs in case of multiple rows and columns, to handle indexing uniformly
-    axs = np.ravel(axs)
+    output_dir = "./frames"
+    os.makedirs(output_dir, exist_ok=True)
+    frame_paths = []
 
-    if linestyles is None:
-        linestyles = ['-'] * num_vars  # Default linestyle if not provided
+    # Determine subplot grid layout
+    n_vars = len(variables)
+    n_cols = math.ceil(math.sqrt(n_vars))
+    n_rows = math.ceil(n_vars / n_cols)
 
-    def update_plot(t_index):
-        """Updates the plot for the given time index."""
-        current_data = simulation_data.isel(t=-num_timesteps + t_index)  # Select the time step
+    for frame_idx, t_idx in enumerate(time_indices):
+        print(f"Generating frame {frame_idx + 1}/{num_frames} (t index = {t_idx})")
+        fig, axs = plt.subplots(n_rows, n_cols, figsize=(5 * n_cols, 4 * n_rows), dpi=100)
+        axs = np.array(axs).reshape(-1)  # Flatten in case of single row/column
+
+        current_data = simulation_data.isel(t=t_idx)
 
         for i, var in enumerate(variables):
             ax = axs[i]
-            ax.clear()  # Clear the previous frame
-
             y = current_data['y'].values
             var_data = np.ravel(current_data[var].values)
 
@@ -318,39 +332,59 @@ def plot_profiles_animation(simulation_data, variables=['Te'], data_label=None,
                 y = y[1:-1]
                 var_data = replace_guards(var_data)
 
-            label = f'{data_label} ({var})'
-            ax.plot(y, var_data, label=label, linestyle=linestyles[i])
+            label = f'{data_label or ""} ({var})'
+            ax.plot(y[::-1], var_data, label=label, linestyle=linestyles[i])
 
-            # Determine if log scale is needed based on threshold
             if np.max(np.abs(var_data)) > log_threshold:
-                scale = "log"
+                    if np.any(var_data < 0):
+                        ax.set_yscale('symlog', linthresh=1e-3)
+                        ax.yaxis.set_major_formatter(ScalarFormatter())
+                    else:
+                        ax.set_yscale('log')
+                        ax.yaxis.set_major_formatter(ScalarFormatter())
             else:
-                scale = "linear"
+                ax.set_yscale('linear')
 
-            # Set the appropriate scale
-            ax.set_yscale(scale)
-            if scale == "log":
-                ax.yaxis.set_major_formatter(log_formatter())  # Apply log formatting
-
-            # Get units
+            ax.set_xscale('log')
             units = current_data[var].attrs.get('units', 'Unknown units')
-
-            ax.set_xlabel(r'S$_\parallel$ (m)')
+            ax.set_xlabel('S$_\\parallel$ (m)')
             ax.set_ylabel(f'{var} ({units})')
+            ax.set_title(f'Time step {frame_idx + 1}/{num_frames} \n time = {simulation_data["t"].values[t_idx]*1e3:.2f} (ms)')
             ax.legend(loc='best', fontsize=8)
             ax.grid(True)
-            ax.set_title(f'Time step {t_index + 1}/{num_timesteps}')
 
-    # Create animation using FuncAnimation
-    ani = animation.FuncAnimation(fig, update_plot, frames=num_timesteps, repeat=False)
+        # Turn off any unused subplots
+        for j in range(len(variables), len(axs)):
+            axs[j].axis('off')
 
-    # Save the animation as a video using FFMpegWriter (MP4 format)
-    ani.save(filename, writer='ffmpeg', fps=2)
+        fig.tight_layout()
+        frame_path = os.path.join(output_dir, f"frame_{frame_idx:03d}.png")
+        fig.savefig(frame_path, bbox_inches='tight')
+        plt.close(fig)
+        frame_paths.append(frame_path)
 
-    print(f"Animation saved as {filename}")
-    plt.close()
+    # Ensure consistent frame size
+    first_frame = imageio.imread(frame_paths[0])
+    target_size = (first_frame.shape[1], first_frame.shape[0])
 
-    
+    if filename.endswith('.mp4'):
+        writer = imageio.get_writer(filename, fps=fps, codec='libx264', format='ffmpeg')
+    else:
+        writer = imageio.get_writer(filename, fps=fps)
+
+    for path in frame_paths:
+        frame = imageio.imread(path)
+        if (frame.shape[1], frame.shape[0]) != target_size:
+            frame = np.array(Image.fromarray(frame).resize(target_size, Image.BICUBIC))
+        if frame.shape[2] == 4:
+            frame = frame[:, :, :3]
+        writer.append_data(frame)
+
+    writer.close()
+    print(f"Animation saved to {filename}")
+
+
+
 if __name__ == '__main__':
     # do something?
     print("Hello world!")
