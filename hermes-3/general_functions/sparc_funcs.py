@@ -118,6 +118,84 @@ def make_profile_evolution_video(ds_in, start_time, end_time, fps=5, mp4_filenam
 import numpy as np
 import matplotlib.pyplot as plt
 
+
+def spatial_sum(ds, var, mult_dv=True, spatial_dim='pos', spatial_slice=slice(2, -2)):
+    """
+    Function to sum over the spatial dimension of a variable.
+
+    Parameters:
+    - ds: xarray.Dataset
+    - var: variable name as a string
+    - mult_dv: whether to multiply by dv
+    - spatial_dim: name of spatial dimension
+    - spatial_slice: slice of the spatial dimension to include
+
+    Returns:
+    - xarray.DataArray of summed values over time
+    """
+    if mult_dv:
+        tot = ds[var].isel({spatial_dim: spatial_slice}) * ds['dv'].isel({spatial_dim: spatial_slice})
+    else:
+        tot = ds[var].isel({spatial_dim: spatial_slice})
+
+    return tot.sum(dim=spatial_dim)
+
+
+
+def plot_spatial_sum_time_series(cs, vars = [''], mult_dv=True, time_range=None,
+                                  spatial_dim='pos', y_scale=None, abs = False,plot_src = False):
+    """
+    Function to plot the spatial sum of one or more variables over time.
+
+    Parameters:
+    - cs: container with .ds (xarray.Dataset)
+    - vars: list of variable names (strings)
+    - mult_dv: whether to multiply by dv before summing
+    - time_range: tuple (start, end) for time slicing
+    - spatial_dim: spatial dimension to sum over
+    """
+    import matplotlib.pyplot as plt
+
+    ds = cs.ds
+    if time_range is not None:
+        ds = ds.isel(t=slice(*time_range))
+    else:
+        ds = ds.isel(t=slice(0, -1))
+
+    time = (ds['t'].values - ds['t'].values[0]) *1e3  # normalize time to start at 0
+
+    fig, ax = plt.subplots(figsize=(12, 8))
+    for var in vars:
+        if abs:
+            summed = np.abs(spatial_sum(ds, var, mult_dv=mult_dv, spatial_dim=spatial_dim))
+        else:
+            summed = spatial_sum(ds, var, mult_dv=mult_dv, spatial_dim=spatial_dim)
+        ax.plot(time, summed, label=f'{var} ({ds[var].units})', linewidth=linewidth, markersize=markersize)
+
+
+    if plot_src:
+        ax2 = ax.twinx()
+        summed_src = spatial_sum(ds, 'Pe_src', mult_dv=False, spatial_dim=spatial_dim)
+        ax2.plot(time, summed_src, label='Pe_src', color='black', linewidth=linewidth, markersize=markersize)
+    ax.set_xlabel('Time (ms)')
+    if mult_dv:
+        ax.set_ylabel(fr'Spatial Sum ($\sum$ {vars} $\cdot  dV$)')
+    else:
+        ax.set_ylabel(fr'Spatial Sum ($\sum$ {vars})')
+        
+    # ax.set_title('Spatial Sum Over Time')
+    if y_scale is not None:
+        ax.set_yscale(f'{y_scale}')
+    else:
+        ax.set_yscale('linear')
+
+    
+    fig.legend(ncols = 2)
+    ax.grid(True)
+    plt.show()
+
+
+
 def source_sink(ds, var, time_range, symlog=True):
     """
     Plots the integrated value of a variable over time for a specified time range.
