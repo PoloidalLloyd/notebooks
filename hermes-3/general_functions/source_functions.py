@@ -64,7 +64,7 @@ def pi_feedback_source(ds, plot = False, time_slices = 10, save = False):
     print(f'steady state pi source = {steady_state}')
 
     if plot:
-        fig, ax = plt.subplots()
+        fig, ax = plt.subplots(figsize=(10, 6), dpi=300)
         ax.plot(t, first_index, label = 'First index')
         ax.axhline(steady_state, color = 'red', label = f'Steady state mean (last {time_slices} steps)', linestyle = '--')
         ax.set_xlabel('Time (ms)')

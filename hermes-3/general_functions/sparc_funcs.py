@@ -80,6 +80,7 @@ def single_profile_plot(ds_in, time, x_log_scale=True, title='None', save=False,
 
     if save:
         plt.savefig(save_path, bbox_inches='tight')
+    plt.show()
     plt.close()
 
 def make_profile_evolution_video(ds_in, start_time, end_time, fps=5, mp4_filename="profile_evolution.mp4", x_log_scale = True, focus_target=False):
@@ -143,7 +144,7 @@ def spatial_sum(ds, var, mult_dv=True, spatial_dim='pos', spatial_slice=slice(2,
 
 
 def plot_spatial_sum_time_series(cs, vars = [''], mult_dv=True, time_range=None,
-                                  spatial_dim='pos', y_scale=None, abs = False,plot_src = False):
+                                  spatial_dim='pos', y_scale=None, abs = False,plot_src = False, title=None):
     """
     Function to plot the spatial sum of one or more variables over time.
 
@@ -155,7 +156,8 @@ def plot_spatial_sum_time_series(cs, vars = [''], mult_dv=True, time_range=None,
     - spatial_dim: spatial dimension to sum over
     """
     import matplotlib.pyplot as plt
-
+    linewidth = 2
+    markersize = 5
     ds = cs.ds
     if time_range is not None:
         ds = ds.isel(t=slice(*time_range))
@@ -179,9 +181,9 @@ def plot_spatial_sum_time_series(cs, vars = [''], mult_dv=True, time_range=None,
         ax2.plot(time, summed_src, label='Pe_src', color='black', linewidth=linewidth, markersize=markersize)
     ax.set_xlabel('Time (ms)')
     if mult_dv:
-        ax.set_ylabel(fr'Spatial Sum ($\sum$ {vars} $\cdot  dV$)')
+        ax.set_ylabel(fr'Spatial Sum ($\sum$ vars $\cdot  dV$)')
     else:
-        ax.set_ylabel(fr'Spatial Sum ($\sum$ {vars})')
+        ax.set_ylabel(fr'Spatial Sum ($\sum$ vars)')
         
     # ax.set_title('Spatial Sum Over Time')
     if y_scale is not None:
@@ -189,8 +191,22 @@ def plot_spatial_sum_time_series(cs, vars = [''], mult_dv=True, time_range=None,
     else:
         ax.set_yscale('linear')
 
-    
-    fig.legend(ncols = 2)
+    if title is not None:
+        ax.set_title(title, loc = 'right')
+
+    def smart_ncols(n_items):
+        if n_items <= 3:
+            return n_items
+        elif n_items <= 8:
+            return 2
+        elif n_items <= 12:
+            return 3
+        else:
+            return 4
+
+    ncols = smart_ncols(len(vars))
+
+    fig.legend(ncol=ncols, bbox_to_anchor=(0.5, 1.1), loc='upper right')
     ax.grid(True)
     plt.show()
 
@@ -363,7 +379,7 @@ import matplotlib.pyplot as plt
 from cycler import cycler
 def spatial_var(ds_in, time, var=[''], second_axis=[], x_log_scale=True, title='None',
                 save=False, save_path=None, focus_target=False, y_scale='log', y_scale2='linear',
-                first_profile=None, ylim1=None, ylim2=None):
+                first_profile=None, ylim1=None, ylim2=None, close_plot = False):
     fig, ax = plt.subplots(1, 1, figsize=(12, 8), dpi=300)
     linewidth = 2
     ds = ds_in.ds.copy().isel(t=time)
@@ -417,7 +433,15 @@ def spatial_var(ds_in, time, var=[''], second_axis=[], x_log_scale=True, title='
 
     if save:
         plt.savefig(save_path, bbox_inches='tight')
-    # plt.close()
+
+    if close_plot:
+        plt.close()
+
+from tqdm import tqdm
+import os
+import imageio
+import numpy as np
+from PIL import Image
 
 def spatial_var_mp4(ds_in, start_time, end_time, var=[''], second_axis=[], fps=5,
                     mp4_filename="spatial_var.mp4", x_log_scale=True,
@@ -429,28 +453,38 @@ def spatial_var_mp4(ds_in, start_time, end_time, var=[''], second_axis=[], fps=5
     first_ds = ds_in.ds.copy().isel(t=start_time)
     first_profile = {i: replace_guards(first_ds[i]) for i in var + second_axis}
 
+    # Frame generation with progress bar
     frame_paths = []
-    for t in range(start_time, end_time):
+    total_frames = end_time - start_time
+    
+    print("Generating frames...")
+    for t in tqdm(range(start_time, end_time), desc="Creating frames", unit="frame"):
         frame_path = os.path.join(output_dir, f"frame_{t:03d}.png")
         spatial_var(ds_in, time=t, var=var, second_axis=second_axis, save=True,
                     save_path=frame_path, x_log_scale=x_log_scale,
                     y_scale=y_scale, y_scale2=y_scale2,
                     focus_target=focus_target,
-                    first_profile=first_profile, ylim1=ylim1, ylim2=ylim2)
+                    first_profile=first_profile, ylim1=ylim1, ylim2=ylim2, close_plot=True)
         frame_paths.append(frame_path)
 
+    # Video creation with progress bar
     first_frame = imageio.imread(frame_paths[0])
     target_size = (first_frame.shape[1], first_frame.shape[0])
 
+    print("Creating MP4...")
     writer = imageio.get_writer(mp4_filename, fps=fps, codec='libx264', format='ffmpeg')
-    for path in frame_paths:
+    
+    for path in tqdm(frame_paths, desc="Writing video", unit="frame"):
         frame = imageio.imread(path)
         if (frame.shape[1], frame.shape[0]) != target_size:
             frame = np.array(Image.fromarray(frame).resize(target_size, Image.BICUBIC))
         if frame.shape[2] == 4:
             frame = frame[:, :, :3]
         writer.append_data(frame)
+    
     writer.close()
+    print(f"Video saved as: {mp4_filename}")
+    print(f"Total frames processed: {len(frame_paths)}")
 
 
 

@@ -159,6 +159,7 @@ def plot_time_history_optimized(dataset, variables=['Te'], upstream_index=2, tar
     # Fast input validation
     if 't' not in dataset.sizes:
         raise ValueError("Dataset missing time dimension 't'")
+
     
     # Optimized data slicing
     num_time_slices = min(time_slices, dataset.sizes['t'])
@@ -209,6 +210,9 @@ def plot_time_history_optimized(dataset, variables=['Te'], upstream_index=2, tar
         plt.close()
     else:
         plt.show()
+
+    print('last time step = ', dataset['t'].values[-1] * 1e3, 'ms')
+    
 
 def _extract_bulk_plot_data(selected_steps, variables, upstream_index, target_index):
     """Bulk extract all variable data in one pass."""

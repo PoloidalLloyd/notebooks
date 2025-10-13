@@ -16,6 +16,7 @@ from matplotlib.ticker import LogFormatter
 
 
 def main(directory_path):
+    editors = ['code', 'cursor']
     if directory_path == ".":
         casename = os.getcwd()
     else:
@@ -27,8 +28,14 @@ def main(directory_path):
             ds = xh.open(casename)  # Attempt to open the dataset
 
             # Generate time history plot
-            plot_time_history_optimized(ds, variables=['Te', 'Td+', 'Ne', 'Nd', 'Sd+_src', 'Pe_src'], track_detachment_front=True, save=True)
-            
+            plot_time_history(ds, variables=['Te', 'Td+', 'Ne', 'Nd', 'Sd+_src', 'Pe_src'], track_detachment_front=True, save=True)
+
+            for editor in editors:
+                try:
+                    os.system(f'{editor} time_history_plot.png')
+                except:
+                    print(f"Failed to open time history plot in {editor}. Please open it manually.")
+
             # Generate profiles plot
             plot_profiles(ds, variables=['Te', 'Td+', 'Ne', 'Nd'], data_label='Simulation', save=True)
 
@@ -38,7 +45,7 @@ def main(directory_path):
                 print('No pi feedback source found')
 
             # Generate profiles animation
-            quick_animation_fast(ds, variables=['Te', 'Td+', 'Td', 'Ne', 'Nd','Pe','Pd+', 'Pd', 'NVd+', 'NVd'], data_label='Simulation', filename='profiles_animation.gif')
+            plot_profiles_animation(ds, variables=['Te', 'Td+', 'Td', 'Ne', 'Nd','Pe','Pd+', 'Pd', 'NVd+', 'NVd'], data_label='Simulation', filename='profiles_animation.gif')
 
             
             import imageio
