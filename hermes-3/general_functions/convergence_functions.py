@@ -1189,7 +1189,7 @@ def plot_time_history(*args, **kwargs):
 
 def plot_profiles_animation(*args, **kwargs):
     """Legacy wrapper - redirects to optimized version."""
-    return plot_profiles_animation_optimized(*args, **kwargs)
+    return plot_profiles_animation_ultra_fast(*args, **kwargs)
 
 def replace_guards(*args, **kwargs):
     """Legacy wrapper - redirects to vectorized version."""
