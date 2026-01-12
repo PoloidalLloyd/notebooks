@@ -1,0 +1,52 @@
+# Test case with varying geometry
+nout = 1
+timestep = 1
+
+MXG = 0  # No guard cells in X
+
+[mesh]
+# 1D simulation, use "y" as the dimension along the fieldline
+nx = 1
+ny = 100   # Resolution along field-line
+nz = 1
+
+length = 30           # Length of the domain in meters
+length_xpt = 10       # Length from midplane to X-point [m] (i.e. this is where the source ends)
+
+dymin = 0.1  # Minimum grid spacing near target, as fraction of average. Must be > 0 and < 1
+
+# Parallel grid spacing — grid refinement near the divertor target 
+dy = (length / ny) * (1 + (1-dymin)*(1-y/pi))
+
+# Calculate where the source ends in grid index (i.e. at the X-point)
+source = length_xpt / length
+y_xpt = pi * ( 2 - dymin - sqrt( (2-dymin)^2 - 4*(1-dymin)*source ) ) / (1 - dymin)
+
+# Separatrix index set to -1 for 1D simulations
+ixseps1 = -1
+ixseps2 = -1
+
+# In 1D, the Jacobian is inversely proportional to volume
+# Total flux expansion can be set up with a non-constant J profile
+J = 1  
+
+[hermes]
+components = fieldline_geometry
+
+[fieldline_geometry]
+diagnose = true  # Important: enables output of geometry fields
+
+# Non-trivial case: varying fields along the fieldline
+# Using y coordinate (0 to pi) as proxy - y/pi goes from 0 to 1 along fieldline
+# Approximate lpar ≈ length * y / pi for these expressions
+
+lambda_int = 0.01 * (1 + 0.5 * y / pi)           # Increases by 50% from upstream to target
+fieldline_radius = 1.0 + 0.1 * y / pi            # R increases by 10% along fieldline
+poloidal_magnetic_field = 0.5 * (1 - 0.3 * y / pi)  # Decreases by 30% along fieldline
+
+compute_Btor_from_R = true
+upstream_toroidal_magnetic_field = 2.0
+
+[units]
+meters = 1.0
+Tesla = 1.0

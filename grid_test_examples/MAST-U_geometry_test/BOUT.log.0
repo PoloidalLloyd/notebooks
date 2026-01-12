@@ -1,0 +1,821 @@
+BOUT++ version 5.2.0
+Revision: ab0c53a3a040e84ed1ab90075010a8b481fe4b6e
+Code compiled on Oct 28 2025 at 13:37:44
+
+B.Dudson (University of York), M.Umansky (LLNL) 2007
+Based on BOUT by Xueqiao Xu, 1999
+
+Processor number: 0 of 1
+
+pid: 72184
+
+Compile-time options:
+	Runtime error checking enabled, level 2
+	Parallel NetCDF support disabled
+	Metrics mode is 2D
+	FFT support enabled
+	Natural language support enabled
+	LAPACK support disabled
+	NetCDF support enabled (NetCDF4)
+	ADIOS2 support disabled
+	PETSc support enabled
+	Pretty function name support enabled
+	PVODE support enabled
+	Score-P support disabled
+	SLEPc support disabled
+	SUNDIALS support enabled
+	Backtrace in exceptions disabled
+	Colour in logs enabled
+	OpenMP parallelisation disabled, using 1 threads
+	Extra debug output disabled
+	Floating-point exceptions disabled
+	Signal handling support enabled
+	Field name tracking enabled
+	Message stack enabled
+	Compiled with flags : "-Wall -Wextra -Wnull-dereference -Wno-cast-function-type -DCHECK=2 -O2 -g -DNDEBUG"
+	Command line options for this run : ./hermes-3 -d examples/tokamak-1D/MAST-U_geometry_test 
+Reading options file examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+	Option datadir = examples/tokamak-1D/MAST-U_geometry_test (Command line)
+	Option optionfile = BOUT.inp (default)
+	Option settingsfile = BOUT.settings (default)
+Writing options to file examples/tokamak-1D/MAST-U_geometry_test/BOUT.settings
+	Option mesh:type = bout (default)
+
+Getting grid data from options
+	Option mesh:calcParallelSlices_on_communicate = false (user_default)
+	Option mesh:maxregionblocksize = 64 (default)
+	Option mesh:staggergrids = 0 (default)
+	Option mesh:include_corner_cells = 1 (default)
+	Option mesh:ddz:fft_filter = 0 (default)
+	Option mesh:symmetricGlobalX = 1 (default)
+	Option optionfile = BOUT.inp (default)
+WARNING: The default of this option has changed in release 4.1.
+If you want the old setting, you have to specify mesh:symmetricGlobalY=false in BOUT.inp
+	Option mesh:symmetricGlobalY = 1 (default)
+Loading mesh
+	Option input:transform_from_field_aligned = true (default)
+	Option input:max_recursion_depth = 0 (default)
+	Option mesh:nx = 1 (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option mesh:ny = 400 (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option mesh:nz = 1 (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Read nz from input grid file
+	Grid size: 1 x 400 x 1
+Variable 'MXG' not in mesh options. Setting to 0
+	Option MXG = 0 (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+Variable 'MYG' not in mesh options. Setting to 0
+	Option MYG = 2 (default)
+	Guard cells (x,y,z): 0, 2, 0
+	Option mesh:ixseps1 = -1 (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option mesh:ixseps2 = -1 (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+Variable 'jyseps1_1' not in mesh options. Setting to -1
+Variable 'jyseps1_2' not in mesh options. Setting to 200
+Variable 'jyseps2_1' not in mesh options. Setting to 200
+Variable 'jyseps2_2' not in mesh options. Setting to 399
+Variable 'ny_inner' not in mesh options. Setting to 200
+Finding value for NXPE (ideal = 0.050000)
+	Candidate value: 1
+	 -> Good value
+	Domain split (NXPE=1, NYPE=1) into domains (localNx=1, localNy=400)
+	Option IncIntShear = 0 (default)
+	Option periodicX = 0 (default)
+	Option async_send = 0 (default)
+	Option ZMIN = 0 (default)
+	Option ZMAX = 1 (default)
+	EQUILIBRIUM IS SINGLE NULL (SND) 
+	MYPE_IN_CORE = false
+	DXS = 0, DIN = -1. DOUT = -1
+	UXS = 0, UIN = -1. UOUT = -1
+	XIN = -1, XOUT = -1
+	Twist-shift: 
+	Option twistshift = 0 (default)
+Variable 'ShiftAngle' not in mesh options. Setting to empty vector
+Possible boundary regions are: lower_target, upper_target, Boundary regions in this processor: upper_target, lower_target, 
+Constructing default regions
+	Boundary region inner X
+	Boundary region outer X
+	Option mesh:extrapolate_x = 0 (default)
+	Option mesh:extrapolate_y = 0 (default)
+Variable 'dx' not in mesh options. Setting to 1.000000e+00
+	Option mesh:dy = (length / ny) * (1 + (1-dymin)*(1-y/pi)) (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option mesh:length = 30 (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option mesh:ny = 400 (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option mesh:dymin = 0.1 (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option ZMIN = 0 (default)
+	Option ZMAX = 1 (default)
+Variable 'dz' not in mesh options. Setting to 6.283185e+00
+	Option mesh:paralleltransform:type = identity (default)
+Variable 'g11' not in mesh options. Setting to 1.000000e+00
+Variable 'g22' not in mesh options. Setting to 1.000000e+00
+Variable 'g33' not in mesh options. Setting to 1.000000e+00
+Variable 'g12' not in mesh options. Setting to 0.000000e+00
+Variable 'g13' not in mesh options. Setting to 0.000000e+00
+Variable 'g23' not in mesh options. Setting to 0.000000e+00
+	Local maximum error in diagonal inversion is 0.000000e+00
+	Local maximum error in off-diagonal inversion is 0.000000e+00
+	Option mesh:J = 1 (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Maximum difference in J is 0.000000e+00
+Variable 'Bxy' not in mesh options. Setting to 0.000000e+00
+	WARNING: Magnitude of B field 'Bxy' not found. Calculating from metric tensor
+Variable 'ShiftTorsion' not in mesh options. Setting to 0.000000e+00
+	WARNING: No Torsion specified for zShift. Derivatives may not be correct
+Calculating differential geometry terms
+	Communicating connection terms
+	Option non_uniform = 1 (default)
+Variable 'd2x' not in mesh options. Setting to 0.000000e+00
+	WARNING: differencing quantity 'd2x' not found. Calculating from dx
+Variable 'd2y' not in mesh options. Setting to 0.000000e+00
+	WARNING: differencing quantity 'd2y' not found. Calculating from dy
+	done
+	Option output:enabled = 1 (default)
+	Option restart_files:enabled = 1 (default)
+	Option datadir = examples/tokamak-1D/MAST-U_geometry_test (Command line)
+	Option append = 0 (default)
+	Option output:type = netcdf (default)
+	Option output:path = examples/tokamak-1D/MAST-U_geometry_test (user_default)
+	Option output:prefix = BOUT.dmp (user_default)
+	Option output:append = false (user_default)
+	Option datadir = examples/tokamak-1D/MAST-U_geometry_test (Command line)
+	Option restart_files:type = netcdf (default)
+	Option restart_files:path = examples/tokamak-1D/MAST-U_geometry_test (user_default)
+	Option restart_files:prefix = BOUT.restart (user_default)
+	Option restart_files:append = false (user_default)
+	Option solver:type = beuler (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option solver:monitor_timestep = 0 (default)
+	Option solver:save_repeat_run_id = 0 (default)
+	Option solver:is_nonsplit_model_diffusive = 1 (default)
+	Option solver:mms = 0 (default)
+	Option solver:mms_initialise = 0 (default)
+	Option nout = 250 (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option solver:nout = 250 (default)
+	Option timestep = 4789.400000000001 (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option solver:output_step = 4789.4 (default)
+Setting `nout` is deprecated. Please set `solver:nout` instead.Setting `timestep` is deprecated. Please set `solver:output_step` instead.	Option solver:timestep = 1 (default)
+	Option solver:dt_min_reset = 1e-06 (default)
+	Option solver:max_timestep = 1e+37 (default)
+	Option solver:snes_type = newtonls (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option solver:atol = 1e-07 (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option solver:rtol = 1e-05 (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option solver:stol = 1e-08 (default)
+	Option solver:max_nonlinear_iterations = 10 (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option solver:lower_its = 5 (default)
+	Option solver:upper_its = 8 (default)
+	Option solver:timestep_factor_on_failure = 0.5 (default)
+	Option solver:timestep_factor_on_upper_its = 0.9 (default)
+	Option solver:timestep_factor_on_lower_its = 1.4 (default)
+	Option solver:diagnose = 0 (default)
+	Option solver:diagnose_failures = 0 (default)
+	Option solver:equation_form = rearranged_backward_euler (default)
+Initialising PETSc
+	Option solver:predictor = 1 (default)
+	Option solver:use_precon = 0 (default)
+	Option solver:ksp_type = gmres (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option solver:kspsetinitialguessnonzero = 0 (default)
+	Option solver:maxl = 20 (default)
+	Option solver:pc_type = hypre (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option solver:pc_hypre_type = euclid (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option solver:line_search_type = default (default)
+	Option solver:matrix_free = 0 (default)
+	Option solver:matrix_free_operator = true (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option solver:lag_jacobian = 500 (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option solver:use_coloring = 1 (default)
+	Option solver:prune_jacobian = 0 (default)
+	Option solver:prune_abstol = 1e-16 (default)
+	Option solver:prune_fraction = 0.2 (default)
+	Option solver:scale_rhs = 0 (default)
+	Option solver:scale_vars = 0 (default)
+Setting up output (experimental output) file
+	Option restart = 0 (default)
+
+Git Version of Hermes: 694bd61e20829a0c923f52ae5469c9fd28515fbf
+Slope limiter: MinMod
+	Option hermes:Tnorm = 100 (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option hermes:Nnorm = 1e+19 (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option hermes:Bnorm = 1 (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option hermes:recalculate_metric = 0 (default)
+	Option hermes:normalise_metric = true (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+Calculating differential geometry terms
+	Communicating connection terms
+	Option non_uniform = true (default)
+Variable 'd2x' not in mesh options. Setting to 0.000000e+00
+	WARNING: differencing quantity 'd2x' not found. Calculating from dx
+Variable 'd2y' not in mesh options. Setting to 0.000000e+00
+	WARNING: differencing quantity 'd2y' not found. Calculating from dy
+	Option hermes:components = (d+, d, e,sheath_boundary_simple, collisions, recycling, reactions,electron_force_balance, neutral_parallel_diffusion, fieldline_geometry) (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option d+:type = (evolve_density, evolve_pressure, evolve_momentum,noflow_boundary, upstream_density_feedback) (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option d+:bndry_flux = 1 (default)
+	Option d+:poloidal_flows = 1 (default)
+	Option d+:density_floor = 1e-07 (default)
+	Option d+:low_n_diffuse = 0 (default)
+	Option d+:low_n_diffuse_perp = 0 (default)
+	Option d+:low_p_diffuse_perp = 0 (default)
+	Option d+:hyper_z = -1 (default)
+	Option d+:evolve_log = 0 (default)
+Setting boundary for variable Nd+
+	upper_target region: 	Option all:bndry_all = dirichlet (default)
+
+	lower_target region: 	Option all:bndry_all = dirichlet (default)
+
+	Option input:transform_from_field_aligned = true (default)
+	Option input:max_recursion_depth = 0 (default)
+	Option Nd+:function = 1 (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option all:scale = 1 (default)
+	Option all:evolve_bndry = 0 (default)
+	Option Nd+:evolve_bndry = 0 (default)
+	Option d+:charge = 1 (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option d+:AA = 2 (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option d+:diagnose = true (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option inv_meters_cubed = 1e+19 ()
+	Option seconds = 1.0439684754508785e-08 ()
+	Option Nd+:source_time_dependent = 0 (default)
+	Option Nd+:source_only_in_core = 0 (default)
+Variable 'Nd+_src' not in mesh options. Setting to 0.000000e+00
+	Option Nd+:source = <Field3D> (default)
+	Option Nd+:neumann_boundary_average_z = 0 (default)
+	Option d+:evolve_log = false (default)
+	Option d+:density_floor = 1e-07 (default)
+	Option d+:low_n_diffuse_perp = false (default)
+	Option d+:temperature_floor = 0.1 (default)
+	Option d+:low_T_diffuse_perp = 0 (default)
+	Option d+:low_p_diffuse_perp = false (default)
+Setting boundary for variable Pd+
+	upper_target region: 	Option all:bndry_all = dirichlet (default)
+
+	lower_target region: 	Option all:bndry_all = dirichlet (default)
+
+	Option input:transform_from_field_aligned = true (default)
+	Option input:max_recursion_depth = 0 (default)
+	Option Pd+:function = 1 (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option all:scale = 1 (default)
+	Option all:evolve_bndry = false (default)
+	Option Pd+:evolve_bndry = 0 (default)
+	Option d+:bndry_flux = true (default)
+	Option d+:poloidal_flows = true (default)
+	Option d+:p_div_v = 0 (default)
+	Option d+:hyper_z = -1 (default)
+	Option d+:hyper_z_T = -1 (default)
+	Option d+:diagnose = true (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option d+:precondition = 1 (default)
+	Option inv_meters_cubed = 1e+19 ()
+	Option eV = 100 ()
+	Option seconds = 1.0439684754508785e-08 ()
+Variable 'Pd+_src' not in mesh options. Setting to 0.000000e+00
+	Option Pd+:powerflux = 2.5e7 (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option mesh:length_xpt = 10 (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option mesh:y_xpt = pi * ( 2 - dymin - sqrt( (2-dymin)^2 - 4*(1-dymin)*source ) ) / (1 - dymin) (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option mesh:source = length_xpt / length (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option Pd+:source_time_dependent = 0 (default)
+	Option Pd+:source_only_in_core = 0 (default)
+	Option Pd+:neumann_boundary_average_z = 0 (default)
+	Option d+:numerical_viscous_heating = 0 (default)
+	Option d+:thermal_conduction = true (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option d+:kappa_coefficient = 3.9 (default)
+	Option d+:kappa_limit_alpha = -1 (default)
+Setting boundary for variable NVd+
+	upper_target region: 	Option all:bndry_all = dirichlet (default)
+
+	lower_target region: 	Option all:bndry_all = dirichlet (default)
+
+	Option input:transform_from_field_aligned = true (default)
+	Option input:max_recursion_depth = 0 (default)
+	Option NVd+:function = 0 (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option all:scale = 1 (default)
+	Option all:evolve_bndry = false (default)
+	Option NVd+:evolve_bndry = 0 (default)
+	Option d+:density_floor = 1e-07 (default)
+	Option d+:low_n_diffuse_perp = false (default)
+	Option d+:low_p_diffuse_perp = false (default)
+	Option d+:bndry_flux = true (default)
+	Option d+:poloidal_flows = true (default)
+	Option d+:hyper_z = -1 (default)
+Setting boundary for variable Vd+
+	upper_target region: 	Option all:bndry_all = dirichlet (default)
+
+	lower_target region: 	Option all:bndry_all = dirichlet (default)
+
+	Option d+:diagnose = true (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option d+:fix_momentum_boundary_flux = 0 (default)
+	Option d+:noflow_lower_y = true (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option d+:noflow_upper_y = false (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option d+:density_upstream = 5e+19 (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option d+:density_controller_p = 500 (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option d+:density_controller_i = 0.01 (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option d+:density_integral_positive = 0 (default)
+	Option d+:density_source_positive = false (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option d+:diagnose = true (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option d:type = (evolve_density, evolve_pressure, evolve_momentum,noflow_boundary) (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option d:bndry_flux = 1 (default)
+	Option d:poloidal_flows = 1 (default)
+	Option d:density_floor = 1e-05 (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option d:low_n_diffuse = 0 (default)
+	Option d:low_n_diffuse_perp = 0 (default)
+	Option d:low_p_diffuse_perp = 0 (default)
+	Option d:hyper_z = -1 (default)
+	Option d:evolve_log = 0 (default)
+Setting boundary for variable Nd
+	upper_target region: 	Option all:bndry_all = dirichlet (default)
+
+	lower_target region: 	Option all:bndry_all = dirichlet (default)
+
+	Option input:transform_from_field_aligned = true (default)
+	Option input:max_recursion_depth = 0 (default)
+	Option Nd:function = 0.001 (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option all:scale = 1 (default)
+	Option all:evolve_bndry = false (default)
+	Option Nd:evolve_bndry = 0 (default)
+	Option d:charge = 0 (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option d:AA = 2 (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option d:diagnose = true (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option inv_meters_cubed = 1e+19 ()
+	Option seconds = 1.0439684754508785e-08 ()
+	Option Nd:source_time_dependent = 0 (default)
+	Option Nd:source_only_in_core = 0 (default)
+Variable 'Nd_src' not in mesh options. Setting to 0.000000e+00
+	Option Nd:source = <Field3D> (default)
+	Option Nd:neumann_boundary_average_z = 0 (default)
+	Option d:evolve_log = false (default)
+	Option d:density_floor = 1e-05 (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option d:low_n_diffuse_perp = false (default)
+	Option d:temperature_floor = 0.1 (default)
+	Option d:low_T_diffuse_perp = 0 (default)
+	Option d:low_p_diffuse_perp = false (default)
+Setting boundary for variable Pd
+	upper_target region: 	Option all:bndry_all = dirichlet (default)
+
+	lower_target region: 	Option all:bndry_all = dirichlet (default)
+
+	Option input:transform_from_field_aligned = true (default)
+	Option input:max_recursion_depth = 0 (default)
+	Option Pd:function = 0.0001 (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option all:scale = 1 (default)
+	Option all:evolve_bndry = false (default)
+	Option Pd:evolve_bndry = 0 (default)
+	Option d:bndry_flux = true (default)
+	Option d:poloidal_flows = true (default)
+	Option d:p_div_v = 0 (default)
+	Option d:hyper_z = -1 (default)
+	Option d:hyper_z_T = -1 (default)
+	Option d:diagnose = true (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option d:precondition = 1 (default)
+	Option inv_meters_cubed = 1e+19 ()
+	Option eV = 100 ()
+	Option seconds = 1.0439684754508785e-08 ()
+Variable 'Pd_src' not in mesh options. Setting to 0.000000e+00
+	Option Pd:source = <Field3D> (default)
+	Option Pd:source_time_dependent = 0 (default)
+	Option Pd:source_only_in_core = 0 (default)
+	Option Pd:neumann_boundary_average_z = 0 (default)
+	Option d:numerical_viscous_heating = 0 (default)
+	Option d:thermal_conduction = true (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option d:kappa_coefficient = 2.5 (default)
+	Option d:kappa_limit_alpha = -1 (default)
+Setting boundary for variable NVd
+	upper_target region: 	Option all:bndry_all = dirichlet (default)
+
+	lower_target region: 	Option all:bndry_all = dirichlet (default)
+
+	Option input:transform_from_field_aligned = true (default)
+	Option input:max_recursion_depth = 0 (default)
+	Option all:function = 0.0 (default)
+	Option all:scale = 1 (default)
+	Option all:evolve_bndry = false (default)
+	Option NVd:evolve_bndry = 0 (default)
+	Option d:density_floor = 1e-05 (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option d:low_n_diffuse_perp = false (default)
+	Option d:low_p_diffuse_perp = false (default)
+	Option d:bndry_flux = true (default)
+	Option d:poloidal_flows = true (default)
+	Option d:hyper_z = -1 (default)
+Setting boundary for variable Vd
+	upper_target region: 	Option all:bndry_all = dirichlet (default)
+
+	lower_target region: 	Option all:bndry_all = dirichlet (default)
+
+	Option d:diagnose = true (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option d:fix_momentum_boundary_flux = 0 (default)
+	Option d:noflow_lower_y = 1 (default)
+	Option d:noflow_upper_y = 1 (default)
+	Option e:type = quasineutral, evolve_pressure, zero_current, noflow_boundary (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option e:charge = -1 (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option e:AA = 0.0005446623093681918 (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option e:evolve_log = 0 (default)
+	Option e:density_floor = 1e-07 (default)
+	Option e:low_n_diffuse_perp = 0 (default)
+	Option e:temperature_floor = 0.1 (default)
+	Option e:low_T_diffuse_perp = 0 (default)
+	Option e:low_p_diffuse_perp = 0 (default)
+Setting boundary for variable Pe
+	upper_target region: 	Option all:bndry_all = dirichlet (default)
+
+	lower_target region: 	Option all:bndry_all = dirichlet (default)
+
+	Option input:transform_from_field_aligned = true (default)
+	Option input:max_recursion_depth = 0 (default)
+	Option Pe:function = `Pd+:function` (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option Pd+:function = 1 (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option all:scale = 1 (default)
+	Option all:evolve_bndry = false (default)
+	Option Pe:evolve_bndry = 0 (default)
+	Option e:bndry_flux = 1 (default)
+	Option e:poloidal_flows = 1 (default)
+	Option e:p_div_v = 0 (default)
+	Option e:hyper_z = -1 (default)
+	Option e:hyper_z_T = -1 (default)
+	Option e:diagnose = true (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option e:precondition = 1 (default)
+	Option inv_meters_cubed = 1e+19 ()
+	Option eV = 100 ()
+	Option seconds = 1.0439684754508785e-08 ()
+Variable 'Pe_src' not in mesh options. Setting to 0.000000e+00
+	Option Pd+:source = (powerflux*2/3 / (mesh:length_xpt))*H(mesh:y_xpt - y) (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option Pd+:powerflux = 2.5e7 (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option Pe:source_time_dependent = 0 (default)
+	Option Pe:source_only_in_core = 0 (default)
+	Option Pe:neumann_boundary_average_z = 0 (default)
+	Option e:numerical_viscous_heating = 0 (default)
+	Option e:thermal_conduction = true (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option e:kappa_coefficient = 2.23446 (default)
+	Option e:kappa_limit_alpha = -1 (default)
+	Option e:charge = -1 (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option e:noflow_lower_y = 1 (default)
+	Option e:noflow_upper_y = false (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option sheath_boundary_simple:secondary_electron_coef = 0 (default)
+	Option sheath_boundary_simple:sin_alpha = 1 (default)
+	Option sheath_boundary_simple:gamma_e = 3.5 (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option sheath_boundary_simple:gamma_i = 3.5 (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option sheath_boundary_simple:sheath_ion_polytropic = 1 (default)
+	Option sheath_boundary_simple:lower_y = false (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option sheath_boundary_simple:upper_y = true (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option sheath_boundary_simple:always_set_phi = 0 (default)
+	Option eV = 100 ()
+	Option sheath_boundary_simple:wall_potential = <Field3D> (default)
+	Option sheath_boundary_simple:no_flow = 0 (default)
+	Option sheath_boundary_simple:density_boundary_mode = 1 (default)
+	Option sheath_boundary_simple:pressure_boundary_mode = 1 (default)
+	Option sheath_boundary_simple:temperature_boundary_mode = 1 (default)
+	Option sheath_boundary_simple:diagnose = 0 (default)
+	Option eV = 100 ()
+	Option inv_meters_cubed = 1e+19 ()
+	Option meters = 0.0010217477552952484 ()
+	Option seconds = 1.0439684754508785e-08 ()
+	Option collisions:electron_electron = 1 (default)
+	Option collisions:electron_ion = 1 (default)
+	Option collisions:electron_neutral = 0 (default)
+	Option collisions:ion_ion = 1 (default)
+	Option collisions:ion_neutral = 0 (default)
+	Option collisions:neutral_neutral = 1 (default)
+	Option collisions:frictional_heating = 1 (default)
+	Option collisions:ei_multiplier = 1 (default)
+	Option collisions:diagnose = 0 (default)
+	Option eV = 100 ()
+	Option recycling:species = d+ (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+Variable 'is_pump' not in mesh options. Setting to 0.000000e+00
+	Option d+:recycle_as = d (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option recycling:density_floor = 1e-07 (default)
+	Option d+:diagnose = true (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option d+:target_recycle_multiplier = 1 (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option d+:sol_recycle_multiplier = 1 (default)
+	Option d+:pfr_recycle_multiplier = 1 (default)
+	Option d+:pump_recycle_multiplier = 1 (default)
+	Option d+:target_recycle_energy = 3.5 (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option d+:sol_recycle_energy = 3 (default)
+	Option d+:pfr_recycle_energy = 3 (default)
+	Option d+:target_fast_recycle_fraction = 0 (default)
+	Option d+:pfr_fast_recycle_fraction = 0 (default)
+	Option d+:sol_fast_recycle_fraction = 0 (default)
+	Option d+:target_fast_recycle_energy_factor = 0 (default)
+	Option d+:sol_fast_recycle_energy_factor = 0 (default)
+	Option d+:pfr_fast_recycle_energy_factor = 0 (default)
+	Option d+:target_recycle = true (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option d+:sol_recycle = 0 (default)
+	Option d+:pfr_recycle = 0 (default)
+	Option d+:neutral_pump = 0 (default)
+	Option reactions:type = (d + e -> d+ + 2e,d+ + e -> d,d + d+ -> d+ + d,) (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option reactions:diagnose = true (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option d:K_iz_multiplier = 1 (default)
+	Option d:R_ex_multiplier = 1 (default)
+	Option reactions:diagnose = true (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option d:K_rec_multiplier = 1 (default)
+	Option d:R_rec_multiplier = 1 (default)
+	Option reactions:diagnose = true (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option reactions:no_neutral_cx_mom_gain = 0 (default)
+	Option d:K_cx_multiplier = 1 (default)
+	Option electron_force_balance:diagnose = 0 (default)
+	Option neutral_parallel_diffusion:dneut = 10 (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option neutral_parallel_diffusion:diagnose = 0 (default)
+	Option neutral_parallel_diffusion:equation_fix = 1 (default)
+	Option neutral_parallel_diffusion:thermal_conducton = 1 (default)
+	Option neutral_parallel_diffusion:viscosity = 1 (default)
+	Option fieldline_geometry:lambda_int = 1e-3 (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option fieldline_geometry:fieldline_radius = 0.5 + where({lpar} < mesh:length_xpt, 1 - cos(lpar_X1 * pi)/2, 1 - cos(lpar_X2 * pi)/2) (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option fieldline_geometry:poloidal_magnetic_field = 1.0 (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option fieldline_geometry:lpar_X1 = clamp( (mesh:length_xpt - {lpar}) / mesh:length_xpt, 0, 1) (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option fieldline_geometry:lpar_X2 = clamp( ({lpar} - mesh:length_xpt) / (mesh:length - mesh:length_xpt), 0, 1) (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option fieldline_geometry:compute_Btor_from_R = true (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option fieldline_geometry:upstream_toroidal_magnetic_field = 3 (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option fieldline_geometry:diagnose = true (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+Variable 'grid_id' not in mesh options. Setting to 
+Variable 'hypnotoad_version' not in mesh options. Setting to 
+Variable 'hypnotoad_git_hash' not in mesh options. Setting to 
+Variable 'hypnotoad_git_diff' not in mesh options. Setting to 
+Variable 'hypnotoad_geqdsk_filename' not in mesh options. Setting to 
+Variable 'grid_id' not in mesh options. Setting to 
+Variable 'hypnotoad_version' not in mesh options. Setting to 
+Variable 'hypnotoad_git_hash' not in mesh options. Setting to 
+Variable 'hypnotoad_git_diff' not in mesh options. Setting to 
+Variable 'hypnotoad_geqdsk_filename' not in mesh options. Setting to 
+	Option wall_limit = -1 (default)
+	Option stopCheck = 0 (default)
+	Option datadir = examples/tokamak-1D/MAST-U_geometry_test (Command line)
+	Option stopCheckName = BOUT.stop (default)
+Solver running for 250 outputs with output timestep of 4.789400e+03
+Initialising solver
+
+	SNES steady state solver
+	3d fields = 7, 2d fields = 0 neq=2800, local_N=2800
+Creating vector
+Create SNES
+Setting Jacobian matrix sizes
+	Option solver:stencil:square = 0 (default)
+	Option solver:stencil:taxi = 0 (default)
+	Option solver:stencil:cross = 0 (default)
+Setting solver:stencil:taxi = 2
+Pre-allocating Jacobian
+Marking non-zero Jacobian entries
+Assembling Jacobian matrix
+	Option solver:force_symmetric_coloring = 0 (default)
+Creating Jacobian coloring
+SNES Type : newtonls
+KSP Type  : gmres
+PC Type   : hypre
+Running simulation
+
+Run ID: 39b1071e-debf-4328-9da0-88e46ecc28d0
+
+Run started at  : Sun Nov  2 17:28:30 2025
+	Option restart = false (default)
+	Option append = false (default)
+	Option dump_on_restart = 1 (default)
+	Option input:validate = 0 (default)
+	Option input:error_on_unused_options = false (examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp)
+	Option d+_density_error_integral = 0 (upstream_density_feedback)
+Sim Time  |  RHS evals  | Wall Time |  Calc    Inv   Comm    I/O   SOLVER
+
+0.000e+00          1       3.12e-02     5.2    0.0    0.6  142.4  -48.2
+4.789e+03       6655       6.47e+00    90.9    0.0    0.1    0.3    8.7
+9.579e+03       1302       1.30e+00    89.7    0.0    0.1    1.2    9.0
+1.437e+04       1924       1.91e+00    90.1    0.0    0.1    0.8    9.1
+1.916e+04       2631       2.69e+00    90.3    0.0    0.1    0.6    9.0
+2.395e+04       4565       4.59e+00    90.9    0.0    0.1    0.3    8.7
+2.874e+04       3742       3.69e+00    90.9    0.0    0.1    0.4    8.6
+3.353e+04       2437       2.52e+00    90.4    0.0    0.1    0.7    8.8
+3.832e+04       2242       2.35e+00    90.1    0.0    0.1    0.7    9.1
+4.310e+04       3344       3.38e+00    90.6    0.0    0.1    0.5    8.8
+4.789e+04       4485       4.54e+00    90.8    0.0    0.1    0.3    8.7
+5.268e+04       2902       2.94e+00    90.6    0.0    0.1    0.5    8.8
+5.747e+04       4761       4.82e+00    90.9    0.0    0.1    0.3    8.7
+6.226e+04       4158       4.25e+00    90.9    0.0    0.1    0.4    8.6
+6.705e+04       3681       3.82e+00    90.7    0.0    0.1    0.4    8.7
+7.184e+04       2169       2.25e+00    90.4    0.0    0.1    0.7    8.8
+7.663e+04       2168       2.23e+00    90.4    0.0    0.1    0.7    8.8
+8.142e+04       2282       2.34e+00    90.5    0.0    0.1    0.7    8.7
+8.621e+04       2062       2.10e+00    90.5    0.0    0.1    0.8    8.6
+9.100e+04       2153       2.20e+00    90.6    0.0    0.1    0.8    8.5
+9.579e+04       1800       1.86e+00    90.2    0.0    0.1    0.9    8.8
+1.006e+05       2240       2.30e+00    90.6    0.0    0.1    0.7    8.5
+1.054e+05       1610       1.65e+00    90.3    0.0    0.1    1.1    8.5
+1.102e+05       1494       1.56e+00    89.9    0.0    0.1    1.2    8.8
+1.149e+05        645       6.80e-01    87.8    0.0    0.1    2.7    9.3
+1.197e+05         66       9.18e-02    66.3    0.0    0.1   19.1   14.5
+1.245e+05         57       8.43e-02    62.8    0.0    0.1   21.2   15.9
+1.293e+05         36       6.31e-02    54.0    0.0    0.1   28.2   17.6
+1.341e+05        150       1.77e-01    78.4    0.0    0.1    9.9   11.6
+1.389e+05         44       7.07e-02    57.7    0.0    0.1   25.1   17.0
+1.437e+05         44       7.02e-02    57.6    0.0    0.1   25.2   17.1
+1.485e+05         45       7.13e-02    57.5    0.0    0.1   25.4   17.0
+1.533e+05         69       9.45e-02    66.3    0.0    0.1   19.1   14.6
+1.581e+05         27       5.43e-02    45.6    0.0    0.1   33.5   20.8
+1.628e+05         51       7.77e-02    60.6    0.0    0.1   23.2   16.1
+1.676e+05         53       8.13e-02    60.2    0.0    0.1   23.6   16.1
+1.724e+05         84       1.11e-01    69.9    0.0    0.1   16.6   13.4
+1.772e+05         60       8.87e-02    62.6    0.0    0.1   22.1   15.2
+1.820e+05         59       8.75e-02    62.8    0.0    0.1   21.3   15.8
+1.868e+05         59       8.73e-02    62.4    0.0    0.1   21.9   15.6
+1.916e+05         89       1.17e-01    70.0    0.0    0.1   16.6   13.3
+1.964e+05         63       1.03e-01    62.3    0.0    0.1   23.7   13.9
+2.012e+05         70       1.03e-01    64.0    0.0    0.1   21.8   14.1
+2.059e+05         71       1.03e-01    65.4    0.0    0.1   19.8   14.7
+2.107e+05        106       1.34e-01    72.7    0.0    0.1   14.4   12.8
+2.155e+05         73       1.01e-01    66.4    0.0    0.1   19.5   14.1
+2.203e+05         74       1.01e-01    66.7    0.0    0.1   19.1   14.1
+2.251e+05         77       1.05e-01    66.9    0.0    0.1   18.9   14.2
+2.299e+05        124       1.60e-01    74.7    0.0    0.1   13.0   12.2
+2.347e+05         97       1.52e-01    74.4    0.0    0.2   13.6   11.8
+2.395e+05         56       8.49e-02    60.6    0.0    0.1   24.4   14.9
+2.443e+05         53       8.25e-02    59.8    0.0    0.1   24.8   15.3
+2.490e+05         67       9.62e-02    64.3    0.0    0.1   21.3   14.3
+2.538e+05         55       8.49e-02    60.1    0.0    0.1   24.6   15.3
+2.586e+05         41       7.02e-02    54.1    0.0    0.1   29.4   16.4
+2.634e+05         42       7.14e-02    53.8    0.0    0.1   29.3   16.8
+2.682e+05         56       8.48e-02    60.8    0.0    0.1   24.0   15.1
+2.730e+05         43       7.22e-02    54.7    0.0    0.1   28.8   16.4
+2.778e+05         46       7.68e-02    56.3    0.0    0.1   27.4   16.3
+2.826e+05         59       8.93e-02    61.6    0.0    0.1   23.8   14.5
+2.874e+05         59       8.89e-02    61.2    0.0    0.1   23.8   14.9
+2.922e+05         76       1.07e-01    66.3    0.0    0.1   19.7   13.9
+2.969e+05         61       9.16e-02    62.1    0.0    0.1   23.3   14.5
+3.017e+05         62       9.28e-02    62.5    0.0    0.1   22.8   14.7
+3.065e+05         47       7.78e-02    55.8    0.0    0.1   27.9   16.2
+3.113e+05         46       7.77e-02    55.5    0.0    0.1   28.5   15.9
+3.161e+05         33       6.39e-02    47.7    0.0    0.1   34.5   17.8
+3.209e+05         33       6.42e-02    47.8    0.0    0.1   33.9   18.2
+3.257e+05         33       6.36e-02    48.0    0.0    0.1   34.4   17.5
+3.305e+05         49       7.96e-02    56.5    0.0    0.1   28.1   15.3
+3.353e+05         69       1.00e-01    63.4    0.0    0.1   22.1   14.3
+3.400e+05         69       1.01e-01    63.6    0.0    0.1   22.4   13.9
+3.448e+05         53       8.41e-02    57.9    0.0    0.1   26.4   15.7
+3.496e+05         86       1.18e-01    67.6    0.0    0.1   19.4   13.0
+3.544e+05         54       8.61e-02    58.2    0.0    0.1   26.7   15.1
+3.592e+05         55       8.66e-02    58.9    0.0    0.1   26.0   15.0
+3.640e+05         55       8.74e-02    58.3    0.0    0.1   26.4   15.2
+3.688e+05         72       1.04e-01    64.2    0.0    0.1   22.0   13.7
+3.736e+05         75       1.08e-01    64.9    0.0    0.1   21.5   13.5
+3.784e+05         78       1.10e-01    64.8    0.0    0.1   21.2   13.9
+3.832e+05         35       6.76e-02    47.6    0.0    0.1   35.2   17.1
+3.879e+05         73       1.05e-01    63.6    0.0    0.1   22.4   13.9
+3.927e+05         57       8.91e-02    58.7    0.0    0.1   26.6   14.6
+3.975e+05         39       7.18e-02    49.6    0.0    0.1   33.3   17.0
+4.023e+05         39       7.16e-02    50.2    0.0    0.1   33.5   16.3
+4.071e+05         57       9.00e-02    58.5    0.0    0.1   26.8   14.6
+4.119e+05         39       7.24e-02    50.3    0.0    0.1   33.3   16.3
+4.167e+05         39       7.23e-02    50.3    0.0    0.1   33.3   16.4
+4.215e+05         39       7.23e-02    49.9    0.0    0.1   33.7   16.3
+4.263e+05         58       9.14e-02    58.6    0.0    0.1   26.8   14.5
+4.310e+05         40       7.30e-02    50.1    0.0    0.1   33.6   16.3
+4.358e+05         41       7.50e-02    50.8    0.0    0.1   33.2   16.0
+4.406e+05         41       7.62e-02    51.0    0.0    0.1   32.7   16.2
+4.454e+05         61       9.65e-02    59.5    0.0    0.1   26.1   14.3
+4.502e+05         41       8.63e-02    49.9    0.0    0.1   36.1   13.9
+4.550e+05         41       8.05e-02    48.5    0.0    0.1   35.1   16.3
+4.598e+05         41       7.98e-02    48.7    0.0    0.1   35.6   15.6
+4.646e+05         61       9.88e-02    57.9    0.0    0.1   27.5   14.6
+4.694e+05         43       7.75e-02    51.2    0.0    0.1   33.0   15.8
+4.742e+05         43       7.77e-02    51.4    0.0    0.1   32.9   15.7
+4.789e+05         43       7.85e-02    50.6    0.0    0.1   33.3   16.0
+4.837e+05         64       1.00e-01    59.7    0.0    0.1   26.0   14.3
+4.885e+05         43       7.80e-02    50.4    0.0    0.1   33.9   15.7
+4.933e+05         43       7.84e-02    51.1    0.0    0.1   33.5   15.3
+4.981e+05         43       7.88e-02    50.3    0.0    0.1   33.8   15.8
+5.029e+05         64       1.01e-01    58.7    0.0    0.1   27.0   14.2
+5.077e+05         43       7.99e-02    50.6    0.0    0.1   34.0   15.3
+5.125e+05         43       7.98e-02    50.8    0.0    0.1   33.7   15.5
+5.173e+05         43       8.07e-02    49.5    0.0    0.1   35.0   15.4
+5.220e+05         64       1.02e-01    58.6    0.0    0.1   27.1   14.2
+5.268e+05         43       8.01e-02    50.2    0.0    0.1   34.2   15.5
+5.316e+05         41       8.20e-02    46.7    0.0    0.1   38.3   14.9
+5.364e+05         41       8.25e-02    46.9    0.0    0.1   37.7   15.4
+5.412e+05         82       1.22e-01    63.2    0.0    0.1   23.9   12.8
+5.460e+05         41       7.90e-02    48.3    0.0    0.1   36.4   15.2
+5.508e+05         41       8.07e-02    48.5    0.0    0.1   35.7   15.7
+5.556e+05         41       7.99e-02    48.9    0.0    0.1   35.8   15.2
+5.604e+05         61       1.00e-01    56.9    0.0    0.1   29.5   13.5
+5.651e+05         41       7.98e-02    48.2    0.0    0.1   36.8   14.9
+5.699e+05         41       8.02e-02    47.3    0.0    0.1   37.7   14.9
+5.747e+05         41       8.03e-02    48.1    0.0    0.1   37.1   14.8
+5.795e+05         60       1.01e-01    55.9    0.0    0.1   29.9   14.1
+5.843e+05         41       8.06e-02    48.0    0.0    0.1   37.2   14.8
+5.891e+05         41       8.00e-02    47.9    0.0    0.1   37.3   14.8
+5.939e+05         41       8.09e-02    47.3    0.0    0.1   37.5   15.2
+5.987e+05         60       1.05e-01    53.6    0.0    0.1   33.3   13.0
+6.035e+05         42       8.50e-02    47.5    0.0    0.1   38.0   14.4
+6.083e+05         41       8.19e-02    46.7    0.0    0.1   39.0   14.3
+6.130e+05         41       8.27e-02    46.1    0.0    0.1   39.2   14.6
+6.178e+05         61       1.03e-01    56.1    0.0    0.1   30.0   13.8
+6.226e+05         41       8.21e-02    45.8    0.0    0.1   39.0   15.1
+6.274e+05         41       8.42e-02    45.5    0.0    0.1   40.1   14.3
+6.322e+05         41       8.51e-02    44.6    0.0    0.1   39.8   15.6
+6.370e+05         60       1.04e-01    53.1    0.0    0.1   33.6   13.2
+6.418e+05         41       8.71e-02    45.1    0.0    0.1   40.5   14.3
+6.466e+05         41       8.44e-02    45.9    0.0    0.1   39.4   14.6
+6.514e+05         41       8.31e-02    45.5    0.0    0.1   39.6   14.8
+6.561e+05         59       9.99e-02    54.6    0.0    0.1   31.9   13.5
+6.609e+05         41       8.26e-02    45.9    0.0    0.1   39.2   14.8
+6.657e+05         41       8.39e-02    46.2    0.0    0.1   39.2   14.5
+6.705e+05         41       8.32e-02    45.8    0.0    0.1   39.8   14.4
+6.753e+05         39       8.13e-02    44.3    0.0    0.1   41.0   14.6
+6.801e+05         58       1.02e-01    53.4    0.0    0.1   33.5   13.1
+6.849e+05         40       8.29e-02    44.9    0.0    0.1   40.7   14.4
+6.897e+05         40       8.34e-02    44.8    0.0    0.1   40.5   14.6
+6.945e+05         39       8.23e-02    43.8    0.0    0.1   41.7   14.4
+6.993e+05         58       1.00e-01    53.0    0.0    0.1   33.6   13.3
+7.040e+05         40       8.22e-02    45.5    0.0    0.1   40.6   13.8
+7.088e+05         40       8.32e-02    44.2    0.0    0.1   41.0   14.7
+7.136e+05         39       8.23e-02    44.1    0.0    0.1   41.6   14.3
+7.184e+05         59       1.07e-01    51.0    0.0    0.1   36.0   13.0
+7.232e+05         40       8.35e-02    44.1    0.0    0.1   41.5   14.4
+7.280e+05         40       8.49e-02    43.1    0.0    0.1   41.9   15.0
+7.328e+05         40       8.48e-02    43.3    0.0    0.1   42.7   14.0
+7.376e+05         61       1.05e-01    54.2    0.0    0.1   32.8   13.0
+7.424e+05         41       8.96e-02    42.6    0.0    0.1   43.8   13.6
+7.471e+05         41       8.64e-02    43.9    0.0    0.1   41.2   14.9
+7.519e+05         41       8.58e-02    44.6    0.0    0.1   41.2   14.1
+7.567e+05         61       1.06e-01    53.2    0.0    0.1   33.3   13.4
+7.615e+05         41       8.60e-02    43.7    0.0    0.1   42.3   13.9
+7.663e+05         41       8.57e-02    44.4    0.0    0.1   41.6   13.9
+7.711e+05         41       9.13e-02    42.2    0.0    0.1   44.4   13.3
+7.759e+05         61       1.07e-01    52.9    0.0    0.1   34.4   12.6
+7.807e+05         65       1.41e-01    58.1    0.0    0.1   30.4   11.4
+7.855e+05         42       9.22e-02    43.1    0.0    0.1   42.9   14.0
+7.903e+05         60       1.11e-01    51.4    0.0    0.1   35.7   12.8
+7.950e+05         81       1.29e-01    57.8    0.0    0.1   29.6   12.5
+7.998e+05         43       8.96e-02    44.9    0.0    0.1   41.2   13.7
+8.046e+05         43       9.04e-02    44.0    0.0    0.1   41.7   14.3
+8.094e+05         43       8.92e-02    45.0    0.0    0.1   41.0   14.0
+8.142e+05         64       1.10e-01    53.1    0.0    0.1   34.1   12.8
+8.190e+05         43       9.10e-02    45.0    0.0    0.1   41.0   14.0
+8.238e+05         43       8.90e-02    44.6    0.0    0.1   41.6   13.8
+8.286e+05         43       8.98e-02    43.2    0.0    0.1   42.6   14.1
+8.334e+05         64       1.12e-01    53.7    0.0    0.1   33.8   12.5
+8.381e+05         44       9.17e-02    44.3    0.0    0.1   42.1   13.6
+8.429e+05         44       9.60e-02    43.2    0.0    0.1   43.7   13.0
+8.477e+05         43       1.00e-01    40.5    0.0    0.1   46.6   12.9
+8.525e+05         64       1.21e-01    50.7    0.0    0.1   37.3   11.9
+8.573e+05         44       9.83e-02    42.5    0.0    0.1   44.4   13.0
+8.621e+05         44       9.25e-02    44.7    0.0    0.1   41.6   13.6
+8.669e+05         43       9.56e-02    41.8    0.0    0.1   44.9   13.3
+8.717e+05         64       1.13e-01    52.0    0.0    0.1   35.8   12.1
+8.765e+05         43       1.00e-01    40.5    0.0    0.1   47.3   12.2
+8.812e+05         43       1.01e-01    39.9    0.0    0.1   46.9   13.1
+8.860e+05         43       1.03e-01    39.9    0.0    0.1   47.3   12.7
+8.908e+05         63       1.23e-01    48.9    0.0    0.1   39.3   11.7
+8.956e+05         41       9.95e-02    39.5    0.0    0.1   47.8   12.6
+9.004e+05         41       1.03e-01    42.6    0.0    0.1   45.2   12.2
+9.052e+05         41       9.37e-02    41.2    0.0    0.1   45.4   13.3
+9.100e+05         61       1.19e-01    48.2    0.0    0.1   40.1   11.7
+9.148e+05         41       9.81e-02    38.8    0.0    0.1   47.8   13.3
+9.196e+05         41       9.68e-02    41.1    0.0    0.1   45.0   13.9
+9.244e+05         39       8.93e-02    41.6    0.0    0.1   45.3   13.1
+9.291e+05         58       1.11e-01    49.2    0.0    0.1   38.0   12.8
+9.339e+05         39       1.01e-01    37.4    0.0    0.1   50.4   12.2
+9.387e+05         39       9.31e-02    39.5    0.0    0.1   48.1   12.4
+9.435e+05         39       9.21e-02    41.2    0.0    0.1   45.1   13.6
+9.483e+05         56       1.08e-01    49.0    0.0    0.1   38.8   12.1
+9.531e+05         39       9.83e-02    37.1    0.0    0.0   50.8   12.1
+9.579e+05         39       1.08e-01    34.0    0.0    0.1   55.2   10.8
+9.627e+05         37       9.57e-02    37.5    0.0    0.1   49.7   12.7
+9.675e+05         58       1.15e-01    47.9    0.0    0.1   39.7   12.4
+9.722e+05         39       9.09e-02    40.1    0.0    0.1   46.7   13.2
+9.770e+05         39       9.54e-02    38.0    0.0    0.0   49.7   12.3
+9.818e+05         39       9.58e-02    37.8    0.0    0.1   49.8   12.3
+9.866e+05         58       1.09e-01    49.2    0.0    0.1   38.6   12.1
+9.914e+05         39       9.82e-02    38.2    0.0    0.1   49.5   12.3
+9.962e+05         39       9.46e-02    39.0    0.0    0.1   47.9   13.0
+1.001e+06         39       9.29e-02    39.7    0.0    0.1   47.6   12.7
+1.006e+06         58       1.12e-01    48.4    0.0    0.1   39.4   12.1
+1.011e+06         39       9.45e-02    38.9    0.0    0.1   48.2   12.8
+1.015e+06         39       9.31e-02    39.2    0.0    0.1   48.1   12.6
+1.020e+06         39       9.03e-02    40.2    0.0    0.1   47.0   12.8
+1.025e+06         58       1.22e-01    44.4    0.0    0.1   44.0   11.5
+1.030e+06         39       1.04e-01    34.7    0.0    0.0   53.7   11.5
+1.035e+06         39       9.39e-02    38.6    0.0    0.0   49.1   12.3
+1.039e+06         39       9.61e-02    38.7    0.0    0.1   48.8   12.4
+1.044e+06         58       1.13e-01    48.4    0.0    0.1   39.3   12.2
+1.049e+06         39       9.13e-02    39.8    0.0    0.1   47.1   13.1
+1.054e+06         39       9.17e-02    39.4    0.0    0.1   48.0   12.5
+1.058e+06         39       9.79e-02    37.4    0.0    0.1   50.2   12.3
+1.063e+06         58       1.25e-01    44.5    0.0    0.1   43.8   11.6
+1.068e+06         39       1.22e-01    30.0    0.0    0.0   59.8   10.1
+1.073e+06         39       1.14e-01    32.4    0.0    0.0   56.8   10.7
+1.078e+06         39       1.02e-01    37.0    0.0    0.1   50.2   12.7
+1.082e+06         39       1.04e-01    36.1    0.0    0.1   51.8   12.0
+1.087e+06         58       1.29e-01    43.3    0.0    0.1   45.7   10.9
+1.092e+06         40       1.09e-01    34.8    0.0    0.1   53.7   11.4
+1.097e+06         39       9.90e-02    37.3    0.0    0.1   50.2   12.4
+1.102e+06         39       9.47e-02    37.6    0.0    0.1   49.6   12.7
+1.106e+06         58       1.23e-01    45.0    0.0    0.1   44.0   11.0
+1.111e+06         40       1.08e-01    35.0    0.0    0.1   53.0   12.0
+1.116e+06         41       9.83e-02    38.4    0.0    0.1   49.1   12.5
+1.121e+06         41       9.68e-02    39.4    0.0    0.1   48.0   12.5
+1.126e+06         61       1.20e-01    47.0    0.0    0.1   41.6   11.3
+1.130e+06         41       1.04e-01    37.3    0.0    0.1   50.7   12.0
+1.135e+06         41       1.03e-01    36.9    0.0    0.1   50.8   12.3
+1.140e+06         41       9.76e-02    38.8    0.0    0.1   49.0   12.1
+1.145e+06         61       1.19e-01    47.7    0.0    0.1   40.9   11.3
+1.149e+06         42       1.07e-01    36.5    0.0    0.1   52.0   11.5
+1.154e+06         41       1.06e-01    36.2    0.0    0.1   52.0   11.7
+1.159e+06         41       9.86e-02    38.3    0.0    0.1   49.3   12.4
+1.164e+06         61       1.18e-01    47.3    0.0    0.1   41.4   11.2
+1.169e+06         42       9.95e-02    38.8    0.0    0.0   49.0   12.1
+1.173e+06         43       1.29e-01    31.6    0.0    0.1   58.9    9.4
+1.178e+06         42       1.15e-01    35.6    0.0    0.1   52.9   11.5
+1.183e+06         64       1.26e-01    47.8    0.0    0.1   41.0   11.1
+1.188e+06         43       1.07e-01    37.5    0.0    0.1   50.8   11.6
+1.193e+06         43       1.08e-01    37.1    0.0    0.1   51.4   11.5
+1.197e+06         43       1.04e-01    38.9    0.0    0.1   49.3   11.8
+
+Run finished at  : Sun Nov  2 17:30:00 2025
+Run time : 1 m 30 s
+Finalising PETSc
+	Option datadir = examples/tokamak-1D/MAST-U_geometry_test (Command line)
+	Option settingsfile = BOUT.settings (default)
+Writing options to file examples/tokamak-1D/MAST-U_geometry_test/BOUT.settings
+	Option time_report:show = 0 (default)

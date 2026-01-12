@@ -1,0 +1,135 @@
+# Test case: all parameters in grid file, accessed via mesh: prefix
+
+nout = 10
+timestep = 95788 * 0.05
+
+MXG = 0
+
+[input]
+error_on_unused_options = false
+
+[mesh]
+file = "grid_1d_minimal.nc"
+# All other mesh parameters are in the grid file!
+#length = 30           # Length of the domain in meters
+length_xpt = 10   # Length from midplane to X-point [m] (i.e. this is where the source ends)
+
+dymin = 0.1  # Minimum grid spacing near target, as fraction of average. Must be > 0 and < 1
+
+# Parallel grid spacing — grid refinement near the divertor target 
+# dy = (length / ny) * (1 + (1-dymin)*(1-y/pi))
+
+# Calculate where the source ends in grid index (i.e. at the X-point)
+source = length_xpt / mesh:length
+y_xpt = pi * ( 2 - dymin - sqrt( (2-dymin)^2 - 4*(1-dymin)*source ) ) / (1 - dymin)
+
+# Separatrix index set to -1 for 1D simulations
+ixseps1 = -1
+ixseps2 = -1
+
+# In 1D, the Jacobian is inversely proportional to volume
+# Total flux expansion can be set up with a non-constant J profile
+# J = 1  
+
+
+[hermes]
+components = (d+, d, e,
+              sheath_boundary_simple, collisions, recycling, reactions,
+              electron_force_balance, neutral_parallel_diffusion)
+
+normalise_metric = true
+Nnorm = 1e19
+Bnorm = 1
+Tnorm = 100
+
+[solver]
+type = beuler
+snes_type = newtonls
+ksp_type = gmres
+pc_type = hypre
+pc_hypre_type = euclid
+max_nonlinear_iterations = 10
+lag_jacobian = 500
+atol = 1e-7
+rtol = 1e-5
+
+[sheath_boundary_simple]
+lower_y = false
+upper_y = true
+gamma_e = 3.5
+gamma_i = 3.5
+
+[neutral_parallel_diffusion]
+dneut = 10
+
+[d+]
+type = (evolve_density, evolve_pressure, evolve_momentum,
+        noflow_boundary, upstream_density_feedback)
+
+noflow_lower_y = true
+noflow_upper_y = false
+charge = 1
+AA = 2
+
+density_upstream = 5e19
+density_source_positive = false
+density_controller_i = 1e-2
+density_controller_p = 5e2
+thermal_conduction = true
+diagnose = true
+
+recycle_as = d
+target_recycle = true
+target_recycle_energy = 3.5
+target_recycle_multiplier = 1
+
+[Nd+]
+function = 1
+# TEST: Can we access mesh:y_xpt?
+source_shape = H(mesh:y_xpt - y) * 1e20
+
+[Pd+]
+function = 1
+powerflux = 2.5e7
+# TEST: Can we access mesh:length_xpt?
+source = (powerflux*2/3 / mesh:length_xpt)*H(mesh:y_xpt - y)
+
+[NVd+]
+function = 0
+
+[d]
+type = (evolve_density, evolve_pressure, evolve_momentum, noflow_boundary)
+charge = 0
+AA = 2
+thermal_conduction = true
+diagnose = true
+density_floor = 1e-7
+
+[Nd]
+function = 0.001
+
+[Pd]
+function = 0.0001
+
+[e]
+type = quasineutral, evolve_pressure, zero_current, noflow_boundary
+noflow_upper_y = false
+charge = -1
+AA = 1/1836
+thermal_conduction = true
+diagnose = true
+
+[Pe]
+function = `Pd+:function`
+source = `Pd+:source`
+
+[recycling]
+species = d+
+
+[reactions]
+diagnose = true
+type = (
+        d + e -> d+ + 2e,
+        d+ + e -> d,
+        d + d+ -> d+ + d,
+       )

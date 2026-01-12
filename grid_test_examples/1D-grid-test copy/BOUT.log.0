@@ -1,0 +1,775 @@
+BOUT++ version 5.2.0
+Revision: ab0c53a3a040e84ed1ab90075010a8b481fe4b6e
+Code compiled on Oct 28 2025 at 13:37:44
+
+B.Dudson (University of York), M.Umansky (LLNL) 2007
+Based on BOUT by Xueqiao Xu, 1999
+
+Processor number: 0 of 1
+
+pid: 73352
+
+Compile-time options:
+	Runtime error checking enabled, level 2
+	Parallel NetCDF support disabled
+	Metrics mode is 2D
+	FFT support enabled
+	Natural language support enabled
+	LAPACK support disabled
+	NetCDF support enabled (NetCDF4)
+	ADIOS2 support disabled
+	PETSc support enabled
+	Pretty function name support enabled
+	PVODE support enabled
+	Score-P support disabled
+	SLEPc support disabled
+	SUNDIALS support enabled
+	Backtrace in exceptions disabled
+	Colour in logs enabled
+	OpenMP parallelisation disabled, using 1 threads
+	Extra debug output disabled
+	Floating-point exceptions disabled
+	Signal handling support enabled
+	Field name tracking enabled
+	Message stack enabled
+	Compiled with flags : "-Wall -Wextra -Wnull-dereference -Wno-cast-function-type -DCHECK=2 -O2 -g -DNDEBUG"
+	Command line options for this run : ../../../hermes-3 -d . 
+Reading options file ./BOUT.inp
+	Option datadir = . (Command line)
+	Option optionfile = BOUT.inp (default)
+	Option settingsfile = BOUT.settings (default)
+Writing options to file ./BOUT.settings
+	Option mesh:type = bout (default)
+	Option grid =  (default)
+	Option mesh:file = grid_1d_minimal.nc (./BOUT.inp)
+
+Getting grid data from file grid_1d_minimal.nc
+	Option format =  (default)
+	Option mesh:format =  (default)
+	Option file = grid_1d_minimal.nc ()
+	Option append = 0 (default)
+	Option y_boundary_guards = 0 (default)
+	Option ny_inner = 0 (default)
+	Option mesh:calcParallelSlices_on_communicate = false (user_default)
+	Option mesh:maxregionblocksize = 64 (default)
+	Option mesh:staggergrids = 0 (default)
+	Option mesh:include_corner_cells = 1 (default)
+	Option mesh:ddz:fft_filter = 0 (default)
+	Option mesh:symmetricGlobalX = 1 (default)
+	Option optionfile = BOUT.inp (default)
+WARNING: The default of this option has changed in release 4.1.
+If you want the old setting, you have to specify mesh:symmetricGlobalY=false in BOUT.inp
+	Option mesh:symmetricGlobalY = 1 (default)
+Loading mesh
+	Option nx = 1 (grid_1d_minimal.nc)
+	Option ny = 400 (grid_1d_minimal.nc)
+	Option nz = 1 (grid_1d_minimal.nc)
+	Read nz from input grid file
+	Grid size: 1 x 400 x 1
+	Option MXG = 0 ()
+	Option input:transform_from_field_aligned = true (default)
+	Option input:max_recursion_depth = 0 (default)
+	Option MXG = 0 (./BOUT.inp)
+	Option MYG = 0 ()
+	Option MYG = 2 (default)
+	Guard cells (x,y,z): 0, 2, 0
+	Option ixseps1 = -1 (grid_1d_minimal.nc)
+	Option ixseps2 = -1 (grid_1d_minimal.nc)
+	Option jyseps1_1 = -1 ()
+	Option jyseps1_2 = 200 ()
+	Option jyseps2_1 = 200 ()
+	Option jyseps2_2 = 399 ()
+	Option ny_inner = 200 ()
+Finding value for NXPE (ideal = 0.050000)
+	Candidate value: 1
+	 -> Good value
+	Domain split (NXPE=1, NYPE=1) into domains (localNx=1, localNy=400)
+	Option IncIntShear = 0 (default)
+	Option periodicX = 0 (default)
+	Option async_send = 0 (default)
+	Option ZMIN = 0 (default)
+	Option ZMAX = 1 (default)
+	EQUILIBRIUM IS SINGLE NULL (SND) 
+	MYPE_IN_CORE = false
+	DXS = 0, DIN = -1. DOUT = -1
+	UXS = 0, UIN = -1. UOUT = -1
+	XIN = -1, XOUT = -1
+	Twist-shift: 
+	Option twistshift = 0 (default)
+Possible boundary regions are: lower_target, upper_target, Boundary regions in this processor: upper_target, lower_target, 
+Constructing default regions
+	Boundary region inner X
+	Boundary region outer X
+	Option mesh:extrapolate_x = 1 (default)
+	Option mesh:extrapolate_y = 1 (default)
+WARNING: extrapolating input mesh quantities into x-boundary cells. Set option extrapolate_x=false to disable this.
+WARNING: extrapolating input mesh quantities into y-boundary cells. Set option extrapolate_y=false to disable this.
+	Option dx = Matrix<BoutReal> (grid_1d_minimal.nc)
+	Option dy = Matrix<BoutReal> (grid_1d_minimal.nc)
+	Option ZMIN = 0 (default)
+	Option ZMAX = 1 (default)
+	Option dz = 6.283185307179586 (grid_1d_minimal.nc)
+	Option mesh:paralleltransform:type = identity (default)
+	Option parallel_transform =  (default)
+	WARNING: Could not read 'g11' from grid. Setting to 1.000000e+00
+	WARNING: Could not read 'g22' from grid. Setting to 1.000000e+00
+	WARNING: Could not read 'g33' from grid. Setting to 1.000000e+00
+	WARNING: Could not read 'g12' from grid. Setting to 0.000000e+00
+	WARNING: Could not read 'g13' from grid. Setting to 0.000000e+00
+	WARNING: Could not read 'g23' from grid. Setting to 0.000000e+00
+	Local maximum error in diagonal inversion is 0.000000e+00
+	Local maximum error in off-diagonal inversion is 0.000000e+00
+	Option J = Matrix<BoutReal> (grid_1d_minimal.nc)
+	Maximum difference in J is 0.000000e+00
+	WARNING: Could not read 'Bxy' from grid. Setting to 0.000000e+00
+	WARNING: Magnitude of B field 'Bxy' not found. Calculating from metric tensor
+	WARNING: Could not read 'ShiftTorsion' from grid. Setting to 0.000000e+00
+	WARNING: No Torsion specified for zShift. Derivatives may not be correct
+Calculating differential geometry terms
+	Communicating connection terms
+	Option non_uniform = 1 (default)
+	WARNING: Could not read 'd2x' from grid. Setting to 0.000000e+00
+	WARNING: differencing quantity 'd2x' not found. Calculating from dx
+	WARNING: Could not read 'd2y' from grid. Setting to 0.000000e+00
+	WARNING: differencing quantity 'd2y' not found. Calculating from dy
+	done
+	Option output:enabled = 1 (default)
+	Option restart_files:enabled = 1 (default)
+	Option datadir = . (Command line)
+	Option append = true (./BOUT.inp)
+	Option output:type = netcdf (default)
+	Option output:path = . (user_default)
+	Option output:prefix = BOUT.dmp (user_default)
+	Option output:append = true (user_default)
+	Option datadir = . (Command line)
+	Option restart_files:type = netcdf (default)
+	Option restart_files:path = . (user_default)
+	Option restart_files:prefix = BOUT.restart (user_default)
+	Option restart_files:append = false (user_default)
+	Option solver:type = beuler (./BOUT.inp)
+	Option solver:monitor_timestep = 0 (default)
+	Option solver:save_repeat_run_id = 0 (default)
+	Option solver:is_nonsplit_model_diffusive = 1 (default)
+	Option solver:mms = 0 (default)
+	Option solver:mms_initialise = 0 (default)
+	Option nout = 200 (./BOUT.inp)
+	Option solver:nout = 200 (default)
+	Option timestep = 4789.400000000001 (./BOUT.inp)
+	Option solver:output_step = 4789.4 (default)
+Setting `nout` is deprecated. Please set `solver:nout` instead.Setting `timestep` is deprecated. Please set `solver:output_step` instead.	Option solver:timestep = 1 (default)
+	Option solver:dt_min_reset = 1e-06 (default)
+	Option solver:max_timestep = 1e+37 (default)
+	Option solver:snes_type = newtonls (./BOUT.inp)
+	Option solver:atol = 1e-07 (./BOUT.inp)
+	Option solver:rtol = 1e-05 (./BOUT.inp)
+	Option solver:stol = 1e-08 (default)
+	Option solver:max_nonlinear_iterations = 10 (./BOUT.inp)
+	Option solver:lower_its = 5 (default)
+	Option solver:upper_its = 8 (default)
+	Option solver:timestep_factor_on_failure = 0.5 (default)
+	Option solver:timestep_factor_on_upper_its = 0.9 (default)
+	Option solver:timestep_factor_on_lower_its = 1.4 (default)
+	Option solver:diagnose = 0 (default)
+	Option solver:diagnose_failures = 0 (default)
+	Option solver:equation_form = rearranged_backward_euler (default)
+Initialising PETSc
+	Option solver:predictor = 1 (default)
+	Option solver:use_precon = 0 (default)
+	Option solver:ksp_type = gmres (./BOUT.inp)
+	Option solver:kspsetinitialguessnonzero = 0 (default)
+	Option solver:maxl = 20 (default)
+	Option solver:pc_type = hypre (./BOUT.inp)
+	Option solver:pc_hypre_type = euclid (./BOUT.inp)
+	Option solver:line_search_type = default (default)
+	Option solver:matrix_free = 0 (default)
+	Option solver:matrix_free_operator = 0 (default)
+	Option solver:lag_jacobian = 500 (./BOUT.inp)
+	Option solver:use_coloring = 1 (default)
+	Option solver:prune_jacobian = 0 (default)
+	Option solver:prune_abstol = 1e-16 (default)
+	Option solver:prune_fraction = 0.2 (default)
+	Option solver:scale_rhs = 0 (default)
+	Option solver:scale_vars = 0 (default)
+Setting up output (experimental output) file
+	Option restart = true (./BOUT.inp)
+
+Git Version of Hermes: 694bd61e20829a0c923f52ae5469c9fd28515fbf
+Slope limiter: MinMod
+	Option hermes:Tnorm = 100 (./BOUT.inp)
+	Option hermes:Nnorm = 1e+19 (./BOUT.inp)
+	Option hermes:Bnorm = 1 (./BOUT.inp)
+	Option hermes:recalculate_metric = 0 (default)
+	Option hermes:normalise_metric = true (./BOUT.inp)
+Calculating differential geometry terms
+	Communicating connection terms
+	Option non_uniform = true (default)
+	WARNING: Could not read 'd2x' from grid. Setting to 0.000000e+00
+	WARNING: differencing quantity 'd2x' not found. Calculating from dx
+	WARNING: Could not read 'd2y' from grid. Setting to 0.000000e+00
+	WARNING: differencing quantity 'd2y' not found. Calculating from dy
+	Option hermes:components = (d+, d, e,sheath_boundary_simple, collisions, recycling, reactions,electron_force_balance, neutral_parallel_diffusion) (./BOUT.inp)
+	Option d+:type = (evolve_density, evolve_pressure, evolve_momentum,noflow_boundary, upstream_density_feedback) (./BOUT.inp)
+	Option d+:bndry_flux = 1 (default)
+	Option d+:poloidal_flows = 1 (default)
+	Option d+:density_floor = 1e-07 (default)
+	Option d+:low_n_diffuse = 0 (default)
+	Option d+:low_n_diffuse_perp = 0 (default)
+	Option d+:low_p_diffuse_perp = 0 (default)
+	Option d+:hyper_z = -1 (default)
+	Option d+:evolve_log = 0 (default)
+Setting boundary for variable Nd+
+	upper_target region: 	Option all:bndry_all = dirichlet (default)
+
+	lower_target region: 	Option all:bndry_all = dirichlet (default)
+
+	Option input:transform_from_field_aligned = true (default)
+	Option input:max_recursion_depth = 0 (default)
+	Option Nd+:function = 1 (./BOUT.inp)
+	Option all:scale = 1 (default)
+	Option all:evolve_bndry = 0 (default)
+	Option Nd+:evolve_bndry = 0 (default)
+	Option d+:charge = 1 (./BOUT.inp)
+	Option d+:AA = 2 (./BOUT.inp)
+	Option d+:diagnose = true (./BOUT.inp)
+	Option inv_meters_cubed = 1e+19 ()
+	Option seconds = 1.0439684754508785e-08 ()
+	Option Nd+:source_time_dependent = 0 (default)
+	Option Nd+:source_only_in_core = 0 (default)
+	WARNING: Could not read 'Nd+_src' from grid. Setting to 0.000000e+00
+	Option Nd+:source = <Field3D> (default)
+	Option Nd+:neumann_boundary_average_z = 0 (default)
+	Option d+:evolve_log = false (default)
+	Option d+:density_floor = 1e-07 (default)
+	Option d+:low_n_diffuse_perp = false (default)
+	Option d+:temperature_floor = 0.1 (default)
+	Option d+:low_T_diffuse_perp = 0 (default)
+	Option d+:low_p_diffuse_perp = false (default)
+Setting boundary for variable Pd+
+	upper_target region: 	Option all:bndry_all = dirichlet (default)
+
+	lower_target region: 	Option all:bndry_all = dirichlet (default)
+
+	Option input:transform_from_field_aligned = true (default)
+	Option input:max_recursion_depth = 0 (default)
+	Option Pd+:function = 1 (./BOUT.inp)
+	Option all:scale = 1 (default)
+	Option all:evolve_bndry = false (default)
+	Option Pd+:evolve_bndry = 0 (default)
+	Option d+:bndry_flux = true (default)
+	Option d+:poloidal_flows = true (default)
+	Option d+:p_div_v = 0 (default)
+	Option d+:hyper_z = -1 (default)
+	Option d+:hyper_z_T = -1 (default)
+	Option d+:diagnose = true (./BOUT.inp)
+	Option d+:precondition = 1 (default)
+	Option inv_meters_cubed = 1e+19 ()
+	Option eV = 100 ()
+	Option seconds = 1.0439684754508785e-08 ()
+	WARNING: Could not read 'Pd+_src' from grid. Setting to 0.000000e+00
+	Option Pd+:powerflux = 2.5e7 (./BOUT.inp)
+	Option mesh:length_xpt = 10 (./BOUT.inp)
+	Option mesh:y_xpt = pi * ( 2 - dymin - sqrt( (2-dymin)^2 - 4*(1-dymin)*source ) ) / (1 - dymin) (./BOUT.inp)
+	Option mesh:dymin = 0.1 (./BOUT.inp)
+	Option mesh:source = length_xpt / length (./BOUT.inp)
+	Option mesh:length = 30 (./BOUT.inp)
+	Option Pd+:source_time_dependent = 0 (default)
+	Option Pd+:source_only_in_core = 0 (default)
+	Option Pd+:neumann_boundary_average_z = 0 (default)
+	Option d+:numerical_viscous_heating = 0 (default)
+	Option d+:thermal_conduction = true (./BOUT.inp)
+	Option d+:kappa_coefficient = 3.9 (default)
+	Option d+:kappa_limit_alpha = -1 (default)
+Setting boundary for variable NVd+
+	upper_target region: 	Option all:bndry_all = dirichlet (default)
+
+	lower_target region: 	Option all:bndry_all = dirichlet (default)
+
+	Option input:transform_from_field_aligned = true (default)
+	Option input:max_recursion_depth = 0 (default)
+	Option NVd+:function = 0 (./BOUT.inp)
+	Option all:scale = 1 (default)
+	Option all:evolve_bndry = false (default)
+	Option NVd+:evolve_bndry = 0 (default)
+	Option d+:density_floor = 1e-07 (default)
+	Option d+:low_n_diffuse_perp = false (default)
+	Option d+:low_p_diffuse_perp = false (default)
+	Option d+:bndry_flux = true (default)
+	Option d+:poloidal_flows = true (default)
+	Option d+:hyper_z = -1 (default)
+Setting boundary for variable Vd+
+	upper_target region: 	Option all:bndry_all = dirichlet (default)
+
+	lower_target region: 	Option all:bndry_all = dirichlet (default)
+
+	Option d+:diagnose = true (./BOUT.inp)
+	Option d+:fix_momentum_boundary_flux = 0 (default)
+	Option d+:noflow_lower_y = true (./BOUT.inp)
+	Option d+:noflow_upper_y = false (./BOUT.inp)
+	Option d+:density_upstream = 5e+19 (./BOUT.inp)
+	Option d+:density_controller_p = 500 (./BOUT.inp)
+	Option d+:density_controller_i = 0.01 (./BOUT.inp)
+	Option d+:density_integral_positive = 0 (default)
+	Option d+:density_source_positive = false (./BOUT.inp)
+	Option d+:diagnose = true (./BOUT.inp)
+	Option d:type = (evolve_density, evolve_pressure, evolve_momentum,noflow_boundary) (./BOUT.inp)
+	Option d:bndry_flux = 1 (default)
+	Option d:poloidal_flows = 1 (default)
+	Option d:density_floor = 1e-07 (./BOUT.inp)
+	Option d:low_n_diffuse = 0 (default)
+	Option d:low_n_diffuse_perp = 0 (default)
+	Option d:low_p_diffuse_perp = 0 (default)
+	Option d:hyper_z = -1 (default)
+	Option d:evolve_log = 0 (default)
+Setting boundary for variable Nd
+	upper_target region: 	Option all:bndry_all = dirichlet (default)
+
+	lower_target region: 	Option all:bndry_all = dirichlet (default)
+
+	Option input:transform_from_field_aligned = true (default)
+	Option input:max_recursion_depth = 0 (default)
+	Option Nd:function = 0.001 (./BOUT.inp)
+	Option all:scale = 1 (default)
+	Option all:evolve_bndry = false (default)
+	Option Nd:evolve_bndry = 0 (default)
+	Option d:charge = 0 (./BOUT.inp)
+	Option d:AA = 2 (./BOUT.inp)
+	Option d:diagnose = true (./BOUT.inp)
+	Option inv_meters_cubed = 1e+19 ()
+	Option seconds = 1.0439684754508785e-08 ()
+	Option Nd:source_time_dependent = 0 (default)
+	Option Nd:source_only_in_core = 0 (default)
+	WARNING: Could not read 'Nd_src' from grid. Setting to 0.000000e+00
+	Option Nd:source = <Field3D> (default)
+	Option Nd:neumann_boundary_average_z = 0 (default)
+	Option d:evolve_log = false (default)
+	Option d:density_floor = 1e-07 (./BOUT.inp)
+	Option d:low_n_diffuse_perp = false (default)
+	Option d:temperature_floor = 0.1 (default)
+	Option d:low_T_diffuse_perp = 0 (default)
+	Option d:low_p_diffuse_perp = false (default)
+Setting boundary for variable Pd
+	upper_target region: 	Option all:bndry_all = dirichlet (default)
+
+	lower_target region: 	Option all:bndry_all = dirichlet (default)
+
+	Option input:transform_from_field_aligned = true (default)
+	Option input:max_recursion_depth = 0 (default)
+	Option Pd:function = 0.0001 (./BOUT.inp)
+	Option all:scale = 1 (default)
+	Option all:evolve_bndry = false (default)
+	Option Pd:evolve_bndry = 0 (default)
+	Option d:bndry_flux = true (default)
+	Option d:poloidal_flows = true (default)
+	Option d:p_div_v = 0 (default)
+	Option d:hyper_z = -1 (default)
+	Option d:hyper_z_T = -1 (default)
+	Option d:diagnose = true (./BOUT.inp)
+	Option d:precondition = 1 (default)
+	Option inv_meters_cubed = 1e+19 ()
+	Option eV = 100 ()
+	Option seconds = 1.0439684754508785e-08 ()
+	WARNING: Could not read 'Pd_src' from grid. Setting to 0.000000e+00
+	Option Pd:source = <Field3D> (default)
+	Option Pd:source_time_dependent = 0 (default)
+	Option Pd:source_only_in_core = 0 (default)
+	Option Pd:neumann_boundary_average_z = 0 (default)
+	Option d:numerical_viscous_heating = 0 (default)
+	Option d:thermal_conduction = true (./BOUT.inp)
+	Option d:kappa_coefficient = 2.5 (default)
+	Option d:kappa_limit_alpha = -1 (default)
+Setting boundary for variable NVd
+	upper_target region: 	Option all:bndry_all = dirichlet (default)
+
+	lower_target region: 	Option all:bndry_all = dirichlet (default)
+
+	Option input:transform_from_field_aligned = true (default)
+	Option input:max_recursion_depth = 0 (default)
+	Option all:function = 0.0 (default)
+	Option all:scale = 1 (default)
+	Option all:evolve_bndry = false (default)
+	Option NVd:evolve_bndry = 0 (default)
+	Option d:density_floor = 1e-07 (./BOUT.inp)
+	Option d:low_n_diffuse_perp = false (default)
+	Option d:low_p_diffuse_perp = false (default)
+	Option d:bndry_flux = true (default)
+	Option d:poloidal_flows = true (default)
+	Option d:hyper_z = -1 (default)
+Setting boundary for variable Vd
+	upper_target region: 	Option all:bndry_all = dirichlet (default)
+
+	lower_target region: 	Option all:bndry_all = dirichlet (default)
+
+	Option d:diagnose = true (./BOUT.inp)
+	Option d:fix_momentum_boundary_flux = 0 (default)
+	Option d:noflow_lower_y = 1 (default)
+	Option d:noflow_upper_y = 1 (default)
+	Option e:type = quasineutral, evolve_pressure, zero_current, noflow_boundary (./BOUT.inp)
+	Option e:charge = -1 (./BOUT.inp)
+	Option e:AA = 0.0005446623093681918 (./BOUT.inp)
+	Option e:evolve_log = 0 (default)
+	Option e:density_floor = 1e-07 (default)
+	Option e:low_n_diffuse_perp = 0 (default)
+	Option e:temperature_floor = 0.1 (default)
+	Option e:low_T_diffuse_perp = 0 (default)
+	Option e:low_p_diffuse_perp = 0 (default)
+Setting boundary for variable Pe
+	upper_target region: 	Option all:bndry_all = dirichlet (default)
+
+	lower_target region: 	Option all:bndry_all = dirichlet (default)
+
+	Option input:transform_from_field_aligned = true (default)
+	Option input:max_recursion_depth = 0 (default)
+	Option Pe:function = `Pd+:function` (./BOUT.inp)
+	Option Pd+:function = 1 (./BOUT.inp)
+	Option all:scale = 1 (default)
+	Option all:evolve_bndry = false (default)
+	Option Pe:evolve_bndry = 0 (default)
+	Option e:bndry_flux = 1 (default)
+	Option e:poloidal_flows = 1 (default)
+	Option e:p_div_v = 0 (default)
+	Option e:hyper_z = -1 (default)
+	Option e:hyper_z_T = -1 (default)
+	Option e:diagnose = true (./BOUT.inp)
+	Option e:precondition = 1 (default)
+	Option inv_meters_cubed = 1e+19 ()
+	Option eV = 100 ()
+	Option seconds = 1.0439684754508785e-08 ()
+	WARNING: Could not read 'Pe_src' from grid. Setting to 0.000000e+00
+	Option Pd+:source = (powerflux*2/3 / (mesh:length_xpt))*H(mesh:y_xpt - y) (./BOUT.inp)
+	Option Pd+:powerflux = 2.5e7 (./BOUT.inp)
+	Option Pe:source_time_dependent = 0 (default)
+	Option Pe:source_only_in_core = 0 (default)
+	Option Pe:neumann_boundary_average_z = 0 (default)
+	Option e:numerical_viscous_heating = 0 (default)
+	Option e:thermal_conduction = true (./BOUT.inp)
+	Option e:kappa_coefficient = 2.23446 (default)
+	Option e:kappa_limit_alpha = -1 (default)
+	Option e:charge = -1 (./BOUT.inp)
+	Option e:noflow_lower_y = 1 (default)
+	Option e:noflow_upper_y = false (./BOUT.inp)
+	Option sheath_boundary_simple:secondary_electron_coef = 0 (default)
+	Option sheath_boundary_simple:sin_alpha = 1 (default)
+	Option sheath_boundary_simple:gamma_e = 3.5 (./BOUT.inp)
+	Option sheath_boundary_simple:gamma_i = 3.5 (./BOUT.inp)
+	Option sheath_boundary_simple:sheath_ion_polytropic = 1 (default)
+	Option sheath_boundary_simple:lower_y = false (./BOUT.inp)
+	Option sheath_boundary_simple:upper_y = true (./BOUT.inp)
+	Option sheath_boundary_simple:always_set_phi = 0 (default)
+	Option eV = 100 ()
+	Option sheath_boundary_simple:wall_potential = <Field3D> (default)
+	Option sheath_boundary_simple:no_flow = 0 (default)
+	Option sheath_boundary_simple:density_boundary_mode = 1 (default)
+	Option sheath_boundary_simple:pressure_boundary_mode = 1 (default)
+	Option sheath_boundary_simple:temperature_boundary_mode = 1 (default)
+	Option sheath_boundary_simple:diagnose = 0 (default)
+	Option eV = 100 ()
+	Option inv_meters_cubed = 1e+19 ()
+	Option meters = 0.0010217477552952484 ()
+	Option seconds = 1.0439684754508785e-08 ()
+	Option collisions:electron_electron = 1 (default)
+	Option collisions:electron_ion = 1 (default)
+	Option collisions:electron_neutral = 0 (default)
+	Option collisions:ion_ion = 1 (default)
+	Option collisions:ion_neutral = 0 (default)
+	Option collisions:neutral_neutral = 1 (default)
+	Option collisions:frictional_heating = 1 (default)
+	Option collisions:ei_multiplier = 1 (default)
+	Option collisions:diagnose = 0 (default)
+	Option eV = 100 ()
+	Option recycling:species = d+ (./BOUT.inp)
+	WARNING: Could not read 'is_pump' from grid. Setting to 0.000000e+00
+	Option d+:recycle_as = d (./BOUT.inp)
+	Option recycling:density_floor = 1e-07 (default)
+	Option d+:diagnose = true (./BOUT.inp)
+	Option d+:target_recycle_multiplier = 1 (./BOUT.inp)
+	Option d+:sol_recycle_multiplier = 1 (default)
+	Option d+:pfr_recycle_multiplier = 1 (default)
+	Option d+:pump_recycle_multiplier = 1 (default)
+	Option d+:target_recycle_energy = 3.5 (./BOUT.inp)
+	Option d+:sol_recycle_energy = 3 (default)
+	Option d+:pfr_recycle_energy = 3 (default)
+	Option d+:target_fast_recycle_fraction = 0 (default)
+	Option d+:pfr_fast_recycle_fraction = 0 (default)
+	Option d+:sol_fast_recycle_fraction = 0 (default)
+	Option d+:target_fast_recycle_energy_factor = 0 (default)
+	Option d+:sol_fast_recycle_energy_factor = 0 (default)
+	Option d+:pfr_fast_recycle_energy_factor = 0 (default)
+	Option d+:target_recycle = true (./BOUT.inp)
+	Option d+:sol_recycle = 0 (default)
+	Option d+:pfr_recycle = 0 (default)
+	Option d+:neutral_pump = 0 (default)
+	Option reactions:type = (d + e -> d+ + 2e,d+ + e -> d,d + d+ -> d+ + d,) (./BOUT.inp)
+	Option reactions:diagnose = true (./BOUT.inp)
+	Option d:K_iz_multiplier = 1 (default)
+	Option d:R_ex_multiplier = 1 (default)
+	Option reactions:diagnose = true (./BOUT.inp)
+	Option d:K_rec_multiplier = 1 (default)
+	Option d:R_rec_multiplier = 1 (default)
+	Option reactions:diagnose = true (./BOUT.inp)
+	Option reactions:no_neutral_cx_mom_gain = 0 (default)
+	Option d:K_cx_multiplier = 1 (default)
+	Option electron_force_balance:diagnose = 0 (default)
+	Option neutral_parallel_diffusion:dneut = 10 (./BOUT.inp)
+	Option neutral_parallel_diffusion:diagnose = 0 (default)
+	Option neutral_parallel_diffusion:equation_fix = 1 (default)
+	Option neutral_parallel_diffusion:thermal_conducton = 1 (default)
+	Option neutral_parallel_diffusion:viscosity = 1 (default)
+	Option grid_id =  (default)
+	Option hypnotoad_version =  (default)
+	Option hypnotoad_git_hash =  (default)
+	Option hypnotoad_git_diff =  (default)
+	Option hypnotoad_geqdsk_filename =  (default)
+	Option run_id = e16cb631-73dd-4e7d-8776-04b6febc977d (Solver)
+	Option tt = 528310.5276884458 (Solver)
+	Option hist_hi = 110 (Solver)
+	Option d+_density_error_integral = -9515.669512708535 (upstream_density_feedback)
+	Option grid_id =  (default)
+	Option hypnotoad_version =  (default)
+	Option hypnotoad_git_hash =  (default)
+	Option hypnotoad_git_diff =  (default)
+	Option hypnotoad_geqdsk_filename =  (default)
+	Option wall_limit = -1 (default)
+	Option stopCheck = 0 (default)
+	Option datadir = . (Command line)
+	Option stopCheckName = BOUT.stop (default)
+Solver running for 200 outputs with output timestep of 4.789400e+03
+Initialising solver
+
+	SNES steady state solver
+	3d fields = 7, 2d fields = 0 neq=2800, local_N=2800
+Creating vector
+Create SNES
+Setting Jacobian matrix sizes
+	Option solver:stencil:square = 0 (default)
+	Option solver:stencil:taxi = 0 (default)
+	Option solver:stencil:cross = 0 (default)
+Setting solver:stencil:taxi = 2
+Pre-allocating Jacobian
+Marking non-zero Jacobian entries
+Assembling Jacobian matrix
+	Option solver:force_symmetric_coloring = 0 (default)
+Creating Jacobian coloring
+SNES Type : newtonls
+KSP Type  : gmres
+PC Type   : hypre
+Running simulation
+
+Run ID: 14772d7d-834e-4d2c-aa67-e07ae4bfa25a
+Restarting from ID: e16cb631-73dd-4e7d-8776-04b6febc977d
+
+Run started at  : Sat Nov  8 14:48:36 2025
+	Option restart = true (./BOUT.inp)
+	Option append = true (./BOUT.inp)
+	Option dump_on_restart = 0 (default)
+	Option input:validate = 0 (default)
+	Option input:error_on_unused_options = false (./BOUT.inp)
+Sim Time  |  RHS evals  | Wall Time |  Calc    Inv   Comm    I/O   SOLVER
+
+5.331e+05        269       3.40e-01    77.9    0.0    0.1    9.9   12.1
+5.379e+05        129       1.92e-01    66.9    0.0    0.1    8.1   24.9
+5.427e+05        129       1.90e-01    67.3    0.0    0.1    7.7   24.8
+5.475e+05        129       1.95e-01    65.8    0.0    0.1    9.6   24.6
+5.523e+05        121       1.73e-01    69.3    0.0    0.1    8.8   21.8
+5.570e+05         57       9.71e-02    58.2    0.0    0.1   15.5   26.2
+5.618e+05         56       9.51e-02    58.5    0.0    0.1   15.8   25.7
+5.666e+05        726       8.23e-01    87.2    0.0    0.1    1.8   10.8
+5.714e+05       1240       1.39e+00    88.9    0.0    0.1    1.1    9.9
+5.762e+05       1115       1.28e+00    87.9    0.0    0.1    1.3   10.7
+5.810e+05        214       2.81e-01    76.1    0.0    0.1    5.8   18.0
+5.858e+05        336       4.11e-01    81.9    0.0    0.1    4.0   14.0
+5.906e+05        251       3.09e-01    80.4    0.0    0.1    5.1   14.4
+5.954e+05         48       8.53e-02    56.0    0.0    0.1   18.6   25.3
+6.002e+05         47       8.49e-02    55.4    0.0    0.1   18.6   25.9
+6.049e+05         48       8.65e-02    55.4    0.0    0.1   18.3   26.2
+6.097e+05         47       8.88e-02    54.5    0.0    0.1   19.0   26.4
+6.145e+05         37       7.48e-02    49.1    0.0    0.1   22.9   28.0
+6.193e+05         41       8.10e-02    50.3    0.0    0.1   20.9   28.7
+6.241e+05        279       3.37e-01    81.7    0.0    0.1    5.1   13.0
+6.289e+05        613       7.09e-01    85.9    0.0    0.1    2.5   11.5
+6.337e+05       1411       1.56e+00    89.3    0.0    0.1    1.1    9.4
+6.385e+05       1978       2.17e+00    90.2    0.0    0.1    0.8    8.9
+6.433e+05       2300       2.53e+00    89.8    0.0    0.1    0.7    9.4
+6.480e+05        381       4.53e-01    83.3    0.0    0.1    3.9   12.7
+6.528e+05        392       4.70e-01    82.5    0.0    0.1    3.9   13.5
+6.576e+05         85       1.37e-01    61.5    0.0    0.1   13.1   25.2
+6.624e+05        325       3.91e-01    81.8    0.0    0.1    4.6   13.5
+6.672e+05         54       9.65e-02    56.3    0.0    0.1   18.8   24.8
+6.720e+05        249       3.09e-01    80.3    0.0    0.1    6.2   13.4
+6.768e+05         33       7.18e-02    47.4    0.0    0.1   25.8   26.7
+6.816e+05         31       6.96e-02    45.4    0.0    0.1   27.9   26.6
+6.864e+05         23       5.73e-02    40.3    0.0    0.1   32.1   27.5
+6.912e+05         29       6.54e-02    44.5    0.0    0.1   29.5   25.9
+6.959e+05         27       6.27e-02    43.2    0.0    0.1   30.1   26.7
+7.007e+05         24       5.93e-02    40.6    0.0    0.1   31.9   27.5
+7.055e+05         24       5.92e-02    41.0    0.0    0.1   32.1   26.9
+7.103e+05         16       4.92e-02    32.8    0.0    0.1   39.4   27.8
+7.151e+05         24       5.88e-02    41.3    0.0    0.1   32.1   26.5
+7.199e+05         22       5.71e-02    38.7    0.0    0.1   34.0   27.3
+7.247e+05         22       5.67e-02    39.1    0.0    0.1   34.5   26.4
+7.295e+05         15       4.79e-02    31.7    0.0    0.1   40.7   27.6
+7.343e+05         22       5.88e-02    38.8    0.0    0.1   33.9   27.2
+7.390e+05         55       9.30e-02    58.9    0.0    0.1   21.6   19.4
+7.438e+05         21       5.66e-02    38.1    0.0    0.1   35.0   26.8
+7.486e+05         14       4.65e-02    30.9    0.0    0.0   42.3   26.7
+7.534e+05         22       5.67e-02    38.9    0.0    0.1   35.6   25.4
+7.582e+05         21       5.64e-02    37.6    0.0    0.1   36.1   26.2
+7.630e+05         25       6.02e-02    41.9    0.0    0.1   33.7   24.3
+7.678e+05         29       6.47e-02    45.1    0.0    0.1   32.8   22.0
+7.726e+05         30       6.66e-02    44.8    0.0    0.1   31.2   23.9
+7.774e+05         28       6.44e-02    43.9    0.0    0.1   32.2   23.8
+7.821e+05        125       1.70e-01    72.4    0.0    0.1   12.3   15.1
+7.869e+05         29       6.79e-02    43.4    0.0    0.1   30.9   25.5
+7.917e+05         25       6.20e-02    40.4    0.0    0.1   34.1   25.5
+7.965e+05         25       6.26e-02    39.7    0.0    0.1   34.3   26.0
+8.013e+05         25       6.25e-02    40.0    0.0    0.1   34.9   25.0
+8.061e+05         26       6.41e-02    41.3    0.0    0.1   33.4   25.2
+8.109e+05         26       6.43e-02    40.9    0.0    0.1   33.8   25.3
+8.157e+05         27       6.53e-02    41.4    0.0    0.1   33.7   24.9
+8.205e+05         28       6.63e-02    42.7    0.0    0.1   32.7   24.5
+8.253e+05         29       6.72e-02    43.3    0.0    0.1   32.4   24.2
+8.300e+05         31       7.04e-02    43.7    0.0    0.1   31.5   24.7
+8.348e+05         24       6.18e-02    39.5    0.0    0.1   35.9   24.6
+8.396e+05         29       6.87e-02    42.0    0.0    0.1   33.1   24.9
+8.444e+05         21       5.86e-02    36.7    0.0    0.1   37.8   25.5
+8.492e+05         26       6.48e-02    40.8    0.0    0.1   35.0   24.1
+8.540e+05        602       6.78e-01    87.3    0.0    0.1    3.4    9.2
+8.588e+05        255       3.16e-01    80.2    0.0    0.1    7.3   12.4
+8.636e+05        175       2.30e-01    75.2    0.0    0.1   10.5   14.1
+8.684e+05        552       6.44e-01    85.6    0.0    0.1    3.6   10.7
+8.731e+05         55       1.00e-01    54.9    0.0    0.1   23.4   21.7
+8.779e+05         55       1.00e-01    55.1    0.0    0.1   23.2   21.7
+8.827e+05        698       8.12e-01    87.6    0.0    0.1    3.0    9.2
+8.875e+05         97       1.47e-01    65.5    0.0    0.1   16.0   18.4
+8.923e+05        222       2.82e-01    77.7    0.0    0.1    8.4   13.9
+8.971e+05        566       6.52e-01    86.0    0.0    0.1    3.9   10.0
+9.019e+05        616       7.12e-01    85.8    0.0    0.1    3.4   10.7
+9.067e+05       1480       1.65e+00    88.9    0.0    0.1    1.5    9.5
+9.115e+05       1012       1.13e+00    88.7    0.0    0.1    2.1    9.0
+9.163e+05       1527       1.69e+00    90.2    0.0    0.1    1.5    8.1
+9.210e+05        689       8.04e-01    86.7    0.0    0.1    3.1   10.1
+9.258e+05       1702       1.86e+00    90.3    0.0    0.1    1.3    8.3
+9.306e+05       1745       1.91e+00    90.6    0.0    0.1    1.3    8.0
+9.354e+05       2472       2.67e+00    91.3    0.0    0.1    0.9    7.6
+9.402e+05       1392       1.52e+00    90.1    0.0    0.1    1.7    8.1
+9.450e+05       1749       1.91e+00    90.6    0.0    0.1    1.3    8.0
+9.498e+05       2705       2.89e+00    92.6    0.0    0.1    0.9    6.3
+9.546e+05       2466       2.64e+00    92.0    0.0    0.1    1.0    6.9
+9.594e+05       2478       2.66e+00    92.3    0.0    0.1    1.0    6.6
+9.641e+05       2449       2.64e+00    91.9    0.0    0.1    1.0    7.0
+9.689e+05       2164       2.37e+00    91.3    0.0    0.1    1.1    7.5
+9.737e+05       3222       3.46e+00    92.2    0.0    0.1    0.8    7.0
+9.785e+05       1919       2.11e+00    91.9    0.0    0.1    1.2    6.8
+9.833e+05       1579       1.72e+00    90.6    0.0    0.1    1.5    7.8
+9.881e+05       2790       3.12e+00    92.3    0.0    0.2    0.9    6.6
+9.929e+05        996       1.11e+00    88.4    0.0    0.1    2.4    9.1
+9.977e+05        687       7.80e-01    86.7    0.0    0.1    3.5    9.7
+1.002e+06        694       7.88e-01    87.2    0.0    0.1    3.4    9.3
+1.007e+06        581       6.64e-01    86.2    0.0    0.1    4.1    9.6
+1.012e+06         30       7.34e-02    41.0    0.0    0.1   36.8   22.1
+1.017e+06         29       7.31e-02    39.2    0.0    0.1   36.7   24.0
+1.022e+06        246       3.05e-01    80.1    0.0    0.1    9.6   10.2
+1.026e+06         20       6.44e-02    32.1    0.0    0.1   44.8   23.1
+1.031e+06         13       5.60e-02    23.7    0.0    0.0   54.2   22.0
+1.036e+06         19       6.25e-02    30.9    0.0    0.1   45.8   23.3
+1.041e+06         19       6.38e-02    30.7    0.0    0.1   45.8   23.5
+1.046e+06         13       5.59e-02    24.5    0.0    0.0   53.3   22.2
+1.050e+06         20       6.35e-02    31.6    0.0    0.0   44.8   23.5
+1.055e+06         14       5.60e-02    24.9    0.0    0.0   51.8   23.3
+1.060e+06         22       6.55e-02    33.6    0.0    0.0   43.4   22.9
+1.065e+06         27       7.28e-02    37.3    0.0    0.1   40.8   21.8
+1.070e+06         18       6.18e-02    29.7    0.0    0.1   48.7   21.6
+1.074e+06         30       7.60e-02    39.4    0.0    0.1   38.2   22.4
+1.079e+06        630       7.23e-01    86.5    0.0    0.1    4.0    9.4
+1.084e+06        199       2.58e-01    76.6    0.0    0.1   11.6   11.7
+1.089e+06        635       7.26e-01    86.6    0.0    0.1    4.1    9.3
+1.093e+06        251       3.17e-01    78.3    0.0    0.1   10.0   11.6
+1.098e+06        322       3.98e-01    80.2    0.0    0.1    7.9   11.9
+1.103e+06        505       5.87e-01    84.9    0.0    0.1    5.4    9.5
+1.108e+06        220       2.85e-01    76.4    0.0    0.1   10.8   12.7
+1.113e+06        426       5.08e-01    83.5    0.0    0.1    6.0   10.3
+1.117e+06        298       3.73e-01    79.3    0.0    0.1    8.4   12.2
+1.122e+06        179       2.37e-01    74.4    0.0    0.1   13.3   12.2
+1.127e+06        318       3.95e-01    80.2    0.0    0.1    8.5   11.2
+1.132e+06        514       5.92e-01    86.0    0.0    0.1    5.3    8.7
+1.137e+06        592       6.81e-01    86.8    0.0    0.1    5.0    8.0
+1.141e+06       1034       1.15e+00    89.2    0.0    0.1    2.7    8.0
+1.146e+06        786       9.12e-01    87.6    0.0    0.1    3.4    8.8
+1.151e+06        701       7.95e-01    88.2    0.0    0.1    4.2    7.6
+1.156e+06       1157       1.28e+00    89.9    0.0    0.1    2.5    7.5
+1.161e+06        966       1.08e+00    89.2    0.0    0.1    3.0    7.7
+1.165e+06       1166       1.29e+00    90.0    0.0    0.1    2.6    7.3
+1.170e+06        962       1.10e+00    87.5    0.0    0.1    3.1    9.3
+1.175e+06        869       9.69e-01    88.6    0.0    0.1    3.4    7.9
+1.180e+06        836       9.43e-01    88.3    0.0    0.1    3.5    8.1
+1.184e+06       1151       1.29e+00    90.0    0.0    0.1    2.5    7.3
+1.189e+06       1417       1.57e+00    89.4    0.0    0.1    2.1    8.4
+1.194e+06       1481       1.61e+00    91.2    0.0    0.1    2.1    6.6
+1.199e+06       1012       1.12e+00    89.2    0.0    0.1    3.0    7.7
+1.204e+06       1231       1.35e+00    90.1    0.0    0.1    2.5    7.2
+1.208e+06       1560       1.70e+00    90.8    0.0    0.1    2.0    7.1
+1.213e+06       1214       1.33e+00    90.4    0.0    0.1    2.6    6.9
+1.218e+06       2608       2.84e+00    91.3    0.0    0.1    1.2    7.4
+1.223e+06       1596       1.77e+00    90.5    0.0    0.1    2.0    7.4
+1.228e+06       1002       1.18e+00    90.0    0.0    0.1    3.2    6.6
+1.232e+06        971       1.15e+00    88.8    0.0    0.1    3.7    7.4
+1.237e+06       1943       2.18e+00    90.3    0.0    0.1    1.8    7.7
+1.242e+06        856       9.70e-01    88.3    0.0    0.1    4.3    7.3
+1.247e+06       1608       1.80e+00    90.5    0.0    0.1    2.0    7.4
+1.252e+06       1185       1.33e+00    88.6    0.0    0.1    2.7    8.6
+1.256e+06       1501       1.68e+00    90.2    0.0    0.1    2.2    7.4
+1.261e+06       1354       1.56e+00    89.0    0.0    0.1    2.8    8.1
+1.266e+06         36       9.50e-02    39.7    0.0    0.1   42.1   18.1
+1.271e+06       1201       1.39e+00    88.6    0.0    0.2    2.8    8.5
+1.275e+06       1150       1.35e+00    88.3    0.0    0.1    3.1    8.4
+1.280e+06         30       1.62e-01    19.2    0.0    0.0   71.1    9.7
+1.285e+06        748       9.20e-01    86.5    0.0    0.1    4.4    9.0
+1.290e+06        519       6.20e-01    85.6    0.0    0.1    6.7    7.6
+1.295e+06         21       8.24e-02    26.5    0.0    0.1   56.8   16.7
+1.299e+06        820       9.84e-01    87.5    0.0    0.1    4.8    7.5
+1.304e+06        193       2.61e-01    73.7    0.0    0.1   15.2   11.0
+1.309e+06        114       1.81e-01    64.5    0.0    0.1   23.8   11.6
+1.314e+06         14       7.33e-02    20.1    0.0    0.0   63.2   16.7
+1.319e+06         13       7.36e-02    18.6    0.0    0.0   64.0   17.3
+1.323e+06         13       7.29e-02    20.3    0.0    0.0   63.2   16.4
+1.328e+06         13       6.76e-02    20.2    0.0    0.0   61.0   18.8
+1.333e+06         13       6.62e-02    20.4    0.0    0.0   61.1   18.4
+1.338e+06         13       6.61e-02    20.2    0.0    0.0   61.4   18.4
+1.343e+06         13       6.68e-02    20.1    0.0    0.0   61.5   18.4
+1.347e+06          9       6.54e-02    14.2    0.0    0.0   69.6   16.2
+1.352e+06         13       7.08e-02    19.5    0.0    0.0   63.1   17.3
+1.357e+06         18       7.48e-02    24.7    0.0    0.0   57.1   18.2
+1.362e+06         25       8.29e-02    30.4    0.0    0.0   52.4   17.1
+1.366e+06         19       8.14e-02    24.9    0.0    0.0   58.2   16.8
+1.371e+06         16       7.98e-02    21.4    0.0    0.0   62.1   16.5
+1.376e+06         13       7.25e-02    19.4    0.0    0.0   63.1   17.5
+1.381e+06         13       6.68e-02    20.0    0.0    0.0   62.0   18.0
+1.386e+06         22       8.12e-02    28.0    0.0    0.0   55.2   16.8
+1.390e+06        601       7.24e-01    85.0    0.0    0.1    5.9    9.0
+1.395e+06        126       1.99e-01    64.3    0.0    0.1   24.9   10.7
+1.400e+06        294       3.82e-01    78.5    0.0    0.1   13.1    8.3
+1.405e+06        450       5.69e-01    83.2    0.0    0.1    8.6    8.1
+1.410e+06        240       3.15e-01    78.1    0.0    0.1   13.9    7.9
+1.414e+06        302       3.89e-01    78.8    0.0    0.1   11.5    9.6
+1.419e+06        692       8.60e-01    83.3    0.0    0.1    8.9    7.6
+1.424e+06        643       7.69e-01    84.8    0.0    0.1    6.7    8.4
+1.429e+06         20       8.74e-02    23.4    0.0    0.0   60.1   16.4
+1.434e+06       1097       1.29e+00    88.5    0.0    0.1    4.4    7.0
+1.438e+06         17       7.70e-02    22.2    0.0    0.0   62.3   15.5
+1.443e+06        401       4.80e-01    83.1    0.0    0.1    9.7    7.1
+1.448e+06        646       7.51e-01    86.5    0.0    0.1    5.8    7.6
+1.453e+06        258       3.34e-01    78.4    0.0    0.1   13.4    8.0
+1.457e+06        632       7.45e-01    85.8    0.0    0.1    6.1    8.0
+1.462e+06        431       5.04e-01    84.4    0.0    0.1    8.5    7.0
+1.467e+06         18       7.55e-02    24.6    0.0    0.0   57.7   17.7
+1.472e+06       1323       1.48e+00    89.4    0.0    0.1    3.0    7.4
+1.477e+06       1290       1.43e+00    89.1    0.0    0.1    3.3    7.6
+1.481e+06         16       7.53e-02    21.6    0.0    0.0   61.4   16.9
+1.486e+06       1024       1.17e+00    87.0    0.0    0.1    3.9    9.0
+
+Run finished at  : Sat Nov  8 14:50:43 2025
+Run time : 2 m 7 s
+Finalising PETSc
+	Option datadir = . (Command line)
+	Option settingsfile = BOUT.settings (default)
+Writing options to file ./BOUT.settings
+	Option time_report:show = 0 (default)

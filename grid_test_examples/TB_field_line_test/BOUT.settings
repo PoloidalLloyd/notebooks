@@ -1,0 +1,48 @@
+MXG = 0		# unused value (NOT marked conditionally used), source: examples/tokamak-1D/TB_field_line_test/BOUT.inp
+datadir = examples/tokamak-1D/TB_field_line_test		# type: string, source: Command line
+nout = 1		# unused value (NOT marked conditionally used), source: examples/tokamak-1D/TB_field_line_test/BOUT.inp
+optionfile = BOUT.inp		# type: string, source: default
+settingsfile = BOUT.settings		# type: string, source: default
+timestep = 1		# unused value (NOT marked conditionally used), source: examples/tokamak-1D/TB_field_line_test/BOUT.inp
+
+[electromagnetic:laplacian]
+atol_accept = 1e-06		# unused value (NOT marked conditionally used), type: BoutReal, source: user_default
+maxits = 1000		# unused value (NOT marked conditionally used), type: int, source: user_default
+rtol_accept = 0.01		# unused value (NOT marked conditionally used), type: BoutReal, source: user_default
+type = naulin		# unused value (NOT marked conditionally used), type: string, source: user_default
+
+[fieldline_geometry]
+compute_Btor_from_R = true		# unused value (NOT marked conditionally used), source: examples/tokamak-1D/TB_field_line_test/BOUT.inp
+diagnose = true		# unused value (NOT marked conditionally used), source: examples/tokamak-1D/TB_field_line_test/BOUT.inp
+fieldline_radius = 1.0 + 0.1 * y / pi		# unused value (NOT marked conditionally used), source: examples/tokamak-1D/TB_field_line_test/BOUT.inp
+lambda_int = 0.01 * (1 + 0.5 * y / pi)		# unused value (NOT marked conditionally used), source: examples/tokamak-1D/TB_field_line_test/BOUT.inp
+poloidal_magnetic_field = 0.5 * (1 - 0.3 * y / pi)		# unused value (NOT marked conditionally used), source: examples/tokamak-1D/TB_field_line_test/BOUT.inp
+upstream_toroidal_magnetic_field = 2.0		# unused value (NOT marked conditionally used), source: examples/tokamak-1D/TB_field_line_test/BOUT.inp
+
+[hermes]
+components = fieldline_geometry		# unused value (NOT marked conditionally used), source: examples/tokamak-1D/TB_field_line_test/BOUT.inp
+
+[mesh]
+J = 1		# unused value (NOT marked conditionally used), source: examples/tokamak-1D/TB_field_line_test/BOUT.inp
+calcParallelSlices_on_communicate = false		# unused value (NOT marked conditionally used), type: bool, source: user_default
+dy = (length / ny) * (1 + (1-dymin)*(1-y/pi))		# unused value (NOT marked conditionally used), source: examples/tokamak-1D/TB_field_line_test/BOUT.inp
+dymin = 0.1		# unused value (NOT marked conditionally used), source: examples/tokamak-1D/TB_field_line_test/BOUT.inp
+ixseps1 = -1		# unused value (NOT marked conditionally used), source: examples/tokamak-1D/TB_field_line_test/BOUT.inp
+ixseps2 = -1		# unused value (NOT marked conditionally used), source: examples/tokamak-1D/TB_field_line_test/BOUT.inp
+length = 30		# unused value (NOT marked conditionally used), source: examples/tokamak-1D/TB_field_line_test/BOUT.inp
+length_xpt = 10		# unused value (NOT marked conditionally used), source: examples/tokamak-1D/TB_field_line_test/BOUT.inp
+nx = 1		# unused value (NOT marked conditionally used), source: examples/tokamak-1D/TB_field_line_test/BOUT.inp
+ny = 100		# unused value (NOT marked conditionally used), source: examples/tokamak-1D/TB_field_line_test/BOUT.inp
+nz = 1		# unused value (NOT marked conditionally used), source: examples/tokamak-1D/TB_field_line_test/BOUT.inp
+source = length_xpt / length		# unused value (NOT marked conditionally used), source: examples/tokamak-1D/TB_field_line_test/BOUT.inp
+y_xpt = pi * ( 2 - dymin - sqrt( (2-dymin)^2 - 4*(1-dymin)*source ) ) / (1 - dymin)		# unused value (NOT marked conditionally used), source: examples/tokamak-1D/TB_field_line_test/BOUT.inp
+
+[run]
+revision = ab0c53a3a040e84ed1ab90075010a8b481fe4b6e		# unused value (NOT marked conditionally used), source: Output
+started = Mon Nov  3 11:31:39 2025
+		# unused value (NOT marked conditionally used), source: Output
+version = 5.2.0		# unused value (NOT marked conditionally used), source: Output
+
+[units]
+Tesla = 1.0		# unused value (NOT marked conditionally used), source: examples/tokamak-1D/TB_field_line_test/BOUT.inp
+meters = 1.0		# unused value (NOT marked conditionally used), source: examples/tokamak-1D/TB_field_line_test/BOUT.inp

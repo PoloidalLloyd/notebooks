@@ -1,0 +1,371 @@
+IncIntShear = false		# type: bool, source: default
+MXG = 0		# type: int, doc: Number of guard cells on each side in X, source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+MYG = 2		# type: int, doc: Number of guard cells on each side in Y, source: default
+ZMAX = 1		# type: BoutReal, source: default
+ZMIN = 0		# type: BoutReal, source: default
+append = false		# type: bool, doc: Add new outputs to the end of existing files? If false, overwrite files., source: default
+async_send = false		# type: bool, doc: Whether to use asyncronous MPI sends, source: default
+datadir = examples/tokamak-1D/MAST-U_geometry_test		# type: string, source: Command line
+dump_on_restart = true		# type: bool, doc: Write initial state as time point 0?, source: default
+non_uniform = true		# type: bool, source: default
+nout = 250		# type: int, doc: Number of output steps, source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+optionfile = BOUT.inp		# type: string, source: default
+periodicX = false		# type: bool, doc: Make grid periodic in X?, source: default
+restart = false		# type: bool, doc: Load state from restart files?, source: default
+settingsfile = BOUT.settings		# type: string, source: default
+stopCheck = false		# type: bool, doc: Check if a file exists, and exit if it does., source: default
+stopCheckName = BOUT.stop		# type: string, doc: Name of file whose existence triggers a stop, source: default
+timestep = 95788 * 0.05		# type: BoutReal, doc: Output time step size, source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+twistshift = false		# type: bool, doc: Apply a Twist-Shift boundary using ShiftAngle?, source: default
+wall_limit = -1		# type: BoutReal, doc: Wall time limit in hours. By default (< 0), no limit, source: default
+
+[NVd]
+evolve_bndry = false		# type: bool, source: default
+
+[NVd+]
+evolve_bndry = false		# type: bool, source: default
+function = 0		# type: string, source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+
+[Nd]
+evolve_bndry = false		# type: bool, source: default
+function = 0.001		# type: string, source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+neumann_boundary_average_z = false		# type: bool, doc: Apply neumann boundary with Z average?, source: default
+source = <Field3D>		# type: Field3D, doc: Source term in ddt(Nd). Units [m^-3/s], source: default
+source_only_in_core = false		# type: bool, doc: Zero the source outside the closed field-line region?, source: default
+source_time_dependent = false		# type: bool, doc: Use a time-dependent source?, source: default
+
+[Nd+]
+evolve_bndry = false		# type: bool, source: default
+function = 1		# type: string, source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+neumann_boundary_average_z = false		# type: bool, doc: Apply neumann boundary with Z average?, source: default
+source = <Field3D>		# type: Field3D, doc: Source term in ddt(Nd+). Units [m^-3/s], source: default
+source_only_in_core = false		# type: bool, doc: Zero the source outside the closed field-line region?, source: default
+source_shape = H(mesh:y_xpt - y) * 1e20		# type: Field3D, doc: Source term in ddt(Nd+). Units [m^-3/s], source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+source_time_dependent = false		# type: bool, doc: Use a time-dependent source?, source: default
+
+[Pd]
+evolve_bndry = false		# type: bool, source: default
+function = 0.0001		# type: string, source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+neumann_boundary_average_z = false		# type: bool, doc: Apply neumann boundary with Z average?, source: default
+source = <Field3D>		# type: Field3D, doc: Source term in ddt(Pd). Units [Pa/s], note P = 2/3 E, source: default
+source_only_in_core = false		# type: bool, doc: Zero the source outside the closed field-line region?, source: default
+source_time_dependent = false		# type: bool, doc: Use a time-dependent source?, source: default
+
+[Pd+]
+evolve_bndry = false		# type: bool, source: default
+function = 1		# type: string, source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+neumann_boundary_average_z = false		# type: bool, doc: Apply neumann boundary with Z average?, source: default
+powerflux = 2.5e7		# source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+source = (powerflux*2/3 / (mesh:length_xpt))*H(mesh:y_xpt - y)		# type: Field3D, doc: Source term in ddt(Pd+). Units [Pa/s], note P = 2/3 E, source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+source_only_in_core = false		# type: bool, doc: Zero the source outside the closed field-line region?, source: default
+source_time_dependent = false		# type: bool, doc: Use a time-dependent source?, source: default
+
+[Pe]
+evolve_bndry = false		# type: bool, source: default
+function = `Pd+:function`		# type: string, source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+neumann_boundary_average_z = false		# type: bool, doc: Apply neumann boundary with Z average?, source: default
+source = `Pd+:source`		# type: Field3D, doc: Source term in ddt(Pe). Units [Pa/s], note P = 2/3 E, source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+source_only_in_core = false		# type: bool, doc: Zero the source outside the closed field-line region?, source: default
+source_time_dependent = false		# type: bool, doc: Use a time-dependent source?, source: default
+
+[all]
+bndry_all = dirichlet		# type: string, source: default
+evolve_bndry = false		# type: bool, source: default
+function = 0.0		# type: string, source: default
+scale = 1		# type: BoutReal, source: default
+
+[collisions]
+diagnose = false		# type: bool, doc: Output additional diagnostics?, source: default
+ei_multiplier = 1		# type: BoutReal, doc: User-set arbitrary multiplier on electron-ion collision rate, source: default
+electron_electron = true		# type: bool, doc: Include electron-electron collisions?, source: default
+electron_ion = true		# type: bool, doc: Include electron-ion collisions?, source: default
+electron_neutral = false		# type: bool, doc: Include electron-neutral elastic collisions?, source: default
+frictional_heating = true		# type: bool, doc: Include R dot v heating term as energy source?, source: default
+ion_ion = true		# type: bool, doc: Include ion-ion elastic collisions?, source: default
+ion_neutral = false		# type: bool, doc: Include ion-neutral elastic collisions?, source: default
+neutral_neutral = true		# type: bool, doc: Include neutral-neutral elastic collisions?, source: default
+
+[d]
+AA = 2		# doc: Particle atomic mass. Proton = 1, source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+K_cx_multiplier = 1		# type: BoutReal, doc: Scale the charge exchange rate by this factor, source: default
+K_iz_multiplier = 1		# type: BoutReal, doc: Scale the ionisation rate by this factor, source: default
+K_rec_multiplier = 1		# type: BoutReal, doc: Scale the recombination rate by this factor, source: default
+R_ex_multiplier = 1		# type: BoutReal, doc: Scale the ionisation excitation/de-excitation radiation rate by this factor, source: default
+R_rec_multiplier = 1		# type: BoutReal, doc: Scale the recombination radiation (incl. 3 body) rate by this factor, source: default
+bndry_flux = true		# type: bool, doc: Allow flows through radial boundaries, source: default
+charge = 0		# doc: Particle charge. electrons = -1, source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+density_floor = 1e-5		# type: BoutReal, doc: Minimum density floor, source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+diagnose = true		# type: bool, doc: Output additional diagnostics?, source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+evolve_log = false		# type: bool, doc: Evolve the logarithm of pressure?, source: default
+fix_momentum_boundary_flux = false		# type: bool, doc: Fix Y boundary momentum flux to boundary midpoint value?, source: default
+hyper_z = -1		# type: BoutReal, doc: Hyper-diffusion in Z, source: default
+hyper_z_T = -1		# type: BoutReal, doc: 4th-order dissipation of temperature, source: default
+kappa_coefficient = 2.5		# type: BoutReal, doc: Numerical coefficient in parallel heat conduction. Default is 3.16/sqrt(2) for electrons, 2.5 for neutrals and 3.9 otherwise, source: default
+kappa_limit_alpha = -1		# type: BoutReal, doc: Flux limiter factor. < 0 means no limit. Typical is 0.2 for electrons, 1 for ions., source: default
+low_T_diffuse_perp = false		# type: bool, doc: Add cross-field diffusion at low temperature?, source: default
+low_n_diffuse = false		# type: bool, doc: Parallel diffusion at low density, source: default
+low_n_diffuse_perp = false		# type: bool, doc: Perpendicular diffusion at low density, source: default
+low_p_diffuse_perp = false		# type: bool, doc: Perpendicular diffusion at low pressure, source: default
+noflow_lower_y = true		# type: bool, doc: No-flow boundary on lower y?, source: default
+noflow_upper_y = true		# type: bool, doc: No-flow boundary on upper y?, source: default
+numerical_viscous_heating = false		# type: bool, doc: Include heating due to numerical viscosity?, source: default
+p_div_v = false		# type: bool, doc: Use p*Div(v) form? Default, false => v * Grad(p) form, source: default
+poloidal_flows = true		# type: bool, doc: Include poloidal ExB flow, source: default
+precondition = true		# type: bool, doc: Enable preconditioner? (Note: solver may not use it), source: default
+temperature_floor = 0.1		# type: BoutReal, doc: Low temperature scale for low_T_diffuse_perp, source: default
+thermal_conduction = true		# type: bool, doc: Include parallel heat conduction?, source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+type = (evolve_density, evolve_pressure, evolve_momentum,noflow_boundary)		# source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+
+[d+]
+AA = 2		# doc: Particle atomic mass. Proton = 1, source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+bndry_flux = true		# type: bool, doc: Allow flows through radial boundaries, source: default
+charge = 1		# doc: Particle charge. electrons = -1, source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+density_controller_i = 1e-2		# type: BoutReal, doc: Feedback controller integral (i) parameter, source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+density_controller_p = 5e2		# type: BoutReal, doc: Feedback controller proportional (p) parameter, source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+density_floor = 1e-07		# type: BoutReal, doc: Minimum density floor, source: default
+density_integral_positive = false		# type: bool, doc: Force integral term to be positive?, source: default
+density_source_positive = false		# type: bool, doc: Force source to be positive?, source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+density_upstream = 5e19		# doc: Upstream density (at y=0) [m^-3], source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+diagnose = true		# type: bool, doc: Save additional diagnostics?, source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+evolve_log = false		# type: bool, doc: Evolve the logarithm of pressure?, source: default
+fix_momentum_boundary_flux = false		# type: bool, doc: Fix Y boundary momentum flux to boundary midpoint value?, source: default
+hyper_z = -1		# type: BoutReal, doc: Hyper-diffusion in Z, source: default
+hyper_z_T = -1		# type: BoutReal, doc: 4th-order dissipation of temperature, source: default
+kappa_coefficient = 3.9		# type: BoutReal, doc: Numerical coefficient in parallel heat conduction. Default is 3.16/sqrt(2) for electrons, 2.5 for neutrals and 3.9 otherwise, source: default
+kappa_limit_alpha = -1		# type: BoutReal, doc: Flux limiter factor. < 0 means no limit. Typical is 0.2 for electrons, 1 for ions., source: default
+low_T_diffuse_perp = false		# type: bool, doc: Add cross-field diffusion at low temperature?, source: default
+low_n_diffuse = false		# type: bool, doc: Parallel diffusion at low density, source: default
+low_n_diffuse_perp = false		# type: bool, doc: Perpendicular diffusion at low density, source: default
+low_p_diffuse_perp = false		# type: bool, doc: Perpendicular diffusion at low pressure, source: default
+neutral_pump = false		# type: bool, doc: Neutral pump enabled? Note, need location in grid file, source: default
+noflow_lower_y = true		# type: bool, doc: No-flow boundary on lower y?, source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+noflow_upper_y = false		# type: bool, doc: No-flow boundary on upper y?, source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+numerical_viscous_heating = false		# type: bool, doc: Include heating due to numerical viscosity?, source: default
+p_div_v = false		# type: bool, doc: Use p*Div(v) form? Default, false => v * Grad(p) form, source: default
+pfr_fast_recycle_energy_factor = 0		# type: BoutReal, doc: Fraction of energy retained by fast recycled neutrals at pfr, source: default
+pfr_fast_recycle_fraction = 0		# type: BoutReal, doc: Fraction of ions undergoing fast reflection at pfr, source: default
+pfr_recycle = false		# type: bool, doc: Recycling in the PFR edge?, source: default
+pfr_recycle_energy = 3		# type: BoutReal, doc: Fixed energy of the recycled particles at pfr [eV], source: default
+pfr_recycle_multiplier = 1		# type: BoutReal, doc: Multiply the pfr recycled flux by this factor. Should be >=0 and <= 1, source: default
+poloidal_flows = true		# type: bool, doc: Include poloidal ExB flow, source: default
+precondition = true		# type: bool, doc: Enable preconditioner? (Note: solver may not use it), source: default
+pump_recycle_multiplier = 1		# type: BoutReal, doc: Multiply the pump boundary recycling flux by this factor (like albedo). Should be >=0 and <= 1, source: default
+recycle_as = d		# doc: Name of the species to recycle into, source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+sol_fast_recycle_energy_factor = 0		# type: BoutReal, doc: Fraction of energy retained by fast recycled neutrals at sol, source: default
+sol_fast_recycle_fraction = 0		# type: BoutReal, doc: Fraction of ions undergoing fast reflection at sol, source: default
+sol_recycle = false		# type: bool, doc: Recycling in the SOL edge?, source: default
+sol_recycle_energy = 3		# type: BoutReal, doc: Fixed energy of the recycled particles at sol [eV], source: default
+sol_recycle_multiplier = 1		# type: BoutReal, doc: Multiply the sol recycled flux by this factor. Should be >=0 and <= 1, source: default
+target_fast_recycle_energy_factor = 0		# type: BoutReal, doc: Fraction of energy retained by fast recycled neutrals at target, source: default
+target_fast_recycle_fraction = 0		# type: BoutReal, doc: Fraction of ions undergoing fast reflection at target, source: default
+target_recycle = true		# type: bool, doc: Recycling in the targets?, source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+target_recycle_energy = 3.5		# type: BoutReal, doc: Fixed energy of the recycled particles at target [eV], source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+target_recycle_multiplier = 1		# type: BoutReal, doc: Multiply the target recycled flux by this factor. Should be >=0 and <= 1, source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+temperature_floor = 0.1		# type: BoutReal, doc: Low temperature scale for low_T_diffuse_perp, source: default
+thermal_conduction = true		# type: bool, doc: Include parallel heat conduction?, source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+type = (evolve_density, evolve_pressure, evolve_momentum,noflow_boundary, upstream_density_feedback)		# source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+
+[e]
+AA = 1/1836		# doc: Particle atomic mass. Proton = 1, source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+bndry_flux = true		# type: bool, doc: Allow flows through radial boundaries, source: default
+charge = -1		# doc: Particle charge. electrons = -1, source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+density_floor = 1e-07		# type: BoutReal, doc: Minimum density floor, source: default
+diagnose = true		# type: bool, doc: Save additional output diagnostics, source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+evolve_log = false		# type: bool, doc: Evolve the logarithm of pressure?, source: default
+hyper_z = -1		# type: BoutReal, doc: Hyper-diffusion in Z, source: default
+hyper_z_T = -1		# type: BoutReal, doc: 4th-order dissipation of temperature, source: default
+kappa_coefficient = 2.23446		# type: BoutReal, doc: Numerical coefficient in parallel heat conduction. Default is 3.16/sqrt(2) for electrons, 2.5 for neutrals and 3.9 otherwise, source: default
+kappa_limit_alpha = -1		# type: BoutReal, doc: Flux limiter factor. < 0 means no limit. Typical is 0.2 for electrons, 1 for ions., source: default
+low_T_diffuse_perp = false		# type: bool, doc: Add cross-field diffusion at low temperature?, source: default
+low_n_diffuse_perp = false		# type: bool, doc: Perpendicular diffusion at low density, source: default
+low_p_diffuse_perp = false		# type: bool, doc: Perpendicular diffusion at low pressure, source: default
+noflow_lower_y = true		# type: bool, doc: No-flow boundary on lower y?, source: default
+noflow_upper_y = false		# type: bool, doc: No-flow boundary on upper y?, source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+numerical_viscous_heating = false		# type: bool, doc: Include heating due to numerical viscosity?, source: default
+p_div_v = false		# type: bool, doc: Use p*Div(v) form? Default, false => v * Grad(p) form, source: default
+poloidal_flows = true		# type: bool, doc: Include poloidal ExB flow, source: default
+precondition = true		# type: bool, doc: Enable preconditioner? (Note: solver may not use it), source: default
+temperature_floor = 0.1		# type: BoutReal, doc: Low temperature scale for low_T_diffuse_perp, source: default
+thermal_conduction = true		# type: bool, doc: Include parallel heat conduction?, source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+type = quasineutral, evolve_pressure, zero_current, noflow_boundary		# source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+
+[electromagnetic:laplacian]
+atol_accept = 1e-06		# unused value (NOT marked conditionally used), type: BoutReal, source: user_default
+maxits = 1000		# unused value (NOT marked conditionally used), type: int, source: user_default
+rtol_accept = 0.01		# unused value (NOT marked conditionally used), type: BoutReal, source: user_default
+type = naulin		# unused value (NOT marked conditionally used), type: string, source: user_default
+
+[electron_force_balance]
+diagnose = false		# type: bool, doc: Save additional output diagnostics, source: default
+
+[fieldline_geometry]
+S = 0		# unused value (NOT marked conditionally used), source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+compute_Btor_from_R = True		# type: bool, doc: Compute Btor = B_tor,upstream * R_upstream / R if true, or else use a function for toroidal_magnetic_field, source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+diagnose = true		# type: bool, doc: Output additional diagnostics?, source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+fieldline_pitch_angle = Bpol_upstream / upstream_magnetic_field_strength		# unused value (NOT marked conditionally used), source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+fieldline_radius = 0.5 + where({lpar} < mesh:length_xpt, 1 - cos(lpar_X1 * pi)/2, 1 - cos(lpar_X2 * pi)/2)		# doc: Function for the fieldline major radius R [m]., source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+lambda_int = 1e-3		# doc: Function for the integral heat flux width lambda_int = lambda_q + 1.64 S [m]., source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+lambda_q = 1e-3		# unused value (NOT marked conditionally used), source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+lpar_X1 = clamp( (mesh:length_xpt - {lpar}) / mesh:length_xpt, 0, 1)		# source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+lpar_X2 = clamp( ({lpar} - mesh:length_xpt) / (mesh:length - mesh:length_xpt), 0, 1)		# source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+magnetic_field_strength = upstream_magnetic_field_strength		# unused value (NOT marked conditionally used), source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+poloidal_magnetic_field = 1.0		# doc: Function for the poloidal magnetic field strength Bpol [T]., source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+upstream_magnetic_field_stregnth = sqrt(Btor_upstream^2 + Bpol_upstream^2)		# unused value (NOT marked conditionally used), source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+upstream_toroidal_magnetic_field = 3.0		# doc: Upstream toroidal magnetic field strength Btor,u [T], source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+
+[hermes]
+Bnorm = 1		# type: BoutReal, doc: Reference magnetic field [T], source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+Nnorm = 1e19		# type: BoutReal, doc: Reference density [m^-3], source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+Tnorm = 100		# type: BoutReal, doc: Reference temperature [eV], source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+components = (d+, d, e,sheath_boundary_simple, collisions, recycling, reactions,electron_force_balance, neutral_parallel_diffusion, fieldline_geometry)		# doc: Components in order of execution, source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+normalise_metric = true		# type: bool, doc: Normalise input metric tensor? (assumes input is in SI units), source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+recalculate_metric = false		# type: bool, doc: Load Rxy, Bpxy etc. to calculate an orthogonal metric?, source: default
+restarting = false		# unused value (marked conditionally used)
+revision = 694bd61e20829a0c923f52ae5469c9fd28515fbf		# unused value (marked conditionally used)
+slope_limiter = MinMod		# unused value (marked conditionally used)
+
+[input]
+error_on_unused_options = false		# type: bool, doc: Error if there are any unused options before starting the main simulation, source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+max_recursion_depth = 0		# type: string, doc: Maximum recursion depth allowed in expressions. 0 = no recursion; -1 = unlimited, source: default
+transform_from_field_aligned = true		# type: string, source: default
+validate = false		# type: bool, doc: Check for unused options and stop, source: default
+
+[mesh]
+J = 1		# source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+calcParallelSlices_on_communicate = false		# type: bool, doc: Calculate parallel slices on all communicated fields, source: user_default
+dy = (length / ny) * (1 + (1-dymin)*(1-y/pi))		# source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+dymin = 0.1		# source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+extrapolate_x = false		# type: bool, source: default
+extrapolate_y = false		# type: bool, source: default
+include_corner_cells = true		# type: bool, doc: Communicate corner guard and boundary cells. Can be set to false if you are sure that you will not need these cells, for mixed derivatives D2DXDY (or anything else), for example if your grid has orthogonal x- and y-directions. This might slightly reduce communication time., source: default
+ixseps1 = -1		# source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+ixseps2 = -1		# source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+length = 30		# source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+length_xpt = 10		# source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+maxregionblocksize = 64		# type: int, doc: (Advanced) Sets the maximum size of continguous blocks when creating Regions, source: default
+nx = 1		# source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+ny = 400		# source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+nz = 1		# source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+source = length_xpt / length		# source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+staggergrids = false		# type: bool, doc: Enable staggered grids. By default, all variables are cell centred, source: default
+symmetricGlobalX = true		# type: bool, source: default
+symmetricGlobalY = true		# type: bool, source: default
+type = bout		# type: string, source: default
+y_xpt = pi * ( 2 - dymin - sqrt( (2-dymin)^2 - 4*(1-dymin)*source ) ) / (1 - dymin)		# source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+
+[mesh:ddz]
+fft_filter = 0		# type: BoutReal, source: default
+
+[mesh:paralleltransform]
+type = identity		# type: string, source: default
+
+[neutral_parallel_diffusion]
+diagnose = false		# type: bool, doc: Output additional diagnostics?, source: default
+dneut = 10		# doc: cross-field diffusion projection (B  / Bpol)^2, source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+equation_fix = true		# type: bool, doc: Fix correcting pressure advection and conductivity factors?, source: default
+thermal_conducton = true		# type: bool, doc: Enable conduction?, source: default
+viscosity = true		# type: bool, doc: Enable viscosity?, source: default
+
+[output]
+append = false		# type: bool, doc: Append to existing file?, source: user_default
+enabled = true		# type: bool, doc: Write output files, source: default
+path = examples/tokamak-1D/MAST-U_geometry_test		# type: string, source: user_default
+prefix = BOUT.dmp		# type: string, source: user_default
+type = netcdf		# type: string, source: default
+
+[reactions]
+diagnose = true		# type: bool, doc: Output additional diagnostics?, source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+no_neutral_cx_mom_gain = false		# type: bool, doc: If true, ion momentum in CX is still lost but not given to the neutrals, source: default
+type = (d + e -> d+ + 2e,d+ + e -> d,d + d+ -> d+ + d,)		# source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+
+[recycling]
+density_floor = 1e-07		# type: BoutReal, doc: Minimum density floor, source: default
+species = d+		# doc: Comma-separated list of species to recycle, source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+
+[restart_files]
+append = false		# type: bool, doc: Append to existing file?, source: user_default
+enabled = true		# type: bool, doc: Write restart files, source: default
+path = examples/tokamak-1D/MAST-U_geometry_test		# type: string, source: user_default
+prefix = BOUT.restart		# type: string, source: user_default
+singleWriteFile = true		# unused value (NOT marked conditionally used), type: bool, source: user_default
+type = netcdf		# type: string, source: default
+
+[run]
+finished = Sun Nov  2 17:30:00 2025
+		# unused value (NOT marked conditionally used), source: Output
+revision = ab0c53a3a040e84ed1ab90075010a8b481fe4b6e		# unused value (NOT marked conditionally used), source: Output
+run_id = 39b1071e-debf-4328-9da0-88e46ecc28d0		# unused value (NOT marked conditionally used), source: Output
+run_restart_from = zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz		# unused value (NOT marked conditionally used), source: Output
+started = Sun Nov  2 17:28:30 2025
+		# unused value (NOT marked conditionally used), source: Output
+version = 5.2.0		# unused value (NOT marked conditionally used), source: Output
+
+[sheath_boundary_simple]
+always_set_phi = false		# type: bool, doc: Always set phi field? Default is to only modify if already set, source: default
+density_boundary_mode = 1		# type: BoutReal, doc: BC mode: 0=LimitFree, 1=ExponentialFree, 2=LinearFree, source: default
+diagnose = false		# type: bool, doc: Save additional output diagnostics, source: default
+gamma_e = 3.5		# type: BoutReal, doc: Electron sheath heat transmission coefficient, source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+gamma_i = 3.5		# type: BoutReal, doc: Ion sheath heat transmission coefficient, source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+lower_y = false		# type: bool, doc: Boundary on lower y?, source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+no_flow = false		# type: bool, doc: Set zero particle flow, keeping energy flow, source: default
+pressure_boundary_mode = 1		# type: BoutReal, doc: BC mode: 0=LimitFree, 1=ExponentialFree, 2=LinearFree, source: default
+secondary_electron_coef = 0		# type: BoutReal, doc: Effective secondary electron emission coefficient, source: default
+sheath_ion_polytropic = 1		# type: BoutReal, doc: Ion polytropic coefficient in Bohm sound speed, source: default
+sin_alpha = 1		# type: BoutReal, doc: Sin of the angle between magnetic field line and wall surface. Should be between 0 and 1, source: default
+temperature_boundary_mode = 1		# type: BoutReal, doc: BC mode: 0=LimitFree, 1=ExponentialFree, 2=LinearFree, source: default
+upper_y = true		# type: bool, doc: Boundary on upper y?, source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+wall_potential = <Field3D>		# type: Field3D, doc: Voltage of the wall [Volts], source: default
+
+[solver]
+atol = 1e-7		# type: BoutReal, doc: Absolute tolerance in SNES solve, source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+diagnose = false		# type: bool, doc: Print additional diagnostics, source: default
+diagnose_failures = false		# type: bool, doc: Print more diagnostics when SNES fails, source: default
+dt_min_reset = 1e-06		# type: BoutReal, doc: If dt falls below this, reset to starting dt, source: default
+equation_form = rearranged_backward_euler		# type: 20BoutSnesEquationForm, doc: Form of equation to solve: rearranged_backward_euler (default); pseudo_transient; backward_euler; direct_newton, source: default
+force_symmetric_coloring = false		# type: bool, doc: Modifies coloring matrix to force it to be symmetric, source: default
+is_nonsplit_model_diffusive = true		# type: bool, doc: If not a split operator, treat RHS as diffusive?, source: default
+ksp_type = gmres		# type: string, doc: Linear solver type. By default let PETSc decide (gmres), source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+kspsetinitialguessnonzero = false		# type: bool, doc: Set the initial guess to be non-zero, source: default
+lag_jacobian = 500		# type: int, doc: Re-use the Jacobian this number of SNES iterations, source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+line_search_type = default		# type: string, doc: Line search type: basic, bt, l2, cp, nleqerr, source: default
+lower_its = 5		# type: int, doc: Iterations below which the next timestep is increased, source: default
+matrix_free = false		# type: bool, doc: Use matrix free Jacobian?, source: default
+matrix_free_operator = true		# type: bool, doc: Use matrix free Jacobian-vector operator?, source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+max_nonlinear_iterations = 10		# type: int, doc: Maximum number of nonlinear iterations per SNES solve, source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+max_timestep = 1e+37		# type: BoutReal, doc: Maximum timestep, source: default
+maxl = 20		# type: int, doc: Maximum number of linear iterations, source: default
+mms = false		# type: bool, doc: Use Method of Manufactured Solutions to track error scaling, source: default
+mms_initialise = false		# type: bool, doc: Use MMS solution for field initial conditions, source: default
+monitor_timestep = false		# type: bool, doc: Call monitors on internal timesteps, source: default
+nout = 250		# type: int, doc: Number of output steps. Overrides global setting., source: default
+output_step = 4789.4		# type: BoutReal, doc: Output time step size. Overrides global 'timestep' setting., source: default
+pc_hypre_type = euclid		# type: string, doc: hypre preconditioner type: euclid, pilut, parasails, boomeramg, ams, ads, source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+pc_type = hypre		# type: string, doc: Preconditioner type. By default lets PETSc decide (ilu or bjacobi), source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+predictor = true		# type: bool, doc: Use linear predictor?, source: default
+prune_abstol = 1e-16		# type: BoutReal, doc: Prune values with absolute values smaller than this, source: default
+prune_fraction = 0.2		# type: BoutReal, doc: Prune if fraction of small elements is larger than this, source: default
+prune_jacobian = false		# type: bool, doc: Remove small elements in the Jacobian?, source: default
+rtol = 1e-5		# type: BoutReal, doc: Relative tolerance in SNES solve, source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+save_repeat_run_id = false		# type: bool, doc: Write run_id and run_restart_from at every output timestep, to make it easier to concatenate output data sets in time, source: default
+scale_rhs = false		# type: bool, doc: Scale time derivatives (Jacobian row scaling)?, source: default
+scale_vars = false		# type: bool, doc: Scale variables (Jacobian column scaling)?, source: default
+snes_type = newtonls		# type: string, doc: PETSc nonlinear solver method to use, source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+stol = 1e-08		# type: BoutReal, doc: Convergence tolerance in terms of the norm of the change in the solution between steps, source: default
+timestep = 1		# type: BoutReal, doc: Initial backward Euler timestep, source: default
+timestep_factor_on_failure = 0.5		# type: BoutReal, doc: Multiply timestep on convergence failure, source: default
+timestep_factor_on_lower_its = 1.4		# type: BoutReal, doc: Multiply timestep if iterations are below lower_its, source: default
+timestep_factor_on_upper_its = 0.9		# type: BoutReal, doc: Multiply timestep if iterations exceed upper_its, source: default
+type = beuler		# type: string, source: examples/tokamak-1D/MAST-U_geometry_test/BOUT.inp
+upper_its = 8		# type: int, doc: Iterations above which the next timestep is reduced, source: default
+use_coloring = true		# type: bool, doc: Use matrix coloring to calculate Jacobian?, source: default
+use_precon = false		# type: bool, doc: Use user-supplied preconditioner?, source: default
+
+[solver:stencil]
+cross = 0		# type: int, doc: Extent of stencil (cross), source: default
+square = 0		# type: int, doc: Extent of stencil (square), source: default
+taxi = 0		# type: int, doc: Extent of stencil (taxi-cab norm), source: default
+Tesla = 1		# unused value (marked conditionally used)
+eV = 100
+inv_meters_cubed = 1e+19
+meters = 0.00102175
+seconds = 1.04397e-08

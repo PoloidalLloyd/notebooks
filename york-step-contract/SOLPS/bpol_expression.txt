@@ -1,0 +1,19 @@
+[fieldline_geometry]
+# Polynomial fit for Bpol
+# R² = 0.729313, RMSE = 3.813048e-02
+# Degree: 6
+
+# Direct expression (copy this line):
+Bpol = 8.732939393763e+01*((lpar - 0.000000)/27.520702)^6 - 2.641577313011e+02*((lpar - 0.000000)/27.520702)^5 + 2.967326085638e+02*((lpar - 0.000000)/27.520702)^4 - 1.528651125020e+02*((lpar - 0.000000)/27.520702)^3 + 3.699992375519e+01*((lpar - 0.000000)/27.520702)^2 - 4.274915416667e+00*((lpar - 0.000000)/27.520702) + 2.817419518792e-01
+
+# Or use coefficients:
+lpar_min = 0.000000
+lpar_range = 27.520702
+c0 = 8.732939393763e+01
+c1 = -2.641577313011e+02
+c2 = 2.967326085638e+02
+c3 = -1.528651125020e+02
+c4 = 3.699992375519e+01
+c5 = -4.274915416667e+00
+c6 = 2.817419518792e-01
+Bpol = c0*((lpar - lpar_min)/lpar_range)^6 + c1*((lpar - lpar_min)/lpar_range)^5 + c2*((lpar - lpar_min)/lpar_range)^4 + c3*((lpar - lpar_min)/lpar_range)^3 + c4*((lpar - lpar_min)/lpar_range)^2 + c5*((lpar - lpar_min)/lpar_range) + c6

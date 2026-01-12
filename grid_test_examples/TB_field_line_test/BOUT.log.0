@@ -1,0 +1,201 @@
+BOUT++ version 5.2.0
+Revision: ab0c53a3a040e84ed1ab90075010a8b481fe4b6e
+Code compiled on Oct 28 2025 at 13:37:44
+
+B.Dudson (University of York), M.Umansky (LLNL) 2007
+Based on BOUT by Xueqiao Xu, 1999
+
+Processor number: 0 of 1
+
+pid: 574
+
+Compile-time options:
+	Runtime error checking enabled, level 2
+	Parallel NetCDF support disabled
+	Metrics mode is 2D
+	FFT support enabled
+	Natural language support enabled
+	LAPACK support disabled
+	NetCDF support enabled (NetCDF4)
+	ADIOS2 support disabled
+	PETSc support enabled
+	Pretty function name support enabled
+	PVODE support enabled
+	Score-P support disabled
+	SLEPc support disabled
+	SUNDIALS support enabled
+	Backtrace in exceptions disabled
+	Colour in logs enabled
+	OpenMP parallelisation disabled, using 1 threads
+	Extra debug output disabled
+	Floating-point exceptions disabled
+	Signal handling support enabled
+	Field name tracking enabled
+	Message stack enabled
+	Compiled with flags : "-Wall -Wextra -Wnull-dereference -Wno-cast-function-type -DCHECK=2 -O2 -g -DNDEBUG"
+	Command line options for this run : ./hermes-3 -d examples/tokamak-1D/TB_field_line_test 
+Reading options file examples/tokamak-1D/TB_field_line_test/BOUT.inp
+	Option datadir = examples/tokamak-1D/TB_field_line_test (Command line)
+	Option optionfile = BOUT.inp (default)
+	Option settingsfile = BOUT.settings (default)
+Writing options to file examples/tokamak-1D/TB_field_line_test/BOUT.settings
+	Option mesh:type = bout (default)
+
+Getting grid data from options
+	Option mesh:calcParallelSlices_on_communicate = false (user_default)
+	Option mesh:maxregionblocksize = 64 (default)
+	Option mesh:staggergrids = 0 (default)
+	Option mesh:include_corner_cells = 1 (default)
+	Option mesh:ddz:fft_filter = 0 (default)
+	Option mesh:symmetricGlobalX = 1 (default)
+	Option optionfile = BOUT.inp (default)
+WARNING: The default of this option has changed in release 4.1.
+If you want the old setting, you have to specify mesh:symmetricGlobalY=false in BOUT.inp
+	Option mesh:symmetricGlobalY = 1 (default)
+Loading mesh
+	Option input:transform_from_field_aligned = true (default)
+	Option input:max_recursion_depth = 0 (default)
+	Option mesh:nx = 1 (examples/tokamak-1D/TB_field_line_test/BOUT.inp)
+	Option mesh:ny = 100 (examples/tokamak-1D/TB_field_line_test/BOUT.inp)
+	Option mesh:nz = 1 (examples/tokamak-1D/TB_field_line_test/BOUT.inp)
+	Read nz from input grid file
+	Grid size: 1 x 100 x 1
+Variable 'MXG' not in mesh options. Setting to 0
+	Option MXG = 0 (examples/tokamak-1D/TB_field_line_test/BOUT.inp)
+Variable 'MYG' not in mesh options. Setting to 0
+	Option MYG = 2 (default)
+	Guard cells (x,y,z): 0, 2, 0
+	Option mesh:ixseps1 = -1 (examples/tokamak-1D/TB_field_line_test/BOUT.inp)
+	Option mesh:ixseps2 = -1 (examples/tokamak-1D/TB_field_line_test/BOUT.inp)
+Variable 'jyseps1_1' not in mesh options. Setting to -1
+Variable 'jyseps1_2' not in mesh options. Setting to 50
+Variable 'jyseps2_1' not in mesh options. Setting to 50
+Variable 'jyseps2_2' not in mesh options. Setting to 99
+Variable 'ny_inner' not in mesh options. Setting to 50
+Finding value for NXPE (ideal = 0.100000)
+	Candidate value: 1
+	 -> Good value
+	Domain split (NXPE=1, NYPE=1) into domains (localNx=1, localNy=100)
+	Option IncIntShear = 0 (default)
+	Option periodicX = 0 (default)
+	Option async_send = 0 (default)
+	Option ZMIN = 0 (default)
+	Option ZMAX = 1 (default)
+	EQUILIBRIUM IS SINGLE NULL (SND) 
+	MYPE_IN_CORE = false
+	DXS = 0, DIN = -1. DOUT = -1
+	UXS = 0, UIN = -1. UOUT = -1
+	XIN = -1, XOUT = -1
+	Twist-shift: 
+	Option twistshift = 0 (default)
+Variable 'ShiftAngle' not in mesh options. Setting to empty vector
+Possible boundary regions are: lower_target, upper_target, Boundary regions in this processor: upper_target, lower_target, 
+Constructing default regions
+	Boundary region inner X
+	Boundary region outer X
+	Option mesh:extrapolate_x = 0 (default)
+	Option mesh:extrapolate_y = 0 (default)
+Variable 'dx' not in mesh options. Setting to 1.000000e+00
+	Option mesh:dy = (length / ny) * (1 + (1-dymin)*(1-y/pi)) (examples/tokamak-1D/TB_field_line_test/BOUT.inp)
+	Option mesh:length = 30 (examples/tokamak-1D/TB_field_line_test/BOUT.inp)
+	Option mesh:ny = 100 (examples/tokamak-1D/TB_field_line_test/BOUT.inp)
+	Option mesh:dymin = 0.1 (examples/tokamak-1D/TB_field_line_test/BOUT.inp)
+	Option ZMIN = 0 (default)
+	Option ZMAX = 1 (default)
+Variable 'dz' not in mesh options. Setting to 6.283185e+00
+	Option mesh:paralleltransform:type = identity (default)
+Variable 'g11' not in mesh options. Setting to 1.000000e+00
+Variable 'g22' not in mesh options. Setting to 1.000000e+00
+Variable 'g33' not in mesh options. Setting to 1.000000e+00
+Variable 'g12' not in mesh options. Setting to 0.000000e+00
+Variable 'g13' not in mesh options. Setting to 0.000000e+00
+Variable 'g23' not in mesh options. Setting to 0.000000e+00
+	Local maximum error in diagonal inversion is 0.000000e+00
+	Local maximum error in off-diagonal inversion is 0.000000e+00
+	Option mesh:J = 1 (examples/tokamak-1D/TB_field_line_test/BOUT.inp)
+	Maximum difference in J is 0.000000e+00
+Variable 'Bxy' not in mesh options. Setting to 0.000000e+00
+	WARNING: Magnitude of B field 'Bxy' not found. Calculating from metric tensor
+Variable 'ShiftTorsion' not in mesh options. Setting to 0.000000e+00
+	WARNING: No Torsion specified for zShift. Derivatives may not be correct
+Calculating differential geometry terms
+	Communicating connection terms
+	Option non_uniform = 1 (default)
+Variable 'd2x' not in mesh options. Setting to 0.000000e+00
+	WARNING: differencing quantity 'd2x' not found. Calculating from dx
+Variable 'd2y' not in mesh options. Setting to 0.000000e+00
+	WARNING: differencing quantity 'd2y' not found. Calculating from dy
+	done
+	Option output:enabled = 1 (default)
+	Option restart_files:enabled = 1 (default)
+	Option datadir = examples/tokamak-1D/TB_field_line_test (Command line)
+	Option append = 0 (default)
+	Option output:type = netcdf (default)
+	Option output:path = examples/tokamak-1D/TB_field_line_test (user_default)
+	Option output:prefix = BOUT.dmp (user_default)
+	Option output:append = false (user_default)
+	Option datadir = examples/tokamak-1D/TB_field_line_test (Command line)
+	Option restart_files:type = netcdf (default)
+	Option restart_files:path = examples/tokamak-1D/TB_field_line_test (user_default)
+	Option restart_files:prefix = BOUT.restart (user_default)
+	Option restart_files:append = false (user_default)
+	Option solver:type = cvode (default)
+	Option solver:monitor_timestep = 0 (default)
+	Option solver:save_repeat_run_id = 0 (default)
+	Option solver:is_nonsplit_model_diffusive = 1 (default)
+	Option solver:mms = 0 (default)
+	Option solver:mms_initialise = 0 (default)
+	Option nout = 1 (examples/tokamak-1D/TB_field_line_test/BOUT.inp)
+	Option solver:nout = 1 (default)
+	Option timestep = 1 (examples/tokamak-1D/TB_field_line_test/BOUT.inp)
+	Option solver:output_step = 1 (default)
+Setting `nout` is deprecated. Please set `solver:nout` instead.Setting `timestep` is deprecated. Please set `solver:output_step` instead.	Option solver:diagnose = 0 (default)
+	Option solver:adams_moulton = 0 (default)
+	Option solver:func_iter = 0 (default)
+	Option solver:cvode_max_order = -1 (default)
+	Option solver:cvode_stability_limit_detection = 0 (default)
+	Option solver:atol = 1e-12 (default)
+	Option solver:rtol = 1e-05 (default)
+	Option solver:use_vector_abstol = 0 (default)
+	Option solver:mxstep = 500 (default)
+	Option solver:max_timestep = 0 (default)
+	Option solver:min_timestep = 0 (default)
+	Option solver:start_timestep = 0 (default)
+	Option solver:mxorder = -1 (default)
+	Option solver:max_nonlinear_iterations = 3 (default)
+	Option solver:apply_positivity_constraints = 0 (default)
+	Option solver:maxl = 5 (default)
+	Option solver:use_precon = 0 (default)
+	Option solver:rightprec = 0 (default)
+	Option solver:use_jacobian = 0 (default)
+	Option solver:cvode_nonlinear_convergence_coef = 0.1 (default)
+	Option solver:cvode_linear_convergence_coef = 0.05 (default)
+Setting up output (experimental output) file
+	Option restart = 0 (default)
+
+Git Version of Hermes: 694bd61e20829a0c923f52ae5469c9fd28515fbf
+Slope limiter: MinMod
+	Option hermes:Tnorm = 100 (default)
+	Option hermes:Nnorm = 1e+19 (default)
+	Option hermes:Bnorm = 1 (default)
+	Option hermes:recalculate_metric = 0 (default)
+	Option hermes:normalise_metric = 1 (default)
+Calculating differential geometry terms
+	Communicating connection terms
+	Option non_uniform = true (default)
+Variable 'd2x' not in mesh options. Setting to 0.000000e+00
+	WARNING: differencing quantity 'd2x' not found. Calculating from dx
+Variable 'd2y' not in mesh options. Setting to 0.000000e+00
+	WARNING: differencing quantity 'd2y' not found. Calculating from dy
+	Option hermes:components = fieldline_geometry (examples/tokamak-1D/TB_field_line_test/BOUT.inp)
+	Option fieldline_geometry:lambda_int = 0.01 * (1 + 0.5 * y / pi) (examples/tokamak-1D/TB_field_line_test/BOUT.inp)
+	Option fieldline_geometry:fieldline_radius = 1.0 + 0.1 * y / pi (examples/tokamak-1D/TB_field_line_test/BOUT.inp)
+	Option fieldline_geometry:poloidal_magnetic_field = 0.5 * (1 - 0.3 * y / pi) (examples/tokamak-1D/TB_field_line_test/BOUT.inp)
+Error encountered: Generator context doesn't contain 'y'Stacktrace not enabled.
+====== Back trace ======
+ -> Creating components on line 278 of '/Users/lloyd/Documents/hermes_dir/hermes-3/hermes-3.cxx'
+ -> Loading metric tensor on line 209 of '/Users/lloyd/Documents/hermes_dir/hermes-3/hermes-3.cxx'
+
+====== Exception thrown ======
+Generator context doesn't contain 'y'
+

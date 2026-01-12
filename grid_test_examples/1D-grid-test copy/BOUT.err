@@ -1,0 +1,1214 @@
+BOUT++ version 5.2.0
+Revision: ab0c53a3a040e84ed1ab90075010a8b481fe4b6e
+Code compiled on Oct 28 2025 at 13:37:44
+
+B.Dudson (University of York), M.Umansky (LLNL) 2007
+Based on BOUT by Xueqiao Xu, 1999
+
+Processor number: 0 of 1
+
+pid: 68885
+
+Compile-time options:
+	Runtime error checking enabled, level 2
+	Parallel NetCDF support disabled
+	Metrics mode is 2D
+	FFT support enabled
+	Natural language support enabled
+	LAPACK support disabled
+	NetCDF support enabled (NetCDF4)
+	ADIOS2 support disabled
+	PETSc support enabled
+	Pretty function name support enabled
+	PVODE support enabled
+	Score-P support disabled
+	SLEPc support disabled
+	SUNDIALS support enabled
+	Backtrace in exceptions disabled
+	Colour in logs enabled
+	OpenMP parallelisation disabled, using 1 threads
+	Extra debug output disabled
+	Floating-point exceptions disabled
+	Signal handling support enabled
+	Field name tracking enabled
+	Message stack enabled
+	Compiled with flags : "-Wall -Wextra -Wnull-dereference -Wno-cast-function-type -DCHECK=2 -O2 -g -DNDEBUG"
+	Command line options for this run : ../../../hermes-3 -d . 
+Reading options file ./BOUT.inp
+	Option datadir = . (Command line)
+	Option optionfile = BOUT.inp (default)
+	Option settingsfile = BOUT.settings (default)
+Writing options to file ./BOUT.settings
+	Option mesh:type = bout (default)
+	Option grid =  (default)
+	Option mesh:file = grid_1d_minimal.nc (./BOUT.inp)
+
+Getting grid data from file grid_1d_minimal.nc
+	Option format =  (default)
+	Option mesh:format =  (default)
+	Option file = grid_1d_minimal.nc ()
+	Option append = 0 (default)
+	Option y_boundary_guards = 0 (default)
+	Option ny_inner = 0 (default)
+	Option mesh:calcParallelSlices_on_communicate = false (user_default)
+	Option mesh:maxregionblocksize = 64 (default)
+	Option mesh:staggergrids = 0 (default)
+	Option mesh:include_corner_cells = 1 (default)
+	Option mesh:ddz:fft_filter = 0 (default)
+	Option mesh:symmetricGlobalX = 1 (default)
+	Option optionfile = BOUT.inp (default)
+WARNING: The default of this option has changed in release 4.1.
+If you want the old setting, you have to specify mesh:symmetricGlobalY=false in BOUT.inp
+	Option mesh:symmetricGlobalY = 1 (default)
+Loading mesh
+	Option nx = 1 (grid_1d_minimal.nc)
+	Option ny = 400 (grid_1d_minimal.nc)
+	Option nz = 1 (grid_1d_minimal.nc)
+	Read nz from input grid file
+	Grid size: 1 x 400 x 1
+	Option MXG = 0 ()
+	Option input:transform_from_field_aligned = true (default)
+	Option input:max_recursion_depth = 0 (default)
+	Option MXG = 0 (./BOUT.inp)
+	Option MYG = 0 ()
+	Option MYG = 2 (default)
+	Guard cells (x,y,z): 0, 2, 0
+	Option ixseps1 = 1 ()
+	Option ixseps2 = 1 ()
+	Option jyseps1_1 = -1 ()
+	Option jyseps1_2 = 200 ()
+	Option jyseps2_1 = 200 ()
+	Option jyseps2_2 = 399 ()
+	Option ny_inner = 200 ()
+Finding value for NXPE (ideal = 0.050000)
+	Candidate value: 1
+	 -> Good value
+	Domain split (NXPE=1, NYPE=1) into domains (localNx=1, localNy=400)
+	Option IncIntShear = 0 (default)
+	Option periodicX = 0 (default)
+	Option async_send = 0 (default)
+	Option ZMIN = 0 (default)
+	Option ZMAX = 1 (default)
+	EQUILIBRIUM IS SINGLE NULL (SND) 
+Connection between top of Y processor 0 and bottom of 0 in range 0 <= x < 1
+=> This processor sending in up
+=> This processor sending in down
+WARNING adding connection: poloidal index -1 out of range
+	MYPE_IN_CORE = true
+	DXS = 1, DIN = 0. DOUT = -1
+	UXS = 1, UIN = 0. UOUT = -1
+	XIN = -1, XOUT = -1
+	Twist-shift: DI UI 
+	Option twistshift = 0 (default)
+No boundary regions; domain is periodic
+No boundary regions in this processor
+Constructing default regions
+	Boundary region inner X
+	Boundary region outer X
+	Option mesh:extrapolate_x = 1 (default)
+	Option mesh:extrapolate_y = 1 (default)
+WARNING: extrapolating input mesh quantities into x-boundary cells. Set option extrapolate_x=false to disable this.
+WARNING: extrapolating input mesh quantities into y-boundary cells. Set option extrapolate_y=false to disable this.
+	Option dx = Matrix<BoutReal> (grid_1d_minimal.nc)
+	Option dy = Matrix<BoutReal> (grid_1d_minimal.nc)
+	Option ZMIN = 0 (default)
+	Option ZMAX = 1 (default)
+	Option dz = 6.283185307179586 (grid_1d_minimal.nc)
+	Option mesh:paralleltransform:type = identity (default)
+	Option parallel_transform =  (default)
+	WARNING: Could not read 'g11' from grid. Setting to 1.000000e+00
+	WARNING: Could not read 'g22' from grid. Setting to 1.000000e+00
+	WARNING: Could not read 'g33' from grid. Setting to 1.000000e+00
+	WARNING: Could not read 'g12' from grid. Setting to 0.000000e+00
+	WARNING: Could not read 'g13' from grid. Setting to 0.000000e+00
+	WARNING: Could not read 'g23' from grid. Setting to 0.000000e+00
+	Local maximum error in diagonal inversion is 0.000000e+00
+	Local maximum error in off-diagonal inversion is 0.000000e+00
+	Option J = Matrix<BoutReal> (grid_1d_minimal.nc)
+	Maximum difference in J is 0.000000e+00
+	WARNING: Could not read 'Bxy' from grid. Setting to 0.000000e+00
+	WARNING: Magnitude of B field 'Bxy' not found. Calculating from metric tensor
+	WARNING: Could not read 'ShiftTorsion' from grid. Setting to 0.000000e+00
+	WARNING: No Torsion specified for zShift. Derivatives may not be correct
+Calculating differential geometry terms
+	Communicating connection terms
+	Option non_uniform = 1 (default)
+	WARNING: Could not read 'd2x' from grid. Setting to 0.000000e+00
+	WARNING: differencing quantity 'd2x' not found. Calculating from dx
+	WARNING: Could not read 'd2y' from grid. Setting to 0.000000e+00
+	WARNING: differencing quantity 'd2y' not found. Calculating from dy
+	done
+	Option output:enabled = 1 (default)
+	Option restart_files:enabled = 1 (default)
+	Option datadir = . (Command line)
+	Option append = 0 (default)
+	Option output:type = netcdf (default)
+	Option output:path = . (user_default)
+	Option output:prefix = BOUT.dmp (user_default)
+	Option output:append = false (user_default)
+	Option datadir = . (Command line)
+	Option restart_files:type = netcdf (default)
+	Option restart_files:path = . (user_default)
+	Option restart_files:prefix = BOUT.restart (user_default)
+	Option restart_files:append = false (user_default)
+	Option solver:type = beuler (./BOUT.inp)
+	Option solver:monitor_timestep = 0 (default)
+	Option solver:save_repeat_run_id = 0 (default)
+	Option solver:is_nonsplit_model_diffusive = 1 (default)
+	Option solver:mms = 0 (default)
+	Option solver:mms_initialise = 0 (default)
+	Option nout = 250 (./BOUT.inp)
+	Option solver:nout = 250 (default)
+	Option timestep = 4789.400000000001 (./BOUT.inp)
+	Option solver:output_step = 4789.4 (default)
+Setting `nout` is deprecated. Please set `solver:nout` instead.Setting `timestep` is deprecated. Please set `solver:output_step` instead.	Option solver:timestep = 1 (default)
+	Option solver:dt_min_reset = 1e-06 (default)
+	Option solver:max_timestep = 1e+37 (default)
+	Option solver:snes_type = newtonls (./BOUT.inp)
+	Option solver:atol = 1e-07 (./BOUT.inp)
+	Option solver:rtol = 1e-05 (./BOUT.inp)
+	Option solver:stol = 1e-08 (default)
+	Option solver:max_nonlinear_iterations = 10 (./BOUT.inp)
+	Option solver:lower_its = 5 (default)
+	Option solver:upper_its = 8 (default)
+	Option solver:timestep_factor_on_failure = 0.5 (default)
+	Option solver:timestep_factor_on_upper_its = 0.9 (default)
+	Option solver:timestep_factor_on_lower_its = 1.4 (default)
+	Option solver:diagnose = 0 (default)
+	Option solver:diagnose_failures = 0 (default)
+	Option solver:equation_form = rearranged_backward_euler (default)
+Initialising PETSc
+	Option solver:predictor = 1 (default)
+	Option solver:use_precon = 0 (default)
+	Option solver:ksp_type = gmres (./BOUT.inp)
+	Option solver:kspsetinitialguessnonzero = 0 (default)
+	Option solver:maxl = 20 (default)
+	Option solver:pc_type = hypre (./BOUT.inp)
+	Option solver:pc_hypre_type = euclid (./BOUT.inp)
+	Option solver:line_search_type = default (default)
+	Option solver:matrix_free = 0 (default)
+	Option solver:matrix_free_operator = 0 (default)
+	Option solver:lag_jacobian = 500 (./BOUT.inp)
+	Option solver:use_coloring = 1 (default)
+	Option solver:prune_jacobian = 0 (default)
+	Option solver:prune_abstol = 1e-16 (default)
+	Option solver:prune_fraction = 0.2 (default)
+	Option solver:scale_rhs = 0 (default)
+	Option solver:scale_vars = 0 (default)
+Setting up output (experimental output) file
+	Option restart = 0 (default)
+
+Git Version of Hermes: 694bd61e20829a0c923f52ae5469c9fd28515fbf
+Slope limiter: MinMod
+	Option hermes:Tnorm = 100 (./BOUT.inp)
+	Option hermes:Nnorm = 1e+19 (./BOUT.inp)
+	Option hermes:Bnorm = 1 (./BOUT.inp)
+	Option hermes:recalculate_metric = 0 (default)
+	Option hermes:normalise_metric = true (./BOUT.inp)
+Calculating differential geometry terms
+	Communicating connection terms
+	Option non_uniform = true (default)
+	WARNING: Could not read 'd2x' from grid. Setting to 0.000000e+00
+	WARNING: differencing quantity 'd2x' not found. Calculating from dx
+	WARNING: Could not read 'd2y' from grid. Setting to 0.000000e+00
+	WARNING: differencing quantity 'd2y' not found. Calculating from dy
+	Option hermes:components = (d+, d, e,sheath_boundary_simple, collisions, recycling, reactions,electron_force_balance, neutral_parallel_diffusion) (./BOUT.inp)
+	Option d+:type = (evolve_density, evolve_pressure, evolve_momentum,noflow_boundary, upstream_density_feedback) (./BOUT.inp)
+	Option d+:bndry_flux = 1 (default)
+	Option d+:poloidal_flows = 1 (default)
+	Option d+:density_floor = 1e-07 (default)
+	Option d+:low_n_diffuse = 0 (default)
+	Option d+:low_n_diffuse_perp = 0 (default)
+	Option d+:low_p_diffuse_perp = 0 (default)
+	Option d+:hyper_z = -1 (default)
+	Option d+:evolve_log = 0 (default)
+Setting boundary for variable Nd+
+	Option input:transform_from_field_aligned = true (default)
+	Option input:max_recursion_depth = 0 (default)
+	Option Nd+:function = 1 (./BOUT.inp)
+	Option all:scale = 1 (default)
+	Option all:evolve_bndry = 0 (default)
+	Option Nd+:evolve_bndry = 0 (default)
+	Option d+:charge = 1 (./BOUT.inp)
+	Option d+:AA = 2 (./BOUT.inp)
+	Option d+:diagnose = true (./BOUT.inp)
+	Option inv_meters_cubed = 1e+19 ()
+	Option seconds = 1.0439684754508785e-08 ()
+	Option Nd+:source_time_dependent = 0 (default)
+	Option Nd+:source_only_in_core = 0 (default)
+	WARNING: Could not read 'Nd+_src' from grid. Setting to 0.000000e+00
+	Option Nd+:source = <Field3D> (default)
+	Option Nd+:neumann_boundary_average_z = 0 (default)
+	Option d+:evolve_log = false (default)
+	Option d+:density_floor = 1e-07 (default)
+	Option d+:low_n_diffuse_perp = false (default)
+	Option d+:temperature_floor = 0.1 (default)
+	Option d+:low_T_diffuse_perp = 0 (default)
+	Option d+:low_p_diffuse_perp = false (default)
+Setting boundary for variable Pd+
+	Option input:transform_from_field_aligned = true (default)
+	Option input:max_recursion_depth = 0 (default)
+	Option Pd+:function = 1 (./BOUT.inp)
+	Option all:scale = 1 (default)
+	Option all:evolve_bndry = false (default)
+	Option Pd+:evolve_bndry = 0 (default)
+	Option d+:bndry_flux = true (default)
+	Option d+:poloidal_flows = true (default)
+	Option d+:p_div_v = 0 (default)
+	Option d+:hyper_z = -1 (default)
+	Option d+:hyper_z_T = -1 (default)
+	Option d+:diagnose = true (./BOUT.inp)
+	Option d+:precondition = 1 (default)
+	Option inv_meters_cubed = 1e+19 ()
+	Option eV = 100 ()
+	Option seconds = 1.0439684754508785e-08 ()
+	WARNING: Could not read 'Pd+_src' from grid. Setting to 0.000000e+00
+	Option Pd+:powerflux = 2.5e7 (./BOUT.inp)
+	Option mesh:length_xpt = 10 (./BOUT.inp)
+	Option mesh:y_xpt = pi * ( 2 - dymin - sqrt( (2-dymin)^2 - 4*(1-dymin)*source ) ) / (1 - dymin) (./BOUT.inp)
+	Option mesh:dymin = 0.1 (./BOUT.inp)
+	Option mesh:source = length_xpt / length (./BOUT.inp)
+	Option mesh:length = 30 (./BOUT.inp)
+	Option Pd+:source_time_dependent = 0 (default)
+	Option Pd+:source_only_in_core = 0 (default)
+	Option Pd+:neumann_boundary_average_z = 0 (default)
+	Option d+:numerical_viscous_heating = 0 (default)
+	Option d+:thermal_conduction = true (./BOUT.inp)
+	Option d+:kappa_coefficient = 3.9 (default)
+	Option d+:kappa_limit_alpha = -1 (default)
+Setting boundary for variable NVd+
+	Option input:transform_from_field_aligned = true (default)
+	Option input:max_recursion_depth = 0 (default)
+	Option NVd+:function = 0 (./BOUT.inp)
+	Option all:scale = 1 (default)
+	Option all:evolve_bndry = false (default)
+	Option NVd+:evolve_bndry = 0 (default)
+	Option d+:density_floor = 1e-07 (default)
+	Option d+:low_n_diffuse_perp = false (default)
+	Option d+:low_p_diffuse_perp = false (default)
+	Option d+:bndry_flux = true (default)
+	Option d+:poloidal_flows = true (default)
+	Option d+:hyper_z = -1 (default)
+Setting boundary for variable Vd+
+	Option d+:diagnose = true (./BOUT.inp)
+	Option d+:fix_momentum_boundary_flux = 0 (default)
+	Option d+:noflow_lower_y = true (./BOUT.inp)
+	Option d+:noflow_upper_y = false (./BOUT.inp)
+	Option d+:density_upstream = 5e+19 (./BOUT.inp)
+	Option d+:density_controller_p = 500 (./BOUT.inp)
+	Option d+:density_controller_i = 0.01 (./BOUT.inp)
+	Option d+:density_integral_positive = 0 (default)
+	Option d+:density_source_positive = false (./BOUT.inp)
+	Option d+:diagnose = true (./BOUT.inp)
+	Option d:type = (evolve_density, evolve_pressure, evolve_momentum,noflow_boundary) (./BOUT.inp)
+	Option d:bndry_flux = 1 (default)
+	Option d:poloidal_flows = 1 (default)
+	Option d:density_floor = 1e-07 (./BOUT.inp)
+	Option d:low_n_diffuse = 0 (default)
+	Option d:low_n_diffuse_perp = 0 (default)
+	Option d:low_p_diffuse_perp = 0 (default)
+	Option d:hyper_z = -1 (default)
+	Option d:evolve_log = 0 (default)
+Setting boundary for variable Nd
+	Option input:transform_from_field_aligned = true (default)
+	Option input:max_recursion_depth = 0 (default)
+	Option Nd:function = 0.001 (./BOUT.inp)
+	Option all:scale = 1 (default)
+	Option all:evolve_bndry = false (default)
+	Option Nd:evolve_bndry = 0 (default)
+	Option d:charge = 0 (./BOUT.inp)
+	Option d:AA = 2 (./BOUT.inp)
+	Option d:diagnose = true (./BOUT.inp)
+	Option inv_meters_cubed = 1e+19 ()
+	Option seconds = 1.0439684754508785e-08 ()
+	Option Nd:source_time_dependent = 0 (default)
+	Option Nd:source_only_in_core = 0 (default)
+	WARNING: Could not read 'Nd_src' from grid. Setting to 0.000000e+00
+	Option Nd:source = <Field3D> (default)
+	Option Nd:neumann_boundary_average_z = 0 (default)
+	Option d:evolve_log = false (default)
+	Option d:density_floor = 1e-07 (./BOUT.inp)
+	Option d:low_n_diffuse_perp = false (default)
+	Option d:temperature_floor = 0.1 (default)
+	Option d:low_T_diffuse_perp = 0 (default)
+	Option d:low_p_diffuse_perp = false (default)
+Setting boundary for variable Pd
+	Option input:transform_from_field_aligned = true (default)
+	Option input:max_recursion_depth = 0 (default)
+	Option Pd:function = 0.0001 (./BOUT.inp)
+	Option all:scale = 1 (default)
+	Option all:evolve_bndry = false (default)
+	Option Pd:evolve_bndry = 0 (default)
+	Option d:bndry_flux = true (default)
+	Option d:poloidal_flows = true (default)
+	Option d:p_div_v = 0 (default)
+	Option d:hyper_z = -1 (default)
+	Option d:hyper_z_T = -1 (default)
+	Option d:diagnose = true (./BOUT.inp)
+	Option d:precondition = 1 (default)
+	Option inv_meters_cubed = 1e+19 ()
+	Option eV = 100 ()
+	Option seconds = 1.0439684754508785e-08 ()
+	WARNING: Could not read 'Pd_src' from grid. Setting to 0.000000e+00
+	Option Pd:source = <Field3D> (default)
+	Option Pd:source_time_dependent = 0 (default)
+	Option Pd:source_only_in_core = 0 (default)
+	Option Pd:neumann_boundary_average_z = 0 (default)
+	Option d:numerical_viscous_heating = 0 (default)
+	Option d:thermal_conduction = true (./BOUT.inp)
+	Option d:kappa_coefficient = 2.5 (default)
+	Option d:kappa_limit_alpha = -1 (default)
+Setting boundary for variable NVd
+	Option input:transform_from_field_aligned = true (default)
+	Option input:max_recursion_depth = 0 (default)
+	Option all:function = 0.0 (default)
+	Option all:scale = 1 (default)
+	Option all:evolve_bndry = false (default)
+	Option NVd:evolve_bndry = 0 (default)
+	Option d:density_floor = 1e-07 (./BOUT.inp)
+	Option d:low_n_diffuse_perp = false (default)
+	Option d:low_p_diffuse_perp = false (default)
+	Option d:bndry_flux = true (default)
+	Option d:poloidal_flows = true (default)
+	Option d:hyper_z = -1 (default)
+Setting boundary for variable Vd
+	Option d:diagnose = true (./BOUT.inp)
+	Option d:fix_momentum_boundary_flux = 0 (default)
+	Option d:noflow_lower_y = 1 (default)
+	Option d:noflow_upper_y = 1 (default)
+	Option e:type = quasineutral, evolve_pressure, zero_current, noflow_boundary (./BOUT.inp)
+	Option e:charge = -1 (./BOUT.inp)
+	Option e:AA = 0.0005446623093681918 (./BOUT.inp)
+	Option e:evolve_log = 0 (default)
+	Option e:density_floor = 1e-07 (default)
+	Option e:low_n_diffuse_perp = 0 (default)
+	Option e:temperature_floor = 0.1 (default)
+	Option e:low_T_diffuse_perp = 0 (default)
+	Option e:low_p_diffuse_perp = 0 (default)
+Setting boundary for variable Pe
+	Option input:transform_from_field_aligned = true (default)
+	Option input:max_recursion_depth = 0 (default)
+	Option Pe:function = `Pd+:function` (./BOUT.inp)
+	Option Pd+:function = 1 (./BOUT.inp)
+	Option all:scale = 1 (default)
+	Option all:evolve_bndry = false (default)
+	Option Pe:evolve_bndry = 0 (default)
+	Option e:bndry_flux = 1 (default)
+	Option e:poloidal_flows = 1 (default)
+	Option e:p_div_v = 0 (default)
+	Option e:hyper_z = -1 (default)
+	Option e:hyper_z_T = -1 (default)
+	Option e:diagnose = true (./BOUT.inp)
+	Option e:precondition = 1 (default)
+	Option inv_meters_cubed = 1e+19 ()
+	Option eV = 100 ()
+	Option seconds = 1.0439684754508785e-08 ()
+	WARNING: Could not read 'Pe_src' from grid. Setting to 0.000000e+00
+	Option Pd+:source = (powerflux*2/3 / (mesh:length_xpt))*H(mesh:y_xpt - y) (./BOUT.inp)
+	Option Pd+:powerflux = 2.5e7 (./BOUT.inp)
+	Option Pe:source_time_dependent = 0 (default)
+	Option Pe:source_only_in_core = 0 (default)
+	Option Pe:neumann_boundary_average_z = 0 (default)
+	Option e:numerical_viscous_heating = 0 (default)
+	Option e:thermal_conduction = true (./BOUT.inp)
+	Option e:kappa_coefficient = 2.23446 (default)
+	Option e:kappa_limit_alpha = -1 (default)
+	Option e:charge = -1 (./BOUT.inp)
+	Option e:noflow_lower_y = 1 (default)
+	Option e:noflow_upper_y = false (./BOUT.inp)
+	Option sheath_boundary_simple:secondary_electron_coef = 0 (default)
+	Option sheath_boundary_simple:sin_alpha = 1 (default)
+	Option sheath_boundary_simple:gamma_e = 3.5 (./BOUT.inp)
+	Option sheath_boundary_simple:gamma_i = 3.5 (./BOUT.inp)
+	Option sheath_boundary_simple:sheath_ion_polytropic = 1 (default)
+	Option sheath_boundary_simple:lower_y = false (./BOUT.inp)
+	Option sheath_boundary_simple:upper_y = true (./BOUT.inp)
+	Option sheath_boundary_simple:always_set_phi = 0 (default)
+	Option eV = 100 ()
+	Option sheath_boundary_simple:wall_potential = <Field3D> (default)
+	Option sheath_boundary_simple:no_flow = 0 (default)
+	Option sheath_boundary_simple:density_boundary_mode = 1 (default)
+	Option sheath_boundary_simple:pressure_boundary_mode = 1 (default)
+	Option sheath_boundary_simple:temperature_boundary_mode = 1 (default)
+	Option sheath_boundary_simple:diagnose = 0 (default)
+	Option eV = 100 ()
+	Option inv_meters_cubed = 1e+19 ()
+	Option meters = 0.0010217477552952484 ()
+	Option seconds = 1.0439684754508785e-08 ()
+	Option collisions:electron_electron = 1 (default)
+	Option collisions:electron_ion = 1 (default)
+	Option collisions:electron_neutral = 0 (default)
+	Option collisions:ion_ion = 1 (default)
+	Option collisions:ion_neutral = 0 (default)
+	Option collisions:neutral_neutral = 1 (default)
+	Option collisions:frictional_heating = 1 (default)
+	Option collisions:ei_multiplier = 1 (default)
+	Option collisions:diagnose = 0 (default)
+	Option eV = 100 ()
+	Option recycling:species = d+ (./BOUT.inp)
+	WARNING: Could not read 'is_pump' from grid. Setting to 0.000000e+00
+	Option d+:recycle_as = d (./BOUT.inp)
+	Option recycling:density_floor = 1e-07 (default)
+	Option d+:diagnose = true (./BOUT.inp)
+	Option d+:target_recycle_multiplier = 1 (./BOUT.inp)
+	Option d+:sol_recycle_multiplier = 1 (default)
+	Option d+:pfr_recycle_multiplier = 1 (default)
+	Option d+:pump_recycle_multiplier = 1 (default)
+	Option d+:target_recycle_energy = 3.5 (./BOUT.inp)
+	Option d+:sol_recycle_energy = 3 (default)
+	Option d+:pfr_recycle_energy = 3 (default)
+	Option d+:target_fast_recycle_fraction = 0 (default)
+	Option d+:pfr_fast_recycle_fraction = 0 (default)
+	Option d+:sol_fast_recycle_fraction = 0 (default)
+	Option d+:target_fast_recycle_energy_factor = 0 (default)
+	Option d+:sol_fast_recycle_energy_factor = 0 (default)
+	Option d+:pfr_fast_recycle_energy_factor = 0 (default)
+	Option d+:target_recycle = true (./BOUT.inp)
+	Option d+:sol_recycle = 0 (default)
+	Option d+:pfr_recycle = 0 (default)
+	Option d+:neutral_pump = 0 (default)
+	Option reactions:type = (d + e -> d+ + 2e,d+ + e -> d,d + d+ -> d+ + d,) (./BOUT.inp)
+	Option reactions:diagnose = true (./BOUT.inp)
+	Option d:K_iz_multiplier = 1 (default)
+	Option d:R_ex_multiplier = 1 (default)
+	Option reactions:diagnose = true (./BOUT.inp)
+	Option d:K_rec_multiplier = 1 (default)
+	Option d:R_rec_multiplier = 1 (default)
+	Option reactions:diagnose = true (./BOUT.inp)
+	Option reactions:no_neutral_cx_mom_gain = 0 (default)
+	Option d:K_cx_multiplier = 1 (default)
+	Option electron_force_balance:diagnose = 0 (default)
+	Option neutral_parallel_diffusion:dneut = 10 (./BOUT.inp)
+	Option neutral_parallel_diffusion:diagnose = 0 (default)
+	Option neutral_parallel_diffusion:equation_fix = 1 (default)
+	Option neutral_parallel_diffusion:thermal_conducton = 1 (default)
+	Option neutral_parallel_diffusion:viscosity = 1 (default)
+	Option grid_id =  (default)
+	Option hypnotoad_version =  (default)
+	Option hypnotoad_git_hash =  (default)
+	Option hypnotoad_git_diff =  (default)
+	Option hypnotoad_geqdsk_filename =  (default)
+	Option grid_id =  (default)
+	Option hypnotoad_version =  (default)
+	Option hypnotoad_git_hash =  (default)
+	Option hypnotoad_git_diff =  (default)
+	Option hypnotoad_geqdsk_filename =  (default)
+	Option wall_limit = -1 (default)
+	Option stopCheck = 0 (default)
+	Option datadir = . (Command line)
+	Option stopCheckName = BOUT.stop (default)
+Solver running for 250 outputs with output timestep of 4.789400e+03
+Initialising solver
+
+	SNES steady state solver
+	3d fields = 7, 2d fields = 0 neq=2800, local_N=2800
+Creating vector
+Create SNES
+Setting Jacobian matrix sizes
+	Option solver:stencil:square = 0 (default)
+	Option solver:stencil:taxi = 0 (default)
+	Option solver:stencil:cross = 0 (default)
+Setting solver:stencil:taxi = 2
+Pre-allocating Jacobian
+Marking non-zero Jacobian entries
+Assembling Jacobian matrix
+	Option solver:force_symmetric_coloring = 0 (default)
+Creating Jacobian coloring
+SNES Type : newtonls
+KSP Type  : gmres
+PC Type   : hypre
+Running simulation
+
+Run ID: d020cd93-aabb-4c7f-818e-3b2330425d5a
+
+Run started at  : Sat Nov  8 14:30:26 2025
+	Option restart = false (default)
+	Option append = false (default)
+	Option dump_on_restart = 1 (default)
+	Option input:validate = 0 (default)
+	Option input:error_on_unused_options = 1 (default)
+	Option datadir = . (Command line)
+	Option optionfile = BOUT.inp (default)
+Finalising PETSc
+WARNING! There are options you set that were not used!
+WARNING! could be spelling mistake, etc!
+There is one unused database option. It is:
+Option left: name:-d value: . source: command line
+Error encountered: 
+There were unused input options:
+-----
+mesh:J = 1
+mesh:dy = (length / ny) * (1 + (1-dymin)*(1-y/pi))
+mesh:ixseps1 = -1
+mesh:ixseps2 = -1
+
+-----
+It's possible you've mistyped some options. BOUT++ input arguments are
+now case-sensitive, and some have changed name. You can try running
+
+    <BOUT++ directory>/bin/bout-v5-input-file-upgrader.py ./BOUT.inp
+
+to automatically fix the most common issues. If these options above
+are sometimes used depending on other options, you can call
+`Options::setConditionallyUsed()`, for example:
+
+    Options::root()["mesh"].setConditionallyUsed();
+
+to mark a section or value as depending on other values, and so ignore
+it in this check. Alternatively, if you're sure the above inputs are
+not a mistake, you can set 'input:error_on_unused_options=false' to
+turn off this check for unused options. You can always set
+'input:validate=true' to check inputs without running the full
+simulation.
+
+Suggested alternatives:
+
+Unused option 'mesh:J', did you mean:
+	mesh:file		# type: string
+	mesh:type		# type: string
+	meters
+
+Unused option 'mesh:dy', did you mean:
+	mesh:dymin
+	mesh:type		# type: string
+	mesh:file		# type: string
+Stacktrace not enabled.
+====== Back trace ======
+
+====== Exception thrown ======
+
+There were unused input options:
+-----
+mesh:J = 1
+mesh:dy = (length / ny) * (1 + (1-dymin)*(1-y/pi))
+mesh:ixseps1 = -1
+mesh:ixseps2 = -1
+
+-----
+It's possible you've mistyped some options. BOUT++ input arguments are
+now case-sensitive, and some have changed name. You can try running
+
+    <BOUT++ directory>/bin/bout-v5-input-file-upgrader.py ./BOUT.inp
+
+to automatically fix the most common issues. If these options above
+are sometimes used depending on other options, you can call
+`Options::setConditionallyUsed()`, for example:
+
+    Options::root()["mesh"].setConditionallyUsed();
+
+to mark a section or value as depending on other values, and so ignore
+it in this check. Alternatively, if you're sure the above inputs are
+not a mistake, you can set 'input:error_on_unused_options=false' to
+turn off this check for unused options. You can always set
+'input:validate=true' to check inputs without running the full
+simulation.
+
+Suggested alternatives:
+
+Unused option 'mesh:J', did you mean:
+	mesh:file		# type: string
+	mesh:type		# type: string
+	meters
+
+Unused option 'mesh:dy', did you mean:
+	mesh:dymin
+	mesh:type		# type: string
+	mesh:file		# type: string
+
+
+BOUT++ version 5.2.0
+Revision: ab0c53a3a040e84ed1ab90075010a8b481fe4b6e
+Code compiled on Oct 28 2025 at 13:37:44
+
+B.Dudson (University of York), M.Umansky (LLNL) 2007
+Based on BOUT by Xueqiao Xu, 1999
+
+Processor number: 0 of 1
+
+pid: 69087
+
+Compile-time options:
+	Runtime error checking enabled, level 2
+	Parallel NetCDF support disabled
+	Metrics mode is 2D
+	FFT support enabled
+	Natural language support enabled
+	LAPACK support disabled
+	NetCDF support enabled (NetCDF4)
+	ADIOS2 support disabled
+	PETSc support enabled
+	Pretty function name support enabled
+	PVODE support enabled
+	Score-P support disabled
+	SLEPc support disabled
+	SUNDIALS support enabled
+	Backtrace in exceptions disabled
+	Colour in logs enabled
+	OpenMP parallelisation disabled, using 1 threads
+	Extra debug output disabled
+	Floating-point exceptions disabled
+	Signal handling support enabled
+	Field name tracking enabled
+	Message stack enabled
+	Compiled with flags : "-Wall -Wextra -Wnull-dereference -Wno-cast-function-type -DCHECK=2 -O2 -g -DNDEBUG"
+	Command line options for this run : ../../../hermes-3 -d . 
+Reading options file ./BOUT.inp
+	Option datadir = . (Command line)
+	Option optionfile = BOUT.inp (default)
+	Option settingsfile = BOUT.settings (default)
+Writing options to file ./BOUT.settings
+	Option mesh:type = bout (default)
+	Option grid =  (default)
+	Option mesh:file = grid_1d_minimal.nc (./BOUT.inp)
+
+Getting grid data from file grid_1d_minimal.nc
+	Option format =  (default)
+	Option mesh:format =  (default)
+	Option file = grid_1d_minimal.nc ()
+	Option append = 0 (default)
+	Option y_boundary_guards = 0 (default)
+	Option ny_inner = 0 (default)
+	Option mesh:calcParallelSlices_on_communicate = false (user_default)
+	Option mesh:maxregionblocksize = 64 (default)
+	Option mesh:staggergrids = 0 (default)
+	Option mesh:include_corner_cells = 1 (default)
+	Option mesh:ddz:fft_filter = 0 (default)
+	Option mesh:symmetricGlobalX = 1 (default)
+	Option optionfile = BOUT.inp (default)
+WARNING: The default of this option has changed in release 4.1.
+If you want the old setting, you have to specify mesh:symmetricGlobalY=false in BOUT.inp
+	Option mesh:symmetricGlobalY = 1 (default)
+Loading mesh
+	Option nx = 1 (grid_1d_minimal.nc)
+	Option ny = 400 (grid_1d_minimal.nc)
+	Option nz = 1 (grid_1d_minimal.nc)
+	Read nz from input grid file
+	Grid size: 1 x 400 x 1
+	Option MXG = 0 ()
+	Option input:transform_from_field_aligned = true (default)
+	Option input:max_recursion_depth = 0 (default)
+	Option MXG = 0 (./BOUT.inp)
+	Option MYG = 0 ()
+	Option MYG = 2 (default)
+	Guard cells (x,y,z): 0, 2, 0
+	Option ixseps1 = 1 ()
+	Option ixseps2 = 1 ()
+	Option jyseps1_1 = -1 ()
+	Option jyseps1_2 = 200 ()
+	Option jyseps2_1 = 200 ()
+	Option jyseps2_2 = 399 ()
+	Option ny_inner = 200 ()
+Finding value for NXPE (ideal = 0.050000)
+	Candidate value: 1
+	 -> Good value
+	Domain split (NXPE=1, NYPE=1) into domains (localNx=1, localNy=400)
+	Option IncIntShear = 0 (default)
+	Option periodicX = 0 (default)
+	Option async_send = 0 (default)
+	Option ZMIN = 0 (default)
+	Option ZMAX = 1 (default)
+	EQUILIBRIUM IS SINGLE NULL (SND) 
+Connection between top of Y processor 0 and bottom of 0 in range 0 <= x < 1
+=> This processor sending in up
+=> This processor sending in down
+WARNING adding connection: poloidal index -1 out of range
+	MYPE_IN_CORE = true
+	DXS = 1, DIN = 0. DOUT = -1
+	UXS = 1, UIN = 0. UOUT = -1
+	XIN = -1, XOUT = -1
+	Twist-shift: DI UI 
+	Option twistshift = 0 (default)
+No boundary regions; domain is periodic
+No boundary regions in this processor
+Constructing default regions
+	Boundary region inner X
+	Boundary region outer X
+	Option mesh:extrapolate_x = 1 (default)
+	Option mesh:extrapolate_y = 1 (default)
+WARNING: extrapolating input mesh quantities into x-boundary cells. Set option extrapolate_x=false to disable this.
+WARNING: extrapolating input mesh quantities into y-boundary cells. Set option extrapolate_y=false to disable this.
+	Option dx = Matrix<BoutReal> (grid_1d_minimal.nc)
+	Option dy = Matrix<BoutReal> (grid_1d_minimal.nc)
+	Option ZMIN = 0 (default)
+	Option ZMAX = 1 (default)
+	Option dz = 6.283185307179586 (grid_1d_minimal.nc)
+	Option mesh:paralleltransform:type = identity (default)
+	Option parallel_transform =  (default)
+	WARNING: Could not read 'g11' from grid. Setting to 1.000000e+00
+	WARNING: Could not read 'g22' from grid. Setting to 1.000000e+00
+	WARNING: Could not read 'g33' from grid. Setting to 1.000000e+00
+	WARNING: Could not read 'g12' from grid. Setting to 0.000000e+00
+	WARNING: Could not read 'g13' from grid. Setting to 0.000000e+00
+	WARNING: Could not read 'g23' from grid. Setting to 0.000000e+00
+	Local maximum error in diagonal inversion is 0.000000e+00
+	Local maximum error in off-diagonal inversion is 0.000000e+00
+	Option J = Matrix<BoutReal> (grid_1d_minimal.nc)
+	Maximum difference in J is 0.000000e+00
+	WARNING: Could not read 'Bxy' from grid. Setting to 0.000000e+00
+	WARNING: Magnitude of B field 'Bxy' not found. Calculating from metric tensor
+	WARNING: Could not read 'ShiftTorsion' from grid. Setting to 0.000000e+00
+	WARNING: No Torsion specified for zShift. Derivatives may not be correct
+Calculating differential geometry terms
+	Communicating connection terms
+	Option non_uniform = 1 (default)
+	WARNING: Could not read 'd2x' from grid. Setting to 0.000000e+00
+	WARNING: differencing quantity 'd2x' not found. Calculating from dx
+	WARNING: Could not read 'd2y' from grid. Setting to 0.000000e+00
+	WARNING: differencing quantity 'd2y' not found. Calculating from dy
+	done
+	Option output:enabled = 1 (default)
+	Option restart_files:enabled = 1 (default)
+	Option datadir = . (Command line)
+	Option append = 0 (default)
+	Option output:type = netcdf (default)
+	Option output:path = . (user_default)
+	Option output:prefix = BOUT.dmp (user_default)
+	Option output:append = false (user_default)
+	Option datadir = . (Command line)
+	Option restart_files:type = netcdf (default)
+	Option restart_files:path = . (user_default)
+	Option restart_files:prefix = BOUT.restart (user_default)
+	Option restart_files:append = false (user_default)
+	Option solver:type = beuler (./BOUT.inp)
+	Option solver:monitor_timestep = 0 (default)
+	Option solver:save_repeat_run_id = 0 (default)
+	Option solver:is_nonsplit_model_diffusive = 1 (default)
+	Option solver:mms = 0 (default)
+	Option solver:mms_initialise = 0 (default)
+	Option nout = 250 (./BOUT.inp)
+	Option solver:nout = 250 (default)
+	Option timestep = 4789.400000000001 (./BOUT.inp)
+	Option solver:output_step = 4789.4 (default)
+Setting `nout` is deprecated. Please set `solver:nout` instead.Setting `timestep` is deprecated. Please set `solver:output_step` instead.	Option solver:timestep = 1 (default)
+	Option solver:dt_min_reset = 1e-06 (default)
+	Option solver:max_timestep = 1e+37 (default)
+	Option solver:snes_type = newtonls (./BOUT.inp)
+	Option solver:atol = 1e-07 (./BOUT.inp)
+	Option solver:rtol = 1e-05 (./BOUT.inp)
+	Option solver:stol = 1e-08 (default)
+	Option solver:max_nonlinear_iterations = 10 (./BOUT.inp)
+	Option solver:lower_its = 5 (default)
+	Option solver:upper_its = 8 (default)
+	Option solver:timestep_factor_on_failure = 0.5 (default)
+	Option solver:timestep_factor_on_upper_its = 0.9 (default)
+	Option solver:timestep_factor_on_lower_its = 1.4 (default)
+	Option solver:diagnose = 0 (default)
+	Option solver:diagnose_failures = 0 (default)
+	Option solver:equation_form = rearranged_backward_euler (default)
+Initialising PETSc
+	Option solver:predictor = 1 (default)
+	Option solver:use_precon = 0 (default)
+	Option solver:ksp_type = gmres (./BOUT.inp)
+	Option solver:kspsetinitialguessnonzero = 0 (default)
+	Option solver:maxl = 20 (default)
+	Option solver:pc_type = hypre (./BOUT.inp)
+	Option solver:pc_hypre_type = euclid (./BOUT.inp)
+	Option solver:line_search_type = default (default)
+	Option solver:matrix_free = 0 (default)
+	Option solver:matrix_free_operator = 0 (default)
+	Option solver:lag_jacobian = 500 (./BOUT.inp)
+	Option solver:use_coloring = 1 (default)
+	Option solver:prune_jacobian = 0 (default)
+	Option solver:prune_abstol = 1e-16 (default)
+	Option solver:prune_fraction = 0.2 (default)
+	Option solver:scale_rhs = 0 (default)
+	Option solver:scale_vars = 0 (default)
+Setting up output (experimental output) file
+	Option restart = 0 (default)
+
+Git Version of Hermes: 694bd61e20829a0c923f52ae5469c9fd28515fbf
+Slope limiter: MinMod
+	Option hermes:Tnorm = 100 (./BOUT.inp)
+	Option hermes:Nnorm = 1e+19 (./BOUT.inp)
+	Option hermes:Bnorm = 1 (./BOUT.inp)
+	Option hermes:recalculate_metric = 0 (default)
+	Option hermes:normalise_metric = true (./BOUT.inp)
+Calculating differential geometry terms
+	Communicating connection terms
+	Option non_uniform = true (default)
+	WARNING: Could not read 'd2x' from grid. Setting to 0.000000e+00
+	WARNING: differencing quantity 'd2x' not found. Calculating from dx
+	WARNING: Could not read 'd2y' from grid. Setting to 0.000000e+00
+	WARNING: differencing quantity 'd2y' not found. Calculating from dy
+	Option hermes:components = (d+, d, e,sheath_boundary_simple, collisions, recycling, reactions,electron_force_balance, neutral_parallel_diffusion) (./BOUT.inp)
+	Option d+:type = (evolve_density, evolve_pressure, evolve_momentum,noflow_boundary, upstream_density_feedback) (./BOUT.inp)
+	Option d+:bndry_flux = 1 (default)
+	Option d+:poloidal_flows = 1 (default)
+	Option d+:density_floor = 1e-07 (default)
+	Option d+:low_n_diffuse = 0 (default)
+	Option d+:low_n_diffuse_perp = 0 (default)
+	Option d+:low_p_diffuse_perp = 0 (default)
+	Option d+:hyper_z = -1 (default)
+	Option d+:evolve_log = 0 (default)
+Setting boundary for variable Nd+
+	Option input:transform_from_field_aligned = true (default)
+	Option input:max_recursion_depth = 0 (default)
+	Option Nd+:function = 1 (./BOUT.inp)
+	Option all:scale = 1 (default)
+	Option all:evolve_bndry = 0 (default)
+	Option Nd+:evolve_bndry = 0 (default)
+	Option d+:charge = 1 (./BOUT.inp)
+	Option d+:AA = 2 (./BOUT.inp)
+	Option d+:diagnose = true (./BOUT.inp)
+	Option inv_meters_cubed = 1e+19 ()
+	Option seconds = 1.0439684754508785e-08 ()
+	Option Nd+:source_time_dependent = 0 (default)
+	Option Nd+:source_only_in_core = 0 (default)
+	WARNING: Could not read 'Nd+_src' from grid. Setting to 0.000000e+00
+	Option Nd+:source = <Field3D> (default)
+	Option Nd+:neumann_boundary_average_z = 0 (default)
+	Option d+:evolve_log = false (default)
+	Option d+:density_floor = 1e-07 (default)
+	Option d+:low_n_diffuse_perp = false (default)
+	Option d+:temperature_floor = 0.1 (default)
+	Option d+:low_T_diffuse_perp = 0 (default)
+	Option d+:low_p_diffuse_perp = false (default)
+Setting boundary for variable Pd+
+	Option input:transform_from_field_aligned = true (default)
+	Option input:max_recursion_depth = 0 (default)
+	Option Pd+:function = 1 (./BOUT.inp)
+	Option all:scale = 1 (default)
+	Option all:evolve_bndry = false (default)
+	Option Pd+:evolve_bndry = 0 (default)
+	Option d+:bndry_flux = true (default)
+	Option d+:poloidal_flows = true (default)
+	Option d+:p_div_v = 0 (default)
+	Option d+:hyper_z = -1 (default)
+	Option d+:hyper_z_T = -1 (default)
+	Option d+:diagnose = true (./BOUT.inp)
+	Option d+:precondition = 1 (default)
+	Option inv_meters_cubed = 1e+19 ()
+	Option eV = 100 ()
+	Option seconds = 1.0439684754508785e-08 ()
+	WARNING: Could not read 'Pd+_src' from grid. Setting to 0.000000e+00
+	Option Pd+:powerflux = 2.5e7 (./BOUT.inp)
+	Option mesh:length_xpt = 10 (./BOUT.inp)
+	Option mesh:y_xpt = pi * ( 2 - dymin - sqrt( (2-dymin)^2 - 4*(1-dymin)*source ) ) / (1 - dymin) (./BOUT.inp)
+	Option mesh:dymin = 0.1 (./BOUT.inp)
+	Option mesh:source = length_xpt / length (./BOUT.inp)
+	Option mesh:length = 30 (./BOUT.inp)
+	Option Pd+:source_time_dependent = 0 (default)
+	Option Pd+:source_only_in_core = 0 (default)
+	Option Pd+:neumann_boundary_average_z = 0 (default)
+	Option d+:numerical_viscous_heating = 0 (default)
+	Option d+:thermal_conduction = true (./BOUT.inp)
+	Option d+:kappa_coefficient = 3.9 (default)
+	Option d+:kappa_limit_alpha = -1 (default)
+Setting boundary for variable NVd+
+	Option input:transform_from_field_aligned = true (default)
+	Option input:max_recursion_depth = 0 (default)
+	Option NVd+:function = 0 (./BOUT.inp)
+	Option all:scale = 1 (default)
+	Option all:evolve_bndry = false (default)
+	Option NVd+:evolve_bndry = 0 (default)
+	Option d+:density_floor = 1e-07 (default)
+	Option d+:low_n_diffuse_perp = false (default)
+	Option d+:low_p_diffuse_perp = false (default)
+	Option d+:bndry_flux = true (default)
+	Option d+:poloidal_flows = true (default)
+	Option d+:hyper_z = -1 (default)
+Setting boundary for variable Vd+
+	Option d+:diagnose = true (./BOUT.inp)
+	Option d+:fix_momentum_boundary_flux = 0 (default)
+	Option d+:noflow_lower_y = true (./BOUT.inp)
+	Option d+:noflow_upper_y = false (./BOUT.inp)
+	Option d+:density_upstream = 5e+19 (./BOUT.inp)
+	Option d+:density_controller_p = 500 (./BOUT.inp)
+	Option d+:density_controller_i = 0.01 (./BOUT.inp)
+	Option d+:density_integral_positive = 0 (default)
+	Option d+:density_source_positive = false (./BOUT.inp)
+	Option d+:diagnose = true (./BOUT.inp)
+	Option d:type = (evolve_density, evolve_pressure, evolve_momentum,noflow_boundary) (./BOUT.inp)
+	Option d:bndry_flux = 1 (default)
+	Option d:poloidal_flows = 1 (default)
+	Option d:density_floor = 1e-07 (./BOUT.inp)
+	Option d:low_n_diffuse = 0 (default)
+	Option d:low_n_diffuse_perp = 0 (default)
+	Option d:low_p_diffuse_perp = 0 (default)
+	Option d:hyper_z = -1 (default)
+	Option d:evolve_log = 0 (default)
+Setting boundary for variable Nd
+	Option input:transform_from_field_aligned = true (default)
+	Option input:max_recursion_depth = 0 (default)
+	Option Nd:function = 0.001 (./BOUT.inp)
+	Option all:scale = 1 (default)
+	Option all:evolve_bndry = false (default)
+	Option Nd:evolve_bndry = 0 (default)
+	Option d:charge = 0 (./BOUT.inp)
+	Option d:AA = 2 (./BOUT.inp)
+	Option d:diagnose = true (./BOUT.inp)
+	Option inv_meters_cubed = 1e+19 ()
+	Option seconds = 1.0439684754508785e-08 ()
+	Option Nd:source_time_dependent = 0 (default)
+	Option Nd:source_only_in_core = 0 (default)
+	WARNING: Could not read 'Nd_src' from grid. Setting to 0.000000e+00
+	Option Nd:source = <Field3D> (default)
+	Option Nd:neumann_boundary_average_z = 0 (default)
+	Option d:evolve_log = false (default)
+	Option d:density_floor = 1e-07 (./BOUT.inp)
+	Option d:low_n_diffuse_perp = false (default)
+	Option d:temperature_floor = 0.1 (default)
+	Option d:low_T_diffuse_perp = 0 (default)
+	Option d:low_p_diffuse_perp = false (default)
+Setting boundary for variable Pd
+	Option input:transform_from_field_aligned = true (default)
+	Option input:max_recursion_depth = 0 (default)
+	Option Pd:function = 0.0001 (./BOUT.inp)
+	Option all:scale = 1 (default)
+	Option all:evolve_bndry = false (default)
+	Option Pd:evolve_bndry = 0 (default)
+	Option d:bndry_flux = true (default)
+	Option d:poloidal_flows = true (default)
+	Option d:p_div_v = 0 (default)
+	Option d:hyper_z = -1 (default)
+	Option d:hyper_z_T = -1 (default)
+	Option d:diagnose = true (./BOUT.inp)
+	Option d:precondition = 1 (default)
+	Option inv_meters_cubed = 1e+19 ()
+	Option eV = 100 ()
+	Option seconds = 1.0439684754508785e-08 ()
+	WARNING: Could not read 'Pd_src' from grid. Setting to 0.000000e+00
+	Option Pd:source = <Field3D> (default)
+	Option Pd:source_time_dependent = 0 (default)
+	Option Pd:source_only_in_core = 0 (default)
+	Option Pd:neumann_boundary_average_z = 0 (default)
+	Option d:numerical_viscous_heating = 0 (default)
+	Option d:thermal_conduction = true (./BOUT.inp)
+	Option d:kappa_coefficient = 2.5 (default)
+	Option d:kappa_limit_alpha = -1 (default)
+Setting boundary for variable NVd
+	Option input:transform_from_field_aligned = true (default)
+	Option input:max_recursion_depth = 0 (default)
+	Option all:function = 0.0 (default)
+	Option all:scale = 1 (default)
+	Option all:evolve_bndry = false (default)
+	Option NVd:evolve_bndry = 0 (default)
+	Option d:density_floor = 1e-07 (./BOUT.inp)
+	Option d:low_n_diffuse_perp = false (default)
+	Option d:low_p_diffuse_perp = false (default)
+	Option d:bndry_flux = true (default)
+	Option d:poloidal_flows = true (default)
+	Option d:hyper_z = -1 (default)
+Setting boundary for variable Vd
+	Option d:diagnose = true (./BOUT.inp)
+	Option d:fix_momentum_boundary_flux = 0 (default)
+	Option d:noflow_lower_y = 1 (default)
+	Option d:noflow_upper_y = 1 (default)
+	Option e:type = quasineutral, evolve_pressure, zero_current, noflow_boundary (./BOUT.inp)
+	Option e:charge = -1 (./BOUT.inp)
+	Option e:AA = 0.0005446623093681918 (./BOUT.inp)
+	Option e:evolve_log = 0 (default)
+	Option e:density_floor = 1e-07 (default)
+	Option e:low_n_diffuse_perp = 0 (default)
+	Option e:temperature_floor = 0.1 (default)
+	Option e:low_T_diffuse_perp = 0 (default)
+	Option e:low_p_diffuse_perp = 0 (default)
+Setting boundary for variable Pe
+	Option input:transform_from_field_aligned = true (default)
+	Option input:max_recursion_depth = 0 (default)
+	Option Pe:function = `Pd+:function` (./BOUT.inp)
+	Option Pd+:function = 1 (./BOUT.inp)
+	Option all:scale = 1 (default)
+	Option all:evolve_bndry = false (default)
+	Option Pe:evolve_bndry = 0 (default)
+	Option e:bndry_flux = 1 (default)
+	Option e:poloidal_flows = 1 (default)
+	Option e:p_div_v = 0 (default)
+	Option e:hyper_z = -1 (default)
+	Option e:hyper_z_T = -1 (default)
+	Option e:diagnose = true (./BOUT.inp)
+	Option e:precondition = 1 (default)
+	Option inv_meters_cubed = 1e+19 ()
+	Option eV = 100 ()
+	Option seconds = 1.0439684754508785e-08 ()
+	WARNING: Could not read 'Pe_src' from grid. Setting to 0.000000e+00
+	Option Pd+:source = (powerflux*2/3 / (mesh:length_xpt))*H(mesh:y_xpt - y) (./BOUT.inp)
+	Option Pd+:powerflux = 2.5e7 (./BOUT.inp)
+	Option Pe:source_time_dependent = 0 (default)
+	Option Pe:source_only_in_core = 0 (default)
+	Option Pe:neumann_boundary_average_z = 0 (default)
+	Option e:numerical_viscous_heating = 0 (default)
+	Option e:thermal_conduction = true (./BOUT.inp)
+	Option e:kappa_coefficient = 2.23446 (default)
+	Option e:kappa_limit_alpha = -1 (default)
+	Option e:charge = -1 (./BOUT.inp)
+	Option e:noflow_lower_y = 1 (default)
+	Option e:noflow_upper_y = false (./BOUT.inp)
+	Option sheath_boundary_simple:secondary_electron_coef = 0 (default)
+	Option sheath_boundary_simple:sin_alpha = 1 (default)
+	Option sheath_boundary_simple:gamma_e = 3.5 (./BOUT.inp)
+	Option sheath_boundary_simple:gamma_i = 3.5 (./BOUT.inp)
+	Option sheath_boundary_simple:sheath_ion_polytropic = 1 (default)
+	Option sheath_boundary_simple:lower_y = false (./BOUT.inp)
+	Option sheath_boundary_simple:upper_y = true (./BOUT.inp)
+	Option sheath_boundary_simple:always_set_phi = 0 (default)
+	Option eV = 100 ()
+	Option sheath_boundary_simple:wall_potential = <Field3D> (default)
+	Option sheath_boundary_simple:no_flow = 0 (default)
+	Option sheath_boundary_simple:density_boundary_mode = 1 (default)
+	Option sheath_boundary_simple:pressure_boundary_mode = 1 (default)
+	Option sheath_boundary_simple:temperature_boundary_mode = 1 (default)
+	Option sheath_boundary_simple:diagnose = 0 (default)
+	Option eV = 100 ()
+	Option inv_meters_cubed = 1e+19 ()
+	Option meters = 0.0010217477552952484 ()
+	Option seconds = 1.0439684754508785e-08 ()
+	Option collisions:electron_electron = 1 (default)
+	Option collisions:electron_ion = 1 (default)
+	Option collisions:electron_neutral = 0 (default)
+	Option collisions:ion_ion = 1 (default)
+	Option collisions:ion_neutral = 0 (default)
+	Option collisions:neutral_neutral = 1 (default)
+	Option collisions:frictional_heating = 1 (default)
+	Option collisions:ei_multiplier = 1 (default)
+	Option collisions:diagnose = 0 (default)
+	Option eV = 100 ()
+	Option recycling:species = d+ (./BOUT.inp)
+	WARNING: Could not read 'is_pump' from grid. Setting to 0.000000e+00
+	Option d+:recycle_as = d (./BOUT.inp)
+	Option recycling:density_floor = 1e-07 (default)
+	Option d+:diagnose = true (./BOUT.inp)
+	Option d+:target_recycle_multiplier = 1 (./BOUT.inp)
+	Option d+:sol_recycle_multiplier = 1 (default)
+	Option d+:pfr_recycle_multiplier = 1 (default)
+	Option d+:pump_recycle_multiplier = 1 (default)
+	Option d+:target_recycle_energy = 3.5 (./BOUT.inp)
+	Option d+:sol_recycle_energy = 3 (default)
+	Option d+:pfr_recycle_energy = 3 (default)
+	Option d+:target_fast_recycle_fraction = 0 (default)
+	Option d+:pfr_fast_recycle_fraction = 0 (default)
+	Option d+:sol_fast_recycle_fraction = 0 (default)
+	Option d+:target_fast_recycle_energy_factor = 0 (default)
+	Option d+:sol_fast_recycle_energy_factor = 0 (default)
+	Option d+:pfr_fast_recycle_energy_factor = 0 (default)
+	Option d+:target_recycle = true (./BOUT.inp)
+	Option d+:sol_recycle = 0 (default)
+	Option d+:pfr_recycle = 0 (default)
+	Option d+:neutral_pump = 0 (default)
+	Option reactions:type = (d + e -> d+ + 2e,d+ + e -> d,d + d+ -> d+ + d,) (./BOUT.inp)
+	Option reactions:diagnose = true (./BOUT.inp)
+	Option d:K_iz_multiplier = 1 (default)
+	Option d:R_ex_multiplier = 1 (default)
+	Option reactions:diagnose = true (./BOUT.inp)
+	Option d:K_rec_multiplier = 1 (default)
+	Option d:R_rec_multiplier = 1 (default)
+	Option reactions:diagnose = true (./BOUT.inp)
+	Option reactions:no_neutral_cx_mom_gain = 0 (default)
+	Option d:K_cx_multiplier = 1 (default)
+	Option electron_force_balance:diagnose = 0 (default)
+	Option neutral_parallel_diffusion:dneut = 10 (./BOUT.inp)
+	Option neutral_parallel_diffusion:diagnose = 0 (default)
+	Option neutral_parallel_diffusion:equation_fix = 1 (default)
+	Option neutral_parallel_diffusion:thermal_conducton = 1 (default)
+	Option neutral_parallel_diffusion:viscosity = 1 (default)
+	Option grid_id =  (default)
+	Option hypnotoad_version =  (default)
+	Option hypnotoad_git_hash =  (default)
+	Option hypnotoad_git_diff =  (default)
+	Option hypnotoad_geqdsk_filename =  (default)
+	Option grid_id =  (default)
+	Option hypnotoad_version =  (default)
+	Option hypnotoad_git_hash =  (default)
+	Option hypnotoad_git_diff =  (default)
+	Option hypnotoad_geqdsk_filename =  (default)
+	Option wall_limit = -1 (default)
+	Option stopCheck = 0 (default)
+	Option datadir = . (Command line)
+	Option stopCheckName = BOUT.stop (default)
+Solver running for 250 outputs with output timestep of 4.789400e+03
+Initialising solver
+
+	SNES steady state solver
+	3d fields = 7, 2d fields = 0 neq=2800, local_N=2800
+Creating vector
+Create SNES
+Setting Jacobian matrix sizes
+	Option solver:stencil:square = 0 (default)
+	Option solver:stencil:taxi = 0 (default)
+	Option solver:stencil:cross = 0 (default)
+Setting solver:stencil:taxi = 2
+Pre-allocating Jacobian
+Marking non-zero Jacobian entries
+Assembling Jacobian matrix
+	Option solver:force_symmetric_coloring = 0 (default)
+Creating Jacobian coloring
+SNES Type : newtonls
+KSP Type  : gmres
+PC Type   : hypre
+Running simulation
+
+Run ID: ab936f7d-3805-44f2-bad3-8f0023e670af
+
+Run started at  : Sat Nov  8 14:31:12 2025
+	Option restart = false (default)
+	Option append = false (default)
+	Option dump_on_restart = 1 (default)
+	Option input:validate = 0 (default)
+	Option input:error_on_unused_options = false (./BOUT.inp)
+	Option d+_density_error_integral = 0 (upstream_density_feedback)
+Sim Time  |  RHS evals  | Wall Time |  Calc    Inv   Comm    I/O   SOLVER
+
+0.000e+00          1       2.60e-02     3.8    0.0    0.4  121.9  -26.1
+|  Step 0 of 250. Elapsed 0:00:00.0 ETA 0:00:06.54.789e+03       5583       6.21e+00    87.3    0.0    0.4    0.3   12.0
+/  Step 1 of 250. Elapsed 0:00:06.2 ETA 0:25:45.39.579e+03       6294       7.02e+00    88.0    0.0    0.4    0.2   11.4
+-  Step 2 of 250. Elapsed 0:00:13.3 ETA 0:29:01.31.437e+04       3963       4.43e+00    87.9    0.0    0.4    0.3   11.4
+\  Step 3 of 250. Elapsed 0:00:17.7 ETA 0:18:13.31.916e+04       2711       3.03e+00    86.7    0.0    0.3    0.5   12.4
+|  Step 4 of 250. Elapsed 0:00:20.7 ETA 0:12:26.22.395e+04       4692       5.13e+00    87.9    0.0    0.3    0.3   11.5
+/  Step 5 of 250. Elapsed 0:00:25.8 ETA 0:20:57.22.874e+04       7407       8.20e+00    87.3    0.0    0.3    0.2   12.2
+-  Step 6 of 250. Elapsed 0:00:34.0 ETA 0:33:20.73.353e+04       4639       5.19e+00    86.1    0.0    0.3    0.3   13.3
+\  Step 7 of 250. Elapsed 0:00:39.2 ETA 0:21:01.53.832e+04       4283       4.81e+00    86.0    0.0    0.3    0.3   13.4
+|  Step 8 of 250. Elapsed 0:00:44.0 ETA 0:19:23.84.310e+04       5565       6.29e+00    86.7    0.0    0.4    0.3   12.7
+/  Step 9 of 250. Elapsed 0:00:50.3 ETA 0:25:15.64.789e+04       7828       8.63e+00    87.5    0.0    0.3    0.2   12.0
+-  Step 10 of 250. Elapsed 0:00:59.0 ETA 0:34:30.55.268e+04      10926       1.21e+01    87.9    0.0    0.3    0.1   11.7
+\  Step 11 of 250. Elapsed 0:01:11.0 ETA 0:48:08.05.747e+04       3658       4.07e+00    87.3    0.0    0.3    0.4   11.9
+|  Step 12 of 250. Elapsed 0:01:15.1 ETA 0:16:07.76.226e+04       3086       3.49e+00    86.9    0.0    0.4    0.5   12.3
+/  Step 13 of 250. Elapsed 0:01:18.6 ETA 0:13:47.86.705e+04       4613       5.11e+00    87.8    0.0    0.4    0.3   11.5
+-  Step 14 of 250. Elapsed 0:01:23.7 ETA 0:20:05.27.184e+04       4064       4.51e+00    87.5    0.0    0.3    0.4   11.7
+\  Step 15 of 250. Elapsed 0:01:28.2 ETA 0:17:39.27.663e+04       3607       3.97e+00    87.4    0.0    0.3    0.4   11.9
+|  Step 16 of 250. Elapsed 0:01:32.2 ETA 0:15:29.98.142e+04       2969       3.28e+00    87.5    0.0    0.3    0.5   11.7
+/  Step 17 of 250. Elapsed 0:01:35.5 ETA 0:12:43.58.621e+04       5934       6.49e+00    88.2    0.0    0.3    0.3   11.2
+-  Step 18 of 250. Elapsed 0:01:42.0 ETA 0:25:05.09.100e+04       5222       5.74e+00    87.7    0.0    0.3    0.3   11.7
+\  Step 19 of 250. Elapsed 0:01:47.7 ETA 0:22:05.29.579e+04       4764       5.22e+00    87.8    0.0    0.3    0.3   11.6
+|  Step 20 of 250. Elapsed 0:01:52.9 ETA 0:20:00.91.006e+05       5237       5.76e+00    87.4    0.0    0.3    0.3   11.9
+/  Step 21 of 250. Elapsed 0:01:58.7 ETA 0:21:59.41.054e+05       5510       6.03e+00    87.9    0.0    0.3    0.3   11.5
+-  Step 22 of 250. Elapsed 0:02:04.7 ETA 0:22:54.51.102e+05       3907       4.33e+00    87.2    0.0    0.3    0.4   12.1
+\  Step 23 of 250. Elapsed 0:02:09.0 ETA 0:16:23.01.149e+05       6063       6.65e+00    87.9    0.0    0.3    0.3   11.5
+|  Step 24 of 250. Elapsed 0:02:15.7 ETA 0:25:03.71.197e+05       7976       8.72e+00    88.3    0.0    0.3    0.2   11.2
+/  Step 25 of 250. Elapsed 0:02:24.4 ETA 0:32:41.01.245e+05       4978       5.49e+00    87.9    0.0    0.3    0.3   11.4
+-  Step 26 of 250. Elapsed 0:02:29.9 ETA 0:20:30.41.293e+05       6554       7.23e+00    87.9    0.0    0.3    0.3   11.5
+\  Step 27 of 250. Elapsed 0:02:37.1 ETA 0:26:53.31.341e+05       7588       8.37e+00    88.1    0.0    0.4    0.2   11.3
+|  Step 28 of 250. Elapsed 0:02:45.5 ETA 0:30:58.71.389e+05       7428       8.14e+00    87.9    0.0    0.3    0.2   11.6
+/  Step 29 of 250. Elapsed 0:02:53.6 ETA 0:29:58.31.437e+05       7664       8.48e+00    88.4    0.0    0.4    0.2   11.1
+-  Step 30 of 250. Elapsed 0:03:02.1 ETA 0:31:04.81.485e+05       8308       9.34e+00    88.3    0.0    0.4    0.2   11.1
+\  Step 31 of 250. Elapsed 0:03:11.5 ETA 0:34:05.01.533e+05       9990       1.10e+01    88.3    0.0    0.4    0.2   11.1
+|  Step 32 of 250. Elapsed 0:03:22.5 ETA 0:40:06.61.581e+05       9629       1.07e+01    88.4    0.0    0.4    0.2   11.0
+/  Step 33 of 250. Elapsed 0:03:33.2 ETA 0:38:50.81.628e+05      10979       1.24e+01    88.5    0.0    0.4    0.2   11.0
+-  Step 34 of 250. Elapsed 0:03:45.7 ETA 0:44:46.01.676e+05       9600       1.09e+01    88.5    0.0    0.4    0.2   10.9
+\  Step 35 of 250. Elapsed 0:03:56.6 ETA 0:39:00.31.724e+05      10374       1.15e+01    88.6    0.0    0.3    0.2   10.9
+|  Step 36 of 250. Elapsed 0:04:08.0 ETA 0:40:50.81.772e+05      12214       1.33e+01    88.8    0.0    0.3    0.1   10.7
+/  Step 37 of 250. Elapsed 0:04:21.3 ETA 0:47:09.21.820e+05      11249       1.23e+01    88.5    0.0    0.3    0.2   11.0
+-  Step 38 of 250. Elapsed 0:04:33.5 ETA 0:43:18.61.868e+05      11117       1.21e+01    88.4    0.0    0.3    0.2   11.1
+\  Step 39 of 250. Elapsed 0:04:45.7 ETA 0:42:35.41.916e+05      12375       1.34e+01    88.7    0.0    0.3    0.1   10.8
+|  Step 40 of 250. Elapsed 0:04:59.1 ETA 0:47:04.11.964e+05      11139       1.22e+01    88.3    0.0    0.3    0.2   11.2
+/  Step 41 of 250. Elapsed 0:05:11.3 ETA 0:42:22.02.012e+05      12338       1.34e+01    88.6    0.0    0.3    0.1   10.9
+-  Step 42 of 250. Elapsed 0:05:24.7 ETA 0:46:25.42.059e+05      13164       1.46e+01    88.7    0.0    0.3    0.1   10.8
+\  Step 43 of 250. Elapsed 0:05:39.3 ETA 0:50:27.42.107e+05      11454       1.24e+01    88.6    0.0    0.3    0.2   11.0
+|  Step 44 of 250. Elapsed 0:05:51.7 ETA 0:42:42.12.155e+05      13378       1.45e+01    88.7    0.0    0.3    0.1   10.8
+/  Step 45 of 250. Elapsed 0:06:06.2 ETA 0:49:31.42.203e+05      12728       1.39e+01    88.5    0.0    0.3    0.2   11.1
+-  Step 46 of 250. Elapsed 0:06:20.1 ETA 0:47:05.52.251e+05      12885       1.41e+01    88.3    0.0    0.3    0.1   11.2
+\  Step 47 of 250. Elapsed 0:06:34.1 ETA 0:47:32.42.299e+05      14160       1.53e+01    88.6    0.0    0.3    0.1   10.9
+|  Step 48 of 250. Elapsed 0:06:49.5 ETA 0:51:38.12.347e+05      13171       1.43e+01    88.5    0.0    0.3    0.1   11.0
+/  Step 49 of 250. Elapsed 0:07:03.8 ETA 0:47:57.42.395e+05      12873       1.40e+01    88.3    0.0    0.3    0.1   11.3
+-  Step 50 of 250. Elapsed 0:07:17.8 ETA 0:46:45.42.443e+05      14273       1.55e+01    88.5    0.0    0.3    0.1   11.0
+\  Step 51 of 250. Elapsed 0:07:33.3 ETA 0:51:32.92.490e+05      13438       1.46e+01    88.4    0.0    0.3    0.1   11.2
+|  Step 52 of 250. Elapsed 0:07:48.0 ETA 0:48:18.62.538e+05      14350       1.56e+01    88.6    0.0    0.3    0.1   11.0
+/  Step 53 of 250. Elapsed 0:08:03.6 ETA 0:51:13.22.586e+05      14407       1.57e+01    88.6    0.0    0.3    0.1   11.0
+-  Step 54 of 250. Elapsed 0:08:19.3 ETA 0:51:14.02.634e+05      15447       1.68e+01    88.6    0.0    0.3    0.1   11.0
+\  Step 55 of 250. Elapsed 0:08:36.1 ETA 0:54:39.42.682e+05      14616       1.61e+01    88.5    0.0    0.3    0.1   11.0
+|  Step 56 of 250. Elapsed 0:08:52.2 ETA 0:52:10.22.730e+05      14173       1.58e+01    88.5    0.0    0.4    0.1   11.0
+/  Step 57 of 250. Elapsed 0:09:08.1 ETA 0:50:55.72.778e+05      16150       1.77e+01    88.6    0.0    0.3    0.1   10.9
+-  Step 58 of 250. Elapsed 0:09:25.7 ETA 0:56:33.42.826e+05      15735       1.75e+01    88.4    0.0    0.4    0.1   11.1
+\  Step 59 of 250. Elapsed 0:09:43.2 ETA 0:55:44.52.874e+05      16053       1.77e+01    88.5    0.0    0.3    0.1   11.1
+|  Step 60 of 250. Elapsed 0:10:00.9 ETA 0:56:03.32.922e+05      15694       1.75e+01    88.5    0.0    0.4    0.1   11.0
+/  Step 61 of 250. Elapsed 0:10:18.5 ETA 0:55:12.92.969e+05      15724       1.77e+01    88.5    0.0    0.4    0.1   11.0
+-  Step 62 of 250. Elapsed 0:10:36.2 ETA 0:55:33.3

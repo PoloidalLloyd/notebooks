@@ -1,0 +1,131 @@
+MXG = 0		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+datadir = .		# type: string, source: Command line
+nout = 200		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+optionfile = BOUT.inp		# type: string, source: default
+settingsfile = BOUT.settings		# type: string, source: default
+timestep = 95788 * 0.05		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+
+[NVd+]
+function = 0		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+
+[Nd]
+function = 0.001		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+
+[Nd+]
+function = 1		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+source_shape = H(mesh:y_xpt - y) * 1e20		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+
+[Pd]
+function = 0.0001		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+
+[Pd+]
+function = 1		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+powerflux = 2.5e7		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+source = (powerflux*2/3 / (mesh:length_xpt))*H(mesh:y_xpt - y)		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+
+[Pe]
+function = `Pd+:function`		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+source = `Pd+:source`		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+
+[d]
+AA = 2		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+charge = 0		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+density_floor = 1e-7		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+diagnose = true		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+thermal_conduction = true		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+type = (evolve_density, evolve_pressure, evolve_momentum,noflow_boundary)		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+
+[d+]
+AA = 2		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+charge = 1		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+density_controller_i = 1e-2		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+density_controller_p = 5e2		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+density_source_positive = false		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+density_upstream = 5e19		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+diagnose = true		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+noflow_lower_y = true		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+noflow_upper_y = false		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+recycle_as = d		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+target_recycle = true		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+target_recycle_energy = 3.5		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+target_recycle_multiplier = 1		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+thermal_conduction = true		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+type = (evolve_density, evolve_pressure, evolve_momentum,noflow_boundary, upstream_density_feedback)		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+
+[e]
+AA = 1/1836		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+charge = -1		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+diagnose = true		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+noflow_upper_y = false		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+thermal_conduction = true		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+type = quasineutral, evolve_pressure, zero_current, noflow_boundary		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+
+[electromagnetic:laplacian]
+atol_accept = 1e-06		# unused value (NOT marked conditionally used), type: BoutReal, source: user_default
+maxits = 1000		# unused value (NOT marked conditionally used), type: int, source: user_default
+rtol_accept = 0.01		# unused value (NOT marked conditionally used), type: BoutReal, source: user_default
+type = naulin		# unused value (NOT marked conditionally used), type: string, source: user_default
+
+[fieldline_geometry]
+compute_Btor_from_R = false		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+diagnose = true		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+fieldline_radius = mesh:fieldline_radius		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+lambda_int = 1		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+poloidal_magnetic_field = mesh:poloidal_magnetic_field		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+toroidal_magnetic_field = mesh:toroidal_magnetic_field		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+
+[hermes]
+Bnorm = 1		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+Nnorm = 1e19		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+Tnorm = 100		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+components = (d+, d, e,sheath_boundary_simple, collisions, recycling, reactions,electron_force_balance, neutral_parallel_diffusion,fieldline_geometry)		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+normalise_metric = true		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+
+[input]
+error_on_unused_options = false		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+
+[mesh]
+J = 1		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+calcParallelSlices_on_communicate = false		# unused value (NOT marked conditionally used), type: bool, source: user_default
+dy = (length / ny) * (1 + (1-dymin)*(1-y/pi))		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+dymin = 0.1		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+file = grid_1D_from_2d.nc		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+ixseps1 = -1		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+ixseps2 = -1		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+length = 30		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+length_xpt = 10		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+source = length_xpt / length		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+y_xpt = pi * ( 2 - dymin - sqrt( (2-dymin)^2 - 4*(1-dymin)*source ) ) / (1 - dymin)		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+
+[neutral_parallel_diffusion]
+dneut = 10		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+
+[reactions]
+diagnose = true		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+type = (d + e -> d+ + 2e,d+ + e -> d,d + d+ -> d+ + d,)		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+
+[recycling]
+species = d+		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+
+[run]
+revision = ab0c53a3a040e84ed1ab90075010a8b481fe4b6e		# unused value (NOT marked conditionally used), source: Output
+started = Sat Nov  8 15:43:59 2025
+		# unused value (NOT marked conditionally used), source: Output
+version = 5.2.0		# unused value (NOT marked conditionally used), source: Output
+
+[sheath_boundary_simple]
+gamma_e = 3.5		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+gamma_i = 3.5		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+lower_y = false		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+upper_y = true		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+
+[solver]
+atol = 1e-7		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+ksp_type = gmres		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+lag_jacobian = 500		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+max_nonlinear_iterations = 10		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+pc_hypre_type = euclid		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+pc_type = hypre		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+rtol = 1e-5		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+snes_type = newtonls		# unused value (NOT marked conditionally used), source: ./BOUT.inp
+type = beuler		# unused value (NOT marked conditionally used), source: ./BOUT.inp

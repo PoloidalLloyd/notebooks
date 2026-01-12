@@ -1,0 +1,273 @@
+BOUT++ version 5.2.0
+Revision: ab0c53a3a040e84ed1ab90075010a8b481fe4b6e
+Code compiled on Oct 28 2025 at 13:37:44
+
+B.Dudson (University of York), M.Umansky (LLNL) 2007
+Based on BOUT by Xueqiao Xu, 1999
+
+Processor number: 0 of 1
+
+pid: 83308
+
+Compile-time options:
+	Runtime error checking enabled, level 2
+	Parallel NetCDF support disabled
+	Metrics mode is 2D
+	FFT support enabled
+	Natural language support enabled
+	LAPACK support disabled
+	NetCDF support enabled (NetCDF4)
+	ADIOS2 support disabled
+	PETSc support enabled
+	Pretty function name support enabled
+	PVODE support enabled
+	Score-P support disabled
+	SLEPc support disabled
+	SUNDIALS support enabled
+	Backtrace in exceptions disabled
+	Colour in logs enabled
+	OpenMP parallelisation disabled, using 1 threads
+	Extra debug output disabled
+	Floating-point exceptions disabled
+	Signal handling support enabled
+	Field name tracking enabled
+	Message stack enabled
+	Compiled with flags : "-Wall -Wextra -Wnull-dereference -Wno-cast-function-type -DCHECK=2 -O2 -g -DNDEBUG"
+	Command line options for this run : ../../../hermes-3 -d . 
+Reading options file ./BOUT.inp
+	Option datadir = . (Command line)
+	Option optionfile = BOUT.inp (default)
+	Option settingsfile = BOUT.settings (default)
+Writing options to file ./BOUT.settings
+	Option mesh:type = bout (default)
+	Option grid =  (default)
+	Option mesh:file = grid_1d_minimal.nc (./BOUT.inp)
+
+Getting grid data from file grid_1d_minimal.nc
+	Option format =  (default)
+	Option mesh:format =  (default)
+	Option file = grid_1d_minimal.nc ()
+	Option append = 0 (default)
+	Option y_boundary_guards = 0 (default)
+	Option ny_inner = 0 (default)
+	Option mesh:calcParallelSlices_on_communicate = false (user_default)
+	Option mesh:maxregionblocksize = 64 (default)
+	Option mesh:staggergrids = 0 (default)
+	Option mesh:include_corner_cells = 1 (default)
+	Option mesh:ddz:fft_filter = 0 (default)
+	Option mesh:symmetricGlobalX = 1 (default)
+	Option optionfile = BOUT.inp (default)
+WARNING: The default of this option has changed in release 4.1.
+If you want the old setting, you have to specify mesh:symmetricGlobalY=false in BOUT.inp
+	Option mesh:symmetricGlobalY = 1 (default)
+Loading mesh
+	Option nx = 1 (grid_1d_minimal.nc)
+	Option ny = 400 (grid_1d_minimal.nc)
+	Option nz = 1 (grid_1d_minimal.nc)
+	Read nz from input grid file
+	Grid size: 1 x 400 x 1
+	Option MXG = 0 ()
+	Option input:transform_from_field_aligned = true (default)
+	Option input:max_recursion_depth = 0 (default)
+	Option MXG = 0 (./BOUT.inp)
+	Option MYG = 0 ()
+	Option MYG = 2 (default)
+	Guard cells (x,y,z): 0, 2, 0
+	Option ixseps1 = -1 (grid_1d_minimal.nc)
+	Option ixseps2 = -1 (grid_1d_minimal.nc)
+	Option jyseps1_1 = -1 ()
+	Option jyseps1_2 = 200 ()
+	Option jyseps2_1 = 200 ()
+	Option jyseps2_2 = 399 ()
+	Option ny_inner = 200 ()
+Finding value for NXPE (ideal = 0.050000)
+	Candidate value: 1
+	 -> Good value
+	Domain split (NXPE=1, NYPE=1) into domains (localNx=1, localNy=400)
+	Option IncIntShear = 0 (default)
+	Option periodicX = 0 (default)
+	Option async_send = 0 (default)
+	Option ZMIN = 0 (default)
+	Option ZMAX = 1 (default)
+	EQUILIBRIUM IS SINGLE NULL (SND) 
+	MYPE_IN_CORE = false
+	DXS = 0, DIN = -1. DOUT = -1
+	UXS = 0, UIN = -1. UOUT = -1
+	XIN = -1, XOUT = -1
+	Twist-shift: 
+	Option twistshift = 0 (default)
+Possible boundary regions are: lower_target, upper_target, Boundary regions in this processor: upper_target, lower_target, 
+Constructing default regions
+	Boundary region inner X
+	Boundary region outer X
+	Option mesh:extrapolate_x = 1 (default)
+	Option mesh:extrapolate_y = 1 (default)
+WARNING: extrapolating input mesh quantities into x-boundary cells. Set option extrapolate_x=false to disable this.
+WARNING: extrapolating input mesh quantities into y-boundary cells. Set option extrapolate_y=false to disable this.
+	Option dx = Matrix<BoutReal> (grid_1d_minimal.nc)
+	Option dy = Matrix<BoutReal> (grid_1d_minimal.nc)
+	Option ZMIN = 0 (default)
+	Option ZMAX = 1 (default)
+	Option dz = 6.283185307179586 (grid_1d_minimal.nc)
+	Option mesh:paralleltransform:type = identity (default)
+	Option parallel_transform =  (default)
+	WARNING: Could not read 'g11' from grid. Setting to 1.000000e+00
+	WARNING: Could not read 'g22' from grid. Setting to 1.000000e+00
+	WARNING: Could not read 'g33' from grid. Setting to 1.000000e+00
+	WARNING: Could not read 'g12' from grid. Setting to 0.000000e+00
+	WARNING: Could not read 'g13' from grid. Setting to 0.000000e+00
+	WARNING: Could not read 'g23' from grid. Setting to 0.000000e+00
+	Local maximum error in diagonal inversion is 0.000000e+00
+	Local maximum error in off-diagonal inversion is 0.000000e+00
+	Option J = Matrix<BoutReal> (grid_1d_minimal.nc)
+	Maximum difference in J is 0.000000e+00
+	WARNING: Could not read 'Bxy' from grid. Setting to 0.000000e+00
+	WARNING: Magnitude of B field 'Bxy' not found. Calculating from metric tensor
+	WARNING: Could not read 'ShiftTorsion' from grid. Setting to 0.000000e+00
+	WARNING: No Torsion specified for zShift. Derivatives may not be correct
+Calculating differential geometry terms
+	Communicating connection terms
+	Option non_uniform = 1 (default)
+	WARNING: Could not read 'd2x' from grid. Setting to 0.000000e+00
+	WARNING: differencing quantity 'd2x' not found. Calculating from dx
+	WARNING: Could not read 'd2y' from grid. Setting to 0.000000e+00
+	WARNING: differencing quantity 'd2y' not found. Calculating from dy
+	done
+	Option output:enabled = 1 (default)
+	Option restart_files:enabled = 1 (default)
+	Option datadir = . (Command line)
+	Option append = 0 (default)
+	Option output:type = netcdf (default)
+	Option output:path = . (user_default)
+	Option output:prefix = BOUT.dmp (user_default)
+	Option output:append = false (user_default)
+	Option datadir = . (Command line)
+	Option restart_files:type = netcdf (default)
+	Option restart_files:path = . (user_default)
+	Option restart_files:prefix = BOUT.restart (user_default)
+	Option restart_files:append = false (user_default)
+	Option solver:type = beuler (./BOUT.inp)
+	Option solver:monitor_timestep = 0 (default)
+	Option solver:save_repeat_run_id = 0 (default)
+	Option solver:is_nonsplit_model_diffusive = 1 (default)
+	Option solver:mms = 0 (default)
+	Option solver:mms_initialise = 0 (default)
+	Option nout = 10 (./BOUT.inp)
+	Option solver:nout = 10 (default)
+	Option timestep = 4789.400000000001 (./BOUT.inp)
+	Option solver:output_step = 4789.4 (default)
+Setting `nout` is deprecated. Please set `solver:nout` instead.Setting `timestep` is deprecated. Please set `solver:output_step` instead.	Option solver:timestep = 1 (default)
+	Option solver:dt_min_reset = 1e-06 (default)
+	Option solver:max_timestep = 1e+37 (default)
+	Option solver:snes_type = newtonls (./BOUT.inp)
+	Option solver:atol = 1e-07 (./BOUT.inp)
+	Option solver:rtol = 1e-05 (./BOUT.inp)
+	Option solver:stol = 1e-08 (default)
+	Option solver:max_nonlinear_iterations = 10 (./BOUT.inp)
+	Option solver:lower_its = 5 (default)
+	Option solver:upper_its = 8 (default)
+	Option solver:timestep_factor_on_failure = 0.5 (default)
+	Option solver:timestep_factor_on_upper_its = 0.9 (default)
+	Option solver:timestep_factor_on_lower_its = 1.4 (default)
+	Option solver:diagnose = 0 (default)
+	Option solver:diagnose_failures = 0 (default)
+	Option solver:equation_form = rearranged_backward_euler (default)
+Initialising PETSc
+	Option solver:predictor = 1 (default)
+	Option solver:use_precon = 0 (default)
+	Option solver:ksp_type = gmres (./BOUT.inp)
+	Option solver:kspsetinitialguessnonzero = 0 (default)
+	Option solver:maxl = 20 (default)
+	Option solver:pc_type = hypre (./BOUT.inp)
+	Option solver:pc_hypre_type = euclid (./BOUT.inp)
+	Option solver:line_search_type = default (default)
+	Option solver:matrix_free = 0 (default)
+	Option solver:matrix_free_operator = 0 (default)
+	Option solver:lag_jacobian = 500 (./BOUT.inp)
+	Option solver:use_coloring = 1 (default)
+	Option solver:prune_jacobian = 0 (default)
+	Option solver:prune_abstol = 1e-16 (default)
+	Option solver:prune_fraction = 0.2 (default)
+	Option solver:scale_rhs = 0 (default)
+	Option solver:scale_vars = 0 (default)
+Setting up output (experimental output) file
+	Option restart = 0 (default)
+
+Git Version of Hermes: 694bd61e20829a0c923f52ae5469c9fd28515fbf
+Slope limiter: MinMod
+	Option hermes:Tnorm = 100 (./BOUT.inp)
+	Option hermes:Nnorm = 1e+19 (./BOUT.inp)
+	Option hermes:Bnorm = 1 (./BOUT.inp)
+	Option hermes:recalculate_metric = 0 (default)
+	Option hermes:normalise_metric = true (./BOUT.inp)
+Calculating differential geometry terms
+	Communicating connection terms
+	Option non_uniform = true (default)
+	WARNING: Could not read 'd2x' from grid. Setting to 0.000000e+00
+	WARNING: differencing quantity 'd2x' not found. Calculating from dx
+	WARNING: Could not read 'd2y' from grid. Setting to 0.000000e+00
+	WARNING: differencing quantity 'd2y' not found. Calculating from dy
+	Option hermes:components = (d+, d, e,sheath_boundary_simple, collisions, recycling, reactions,electron_force_balance, neutral_parallel_diffusion) (./BOUT.inp)
+	Option d+:type = (evolve_density, evolve_pressure, evolve_momentum,noflow_boundary, upstream_density_feedback) (./BOUT.inp)
+	Option d+:bndry_flux = 1 (default)
+	Option d+:poloidal_flows = 1 (default)
+	Option d+:density_floor = 1e-07 (default)
+	Option d+:low_n_diffuse = 0 (default)
+	Option d+:low_n_diffuse_perp = 0 (default)
+	Option d+:low_p_diffuse_perp = 0 (default)
+	Option d+:hyper_z = -1 (default)
+	Option d+:evolve_log = 0 (default)
+Setting boundary for variable Nd+
+	upper_target region: 	Option all:bndry_all = dirichlet (default)
+
+	lower_target region: 	Option all:bndry_all = dirichlet (default)
+
+	Option input:transform_from_field_aligned = true (default)
+	Option input:max_recursion_depth = 0 (default)
+	Option Nd+:function = 1 (./BOUT.inp)
+	Option all:scale = 1 (default)
+	Option all:evolve_bndry = 0 (default)
+	Option Nd+:evolve_bndry = 0 (default)
+	Option d+:charge = 1 (./BOUT.inp)
+	Option d+:AA = 2 (./BOUT.inp)
+	Option d+:diagnose = true (./BOUT.inp)
+	Option inv_meters_cubed = 1e+19 ()
+	Option seconds = 1.0439684754508785e-08 ()
+	Option Nd+:source_time_dependent = 0 (default)
+	Option Nd+:source_only_in_core = 0 (default)
+	WARNING: Could not read 'Nd+_src' from grid. Setting to 0.000000e+00
+	Option Nd+:source = <Field3D> (default)
+	Option Nd+:neumann_boundary_average_z = 0 (default)
+	Option d+:evolve_log = false (default)
+	Option d+:density_floor = 1e-07 (default)
+	Option d+:low_n_diffuse_perp = false (default)
+	Option d+:temperature_floor = 0.1 (default)
+	Option d+:low_T_diffuse_perp = 0 (default)
+	Option d+:low_p_diffuse_perp = false (default)
+Setting boundary for variable Pd+
+	upper_target region: 	Option all:bndry_all = dirichlet (default)
+
+	lower_target region: 	Option all:bndry_all = dirichlet (default)
+
+	Option input:transform_from_field_aligned = true (default)
+	Option input:max_recursion_depth = 0 (default)
+	Option Pd+:function = 1 (./BOUT.inp)
+	Option all:scale = 1 (default)
+	Option all:evolve_bndry = false (default)
+	Option Pd+:evolve_bndry = 0 (default)
+	Option d+:bndry_flux = true (default)
+	Option d+:poloidal_flows = true (default)
+	Option d+:p_div_v = 0 (default)
+	Option d+:hyper_z = -1 (default)
+	Option d+:hyper_z_T = -1 (default)
+	Option d+:diagnose = true (./BOUT.inp)
+	Option d+:precondition = 1 (default)
+	Option inv_meters_cubed = 1e+19 ()
+	Option eV = 100 ()
+	Option seconds = 1.0439684754508785e-08 ()
+	WARNING: Could not read 'Pd+_src' from grid. Setting to 0.000000e+00
+	Option Pd+:powerflux = 2.5e7 (./BOUT.inp)
+	Option mesh:length_xpt = 10 (./BOUT.inp)
+	Option mesh:y_xpt = pi * ( 2 - dymin - sqrt( (2-dymin)^2 - 4*(1-dymin)*source ) ) / (1 - dymin) (./BOUT.inp)
+	Option mesh:dymin = 0.1 (./BOUT.inp)
+	Option mesh:source = length_xpt / mesh:length (./BOUT.inp)
