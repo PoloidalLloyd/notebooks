@@ -11,7 +11,7 @@ sys.path.append(os.path.join(r"/Users/lloyd/Documents/hermes_dir/analysis/sdtool
 sys.path.append(os.path.join(r"/Users/lloyd/Documents/hermes_dir/analysis/notebooks/hermes-3/general_functions"))
 sys.path.append(os.path.join(r"/Users/lloyd/Documents/hermes_dir/analysis/notebooks/hermes-3/general_functions/source_functions.py"))
 from convergence_functions import *
-from plotting_functions import *
+# from plotting_functions import *
 from source_functions import *
 from matplotlib.ticker import LogFormatter
 from gpu_accelerated_animation import create_animation_ultra_fast_gpu, quick_gpu_animation
@@ -39,11 +39,18 @@ def main(directory_path):
 
     while True:
         try:
-            ds = xh.open(casename)  # Attempt to open the dataset
+            ds = Load.case_1D(casename, use_squash = True).ds  # Attempt to open the dataset
 
             # Change to output directory so plots are saved there
             original_dir = os.getcwd()
             os.chdir(output_dir)
+
+
+            plot_multi_vars(ds, save=True)
+            print('Multi-vars plotted')
+
+            animate_multi_vars(ds, filename="multi_vars.mp4")
+            print('Multi-vars animated')
 
             # Generate time history plot
             plot_time_history(
@@ -56,7 +63,7 @@ def main(directory_path):
             # Generate profiles plot
             plot_profiles(
                 ds, 
-                variables=['Te', 'Td+', 'Ne', 'Nd'], 
+                variables=['Te', 'Td+' , 'Td', 'Ne', 'Nd', 'Pe', 'Pd+', 'Pd', 'NVd+', 'NVd'], 
                 data_label='Simulation', 
                 save=True
             )
@@ -72,14 +79,23 @@ def main(directory_path):
             except Exception:
                 print('No pi feedback source found')
 
-            # Generate profiles animation
-            create_animation_ultra_fast_gpu(
-                ds,
-                variables=['Te', 'Td+', 'Ne', 'Nd'],
-                max_frames=15, 
-                quality='high',  # 120 DPI instead of 50
-                filename='profiles_animation.mp4'
-            )
+            try:
+                print('Plotting fieldline geometry')
+                plot_fieldline_geometry(ds)
+                print('Fieldline geometry plotted')
+            except Exception as e:
+                print('No fieldline geometry found')
+                print(e)
+
+            # # Generate profiles animation
+            # create_animation_ultra_fast_gpu(
+            #     ds,
+            #     variables=['Te', 'Td+', 'Ne', 'Nd'],
+            #     max_frames=60, 
+            #     quality='high',  # 120 DPI instead of 50
+            #     filename='profiles_animation.mp4',
+            #     all_variables=True
+            # )
 
             # Restore original directory
             os.chdir(original_dir)
@@ -99,6 +115,7 @@ def main(directory_path):
 
             # Sleep for a short time before trying again
             time.sleep(0.5)  # Adjust the sleep time if needed
+
 
 
 if __name__ == "__main__":

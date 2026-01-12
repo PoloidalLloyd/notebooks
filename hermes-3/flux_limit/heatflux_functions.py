@@ -1,6 +1,5 @@
-from scipy.integrate import simps
-import matplotlib.pyplot as pltimport
-from scipy.integrate import cumtrapz
+from scipy.integrate import simpson
+from scipy.integrate import cumulative_trapezoid
 import xhermes as xh
 from boutdata.data import BoutData
 from boutdata import collect
@@ -263,8 +262,8 @@ def divq_integrate(dataframe, snb_int = False):
     div_q_snb = np.ravel(dataframe['Div_Q_SNB'].values)
     div_q_sh = np.ravel(dataframe['Div_Q_SH'].values)
 
-    q_snb = cumtrapz(div_q_snb, x, initial=0)
-    q_sh = cumtrapz(div_q_sh, x, initial=0)
+    q_snb = cumulative_trapezoid(div_q_snb, x, initial=0)
+    q_sh = cumulative_trapezoid(div_q_sh, x, initial=0)
 
     if snb_int == False:
         return q_sh
