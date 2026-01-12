@@ -124,7 +124,7 @@ def _ensure_sdtools_on_path():
 
 # ---- Qt imports (PyQt6 preferred; fall back to PySide6) ----
 try:
-    from PyQt6.QtCore import QEvent, Qt  # type: ignore
+    from PyQt6.QtCore import QEvent, Qt, QTimer  # type: ignore
     from PyQt6.QtGui import QAction, QColor, QPalette  # type: ignore
     from PyQt6.QtWidgets import (  # type: ignore
         QAbstractItemView,
@@ -137,8 +137,10 @@ try:
         QMainWindow,
         QMenu,
         QPushButton,
+        QSpinBox,
         QSlider,
         QSplitter,
+        QTabWidget,
         QVBoxLayout,
         QWidget,
     )
@@ -152,7 +154,7 @@ try:
         return Qt.CheckState.Unchecked
 
 except Exception:  # pragma: no cover
-    from PySide6.QtCore import QEvent, Qt  # type: ignore
+    from PySide6.QtCore import QEvent, Qt, QTimer  # type: ignore
     from PySide6.QtGui import QAction, QColor, QPalette  # type: ignore
     from PySide6.QtWidgets import (  # type: ignore
         QAbstractItemView,
@@ -165,8 +167,10 @@ except Exception:  # pragma: no cover
         QMainWindow,
         QMenu,
         QPushButton,
+        QSpinBox,
         QSlider,
         QSplitter,
+        QTabWidget,
         QVBoxLayout,
         QWidget,
     )
@@ -293,12 +297,22 @@ class Hermes3QtMainWindow(QMainWindow):
         self.canvas.mpl_connect("draw_event", lambda _evt: self._position_overlay_buttons())
         self.canvas.installEventFilter(self)
 
+        # Time-history performance helpers:
+        # - debounce redraws (avoid redrawing many times while user drags/scrolls)
+        # - cache extracted time series per case/var/index (avoid repeated xarray slicing)
+        self._hist_redraw_timer = QTimer(self)
+        self._hist_redraw_timer.setSingleShot(True)
+        self._hist_redraw_timer.timeout.connect(self._do_redraw_time_history)
+        self._hist_cache: Dict[tuple, tuple] = {}
+        self._hist_max_points = 2000  # downsample long traces for responsiveness
+
         if initial_case_path:
             self.path_edit.setText(str(initial_case_path))
             self.load_dataset(replace=True)
         else:
             self.set_status("Enter a case directory path and click 'Load dataset'.")
             self.redraw()
+            self.request_time_history_redraw()
 
     # ---------- UI ----------
     def _build_ui(self) -> None:
@@ -338,12 +352,13 @@ class Hermes3QtMainWindow(QMainWindow):
         self.datasets_label.setWordWrap(True)
         left_layout.addWidget(self.datasets_label)
 
-        # Search box
+        # Shared variable list (used for both Profiles and Time history)
+        left_layout.addWidget(QLabel("Search variables"))
         self.search_edit = QLineEdit()
         self.search_edit.setPlaceholderText("search variables…")
         left_layout.addWidget(self.search_edit)
 
-        left_layout.addWidget(QLabel("Variables (check to plot; right-click for options)"))
+        left_layout.addWidget(QLabel("Variables (check/double-click to plot; right-click for options)"))
         self.vars_list = QListWidget()
         self.vars_list.setUniformItemSizes(True)
         self.vars_list.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
@@ -351,12 +366,55 @@ class Hermes3QtMainWindow(QMainWindow):
         try:
             self.vars_list.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
         except Exception:
-            # PySide6 older enums fallback
             self.vars_list.setEditTriggers(QAbstractItemView.NoEditTriggers)  # type: ignore[attr-defined]
         left_layout.addWidget(self.vars_list, 1)
 
         self.deselect_btn = QPushButton("Deselect All")
         left_layout.addWidget(self.deselect_btn)
+
+        # Per-view controls (selection is shared)
+        self.controls_tabs = QTabWidget()
+
+        # Profiles controls (informational only; buttons live on plots)
+        prof_ctrl_tab = QWidget()
+        prof_ctrl_layout = QVBoxLayout(prof_ctrl_tab)
+        prof_ctrl_layout.setContentsMargins(6, 6, 6, 6)
+        prof_ctrl_layout.setSpacing(6)
+        prof_ctrl_layout.addWidget(QLabel("Profiles controls:\n- Use the overlay buttons on each plot for y-scale and y-limits.\n- Or right-click a variable to set modes."))
+        prof_ctrl_layout.addStretch(1)
+
+        # Time history controls
+        hist_ctrl_tab = QWidget()
+        hist_ctrl_layout = QVBoxLayout(hist_ctrl_tab)
+        hist_ctrl_layout.setContentsMargins(6, 6, 6, 6)
+        hist_ctrl_layout.setSpacing(6)
+        hist_ctrl_layout.addWidget(QLabel("Time history controls:"))
+
+        ctrl_row = QHBoxLayout()
+        ctrl_row.addWidget(QLabel("upstream idx"))
+        self.hist_upstream_spin = QSpinBox()
+        self.hist_upstream_spin.setRange(-1000000, 1000000)
+        self.hist_upstream_spin.setValue(2)
+        ctrl_row.addWidget(self.hist_upstream_spin)
+
+        ctrl_row.addWidget(QLabel("target idx"))
+        self.hist_target_spin = QSpinBox()
+        self.hist_target_spin.setRange(-1000000, 1000000)
+        self.hist_target_spin.setValue(-2)
+        ctrl_row.addWidget(self.hist_target_spin)
+
+        ctrl_row.addWidget(QLabel("time slices"))
+        self.hist_time_slices_spin = QSpinBox()
+        self.hist_time_slices_spin.setRange(10, 1000000)
+        self.hist_time_slices_spin.setValue(800)
+        ctrl_row.addWidget(self.hist_time_slices_spin)
+        ctrl_row.addStretch(1)
+        hist_ctrl_layout.addLayout(ctrl_row)
+        hist_ctrl_layout.addStretch(1)
+
+        self.controls_tabs.addTab(prof_ctrl_tab, "Profiles")
+        self.controls_tabs.addTab(hist_ctrl_tab, "Time history")
+        left_layout.addWidget(self.controls_tabs)
 
         # Right panel
         right = QWidget()
@@ -364,11 +422,20 @@ class Hermes3QtMainWindow(QMainWindow):
         right_layout.setContentsMargins(8, 8, 8, 8)
         right_layout.setSpacing(6)
 
+        # Plot tabs (Profiles vs Time history)
+        self.plot_tabs = QTabWidget()
+
+        # Profiles plot tab
+        prof_plot_tab = QWidget()
+        prof_plot_layout = QVBoxLayout(prof_plot_tab)
+        prof_plot_layout.setContentsMargins(0, 0, 0, 0)
+        prof_plot_layout.setSpacing(6)
+
         self.figure = Figure(figsize=(10.5, 7.5))
         self.canvas = FigureCanvas(self.figure)
         self.toolbar = NavigationToolbar(self.canvas, self)
-        right_layout.addWidget(self.toolbar)
-        right_layout.addWidget(self.canvas, 1)
+        prof_plot_layout.addWidget(self.toolbar)
+        prof_plot_layout.addWidget(self.canvas, 1)
 
         slider_row = QHBoxLayout()
         self.time_slider = QSlider(Qt.Orientation.Horizontal)
@@ -381,7 +448,26 @@ class Hermes3QtMainWindow(QMainWindow):
         slider_row.addWidget(QLabel("time index"))
         slider_row.addWidget(self.time_slider, 1)
         slider_row.addWidget(self.time_readout)
-        right_layout.addLayout(slider_row)
+        prof_plot_layout.addLayout(slider_row)
+
+        # Time history plot tab
+        hist_plot_tab = QWidget()
+        hist_plot_layout = QVBoxLayout(hist_plot_tab)
+        hist_plot_layout.setContentsMargins(0, 0, 0, 0)
+        hist_plot_layout.setSpacing(6)
+
+        self.hist_figure = Figure(figsize=(10.5, 7.5))
+        self.hist_canvas = FigureCanvas(self.hist_figure)
+        self.hist_toolbar = NavigationToolbar(self.hist_canvas, self)
+        hist_plot_layout.addWidget(self.hist_toolbar)
+        hist_plot_layout.addWidget(self.hist_canvas, 1)
+
+        self.hist_time_readout = QLabel("Time history")
+        hist_plot_layout.addWidget(self.hist_time_readout)
+
+        self.plot_tabs.addTab(prof_plot_tab, "Profiles")
+        self.plot_tabs.addTab(hist_plot_tab, "Time history")
+        right_layout.addWidget(self.plot_tabs, 1)
 
         splitter.addWidget(left)
         splitter.addWidget(right)
@@ -401,11 +487,44 @@ class Hermes3QtMainWindow(QMainWindow):
         self.vars_list.itemDoubleClicked.connect(self._on_var_item_double_clicked)
         self.vars_list.customContextMenuRequested.connect(self._on_var_list_context_menu)
         self.time_slider.valueChanged.connect(lambda _v: self.redraw())
+        self.hist_upstream_spin.valueChanged.connect(lambda _v: self.request_time_history_redraw())
+        self.hist_target_spin.valueChanged.connect(lambda _v: self.request_time_history_redraw())
+        self.hist_time_slices_spin.valueChanged.connect(lambda _v: self.request_time_history_redraw())
+
+        # Redraw correct tab when switching
+        self.plot_tabs.currentChanged.connect(self._on_plot_tab_changed)
 
     # ---------- Status / datasets ----------
     def set_status(self, msg: str, *, is_error: bool = False) -> None:
         self.status_label.setText(msg)
         self.status_label.setStyleSheet("color: #b00020;" if is_error else "color: #333;")
+
+    def _on_plot_tab_changed(self, index: int) -> None:
+        """
+        Keep the left-side controls tab aligned with the active plot tab,
+        and redraw whichever plot is being shown.
+        """
+        try:
+            # Sync the controls tab with the plot tab (0=Profiles, 1=Time history)
+            self.controls_tabs.setCurrentIndex(int(index))
+        except Exception:
+            pass
+        # Redraw both (cheap enough and keeps state consistent)
+        self.redraw()
+        self.request_time_history_redraw()
+
+    def request_time_history_redraw(self) -> None:
+        """
+        Debounced request to redraw the time-history plot.
+
+        Matplotlib can be slow when rebuilding many subplots; debouncing avoids
+        multiple redraws while the user is still adjusting controls.
+        """
+        try:
+            self._hist_redraw_timer.start(120)
+        except Exception:
+            # Fallback: redraw immediately
+            self._do_redraw_time_history()
 
     def _update_datasets_list(self) -> None:
         if not self.cases:
@@ -481,6 +600,7 @@ class Hermes3QtMainWindow(QMainWindow):
         # Update display text (so mode info stays visible)
         item.setText(self._item_text_for_var(name))
         self.redraw()
+        self.request_time_history_redraw()
 
     def _on_var_item_double_clicked(self, item: "QListWidgetItem") -> None:
         """
@@ -505,6 +625,7 @@ class Hermes3QtMainWindow(QMainWindow):
         finally:
             self.vars_list.blockSignals(False)
         self.redraw()
+        self.request_time_history_redraw()
 
     def _cycle_yscale(self, current: str) -> str:
         order = ["linear", "log", "symlog"]
@@ -867,6 +988,12 @@ class Hermes3QtMainWindow(QMainWindow):
             self._update_datasets_list()
             self.set_status("")
             self.redraw()
+            # New dataset -> invalidate cached time history and redraw (debounced)
+            try:
+                self._hist_cache.clear()
+            except Exception:
+                pass
+            self.request_time_history_redraw()
         except Exception as e:
             self.set_status(f"Failed to load dataset: {e}", is_error=True)
 
@@ -1137,6 +1264,192 @@ class Hermes3QtMainWindow(QMainWindow):
         # Sync overlay buttons to the current subplot grid.
         self._sync_overlay_buttons(vars_to_plot=vars_to_plot, axes=axes)
         self.canvas.draw_idle()
+
+    # ---------- Time history plotting ----------
+    def redraw_time_history(self) -> None:
+        """
+        Backwards-compatible entry point.
+        Prefer `request_time_history_redraw()` for better interactivity.
+        """
+        self.request_time_history_redraw()
+
+    def _do_redraw_time_history(self) -> None:
+        """
+        Plot time traces of selected variables at an upstream and target index, based on
+        `plot_time_history_optimized` in `convergence_functions.py`.
+
+        For each selected variable we draw 2 subplots (rows):
+        - upstream value vs time
+        - target value vs time
+        """
+        self.hist_figure.clear()
+        try:
+            self.hist_figure.set_facecolor("white")
+        except Exception:
+            pass
+
+        if not self.cases:
+            ax = self.hist_figure.add_subplot(1, 1, 1)
+            ax.set_axis_off()
+            ax.text(
+                0.5,
+                0.5,
+                "No dataset loaded.\nLoad a case directory to view time history.",
+                ha="center",
+                va="center",
+                fontsize=12,
+                transform=ax.transAxes,
+            )
+            self.hist_canvas.draw_idle()
+            return
+
+        tdim = self.state.get("time_dim") or "t"
+        # Shared selection with profiles
+        vars_to_plot = list(self.selected_vars)
+        if not vars_to_plot:
+            ax = self.hist_figure.add_subplot(1, 1, 1)
+            ax.set_axis_off()
+            ax.text(
+                0.5,
+                0.5,
+                "No variables selected.\nCheck variables on the left to plot time history.",
+                ha="center",
+                va="center",
+                fontsize=12,
+                transform=ax.transAxes,
+            )
+            self.hist_canvas.draw_idle()
+            return
+
+        upstream_index = int(self.hist_upstream_spin.value())
+        target_index = int(self.hist_target_spin.value())
+        time_slices = int(self.hist_time_slices_spin.value())
+
+        n_cols = max(1, len(vars_to_plot))
+        n_rows = 2
+        gs = self.hist_figure.add_gridspec(nrows=n_rows, ncols=n_cols, hspace=0.35, wspace=0.30)
+
+        last_time_ms = None
+        for i, var in enumerate(vars_to_plot):
+            ax_u = self.hist_figure.add_subplot(gs[0, i])
+            ax_t = self.hist_figure.add_subplot(gs[1, i], sharex=ax_u)
+
+            units = None
+            # Choose a scale similar to convergence_functions (log if huge)
+            log_threshold = 1e6
+            max_abs = 0.0
+
+            for c in self.cases.values():
+                ds = c.ds
+                if var not in ds:
+                    continue
+                da = ds[var]
+                try:
+                    units = units or da.attrs.get("units", None)
+                except Exception:
+                    pass
+
+                # Pick time dim
+                if tdim not in da.dims:
+                    # Not a time-varying variable -> skip
+                    continue
+
+                # Spatial dimension: try "y" then "pos" then inferred spatial dim
+                sdim = None
+                for cand in ("y", "pos", self.state.get("spatial_dim")):
+                    if cand and cand in da.dims:
+                        sdim = cand
+                        break
+                if sdim is None:
+                    continue
+
+                # Clamp indices (per-case, per-var)
+                n_s = int(ds.sizes.get(sdim, 0))
+                if n_s <= 0:
+                    continue
+                upi = upstream_index if upstream_index >= 0 else max(0, n_s + upstream_index)
+                tgi = target_index if target_index >= 0 else max(0, n_s + target_index)
+                upi = int(np.clip(upi, 0, n_s - 1))
+                tgi = int(np.clip(tgi, 0, n_s - 1))
+
+                # Cache key: (case_label, var, tdim, sdim, upi, tgi)
+                ck = (c.label, var, tdim, sdim, upi, tgi)
+                cached = self._hist_cache.get(ck)
+                if cached is None:
+                    try:
+                        t_full = np.asarray(ds[tdim].values) * 1e3
+                        y_up_full = np.asarray(da.isel({sdim: upi}).values).squeeze()
+                        y_tg_full = np.asarray(da.isel({sdim: tgi}).values).squeeze()
+                        self._hist_cache[ck] = (t_full, y_up_full, y_tg_full)
+                        cached = self._hist_cache[ck]
+                    except Exception:
+                        continue
+
+                t_full, y_up_full, y_tg_full = cached
+                if t_full is None:
+                    continue
+
+                n_t = int(len(t_full))
+                if n_t <= 0:
+                    continue
+                n_sel = min(time_slices, n_t)
+                sl = slice(-n_sel, None)
+                tvals = t_full[sl]
+                y_up = y_up_full[sl]
+                y_tg = y_tg_full[sl]
+
+                # Downsample for responsiveness (keep last N points evenly)
+                try:
+                    if self._hist_max_points and len(tvals) > int(self._hist_max_points):
+                        stride = int(np.ceil(len(tvals) / float(self._hist_max_points)))
+                        tvals = tvals[::stride]
+                        y_up = y_up[::stride]
+                        y_tg = y_tg[::stride]
+                except Exception:
+                    pass
+
+                # Track scale decision
+                try:
+                    max_abs = max(max_abs, float(np.nanmax(np.abs(y_up))), float(np.nanmax(np.abs(y_tg))))
+                except Exception:
+                    pass
+
+                ax_u.plot(tvals, y_up, "-", linewidth=1.5, label=c.label)
+                ax_t.plot(tvals, y_tg, "--", linewidth=1.5, label=c.label)
+
+                if tvals.size:
+                    last_time_ms = float(tvals[-1])
+
+            scale = "log" if (max_abs > log_threshold and max_abs > 0) else "linear"
+            ax_u.set_yscale(scale)
+            ax_t.set_yscale(scale)
+
+            ax_u.set_title(f"Upstream {var}", fontsize=10)
+            ax_t.set_title(f"Target {var}", fontsize=10)
+            ax_t.set_xlabel("Time (ms)")
+            ylabel = f"{var} ({units})" if units else f"{var}"
+            ax_u.set_ylabel(ylabel)
+            ax_t.set_ylabel(ylabel)
+            ax_u.grid(True, alpha=0.3)
+            ax_t.grid(True, alpha=0.3)
+
+            if len(self.cases) > 1:
+                ax_u.legend(loc="best", fontsize=8)
+
+            # Hide x tick labels on top row
+            ax_u.tick_params(labelbottom=False)
+
+        # if last_time_ms is not None:
+        #     self.hist_time_readout.setText(f"Time history (last: {last_time_ms:.4f} ms)")
+        #     self.hist_figure.suptitle(f"Time History (Last: {last_time_ms:.3f} ms)", fontsize=12)
+        # else:
+        #     self.hist_time_readout.setText("Time history")
+
+        try:
+            self.hist_figure.tight_layout()
+        except Exception:
+            pass
+        self.hist_canvas.draw_idle()
 
 
 def main(argv: Optional[List[str]] = None) -> int:
