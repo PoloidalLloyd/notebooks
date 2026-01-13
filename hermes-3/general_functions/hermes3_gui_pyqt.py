@@ -1427,7 +1427,8 @@ class Hermes3QtMainWindow(QMainWindow):
             ax_u.set_title(f"Upstream {var}", fontsize=10)
             ax_t.set_title(f"Target {var}", fontsize=10)
             ax_t.set_xlabel("Time (ms)")
-            ylabel = f"{var} ({units})" if units else f"{var}"
+            # Variable name is already in the subplot title; keep y-label to units only.
+            ylabel = f"({units})" if units else ""
             ax_u.set_ylabel(ylabel)
             ax_t.set_ylabel(ylabel)
             ax_u.grid(True, alpha=0.3)
